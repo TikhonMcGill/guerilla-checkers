@@ -1,0 +1,264 @@
+Preliminary Steps(January 5
+th to January 6
+th, 2024):
+1. Create a Godot 4.1.3 Project for the Project
+2. Create a GitHub Repository for the Project
+3. Create an Empty Draft of the Dissertation
+4. Copy the Literature Review into the Draft
+5. Upload the Draft to OneDrive
+6. Upload the Draft to Google Drive
+Create Placeholder Assets(January 6th to January 7th, 2024):
+1. Create a Placeholder Game Board Graphical Asset
+2. Create a Placeholder Counterinsurgent Checker Graphical Asset
+3. Create a Placeholder Guerilla Graphical Asset
+The Main Menu(January 7th to January 8th, 2024):
+1. Create a Main Menu Scene
+2. Create a Game Scene
+3. In the Main Menu Scene, add a “Play” Button, which transfers the game to the Game Scene
+4. In the Game Scene, add functionality for Pressing ESCAPE, producing an “Are you sure?” Pop-up 
+window and, if yes, returning to the Main Menu
+5. Write in credits to Brian Train for devising the rules of Guerilla Checkers
+Game State(January 8th to January 15th, 2024):
+1. Produce a Class for modeling the Game State (no. Guerilla Pieces left, positions of pieces)
+2. Add a method to check if the Guerilla is Victorious
+3. Add a method to check if the Counterinsurgent is Victorious
+4. Add a method to get future legal moves, either as a Guerilla or Counterinsurgent based on the 
+current Game State
+36
+Graphical Representation of Game State(January 15th to January 22
+nd, 2024):
+1. Add the Game Board Asset Into the Game Scene
+2. Create a Counterinsurgent Checker Scene, with a 2D Sprite whose texture is the placeholder 
+Counterinsurgent Checker 
+3. Create a Guerilla Piece Scene, with a 2D Sprite whose texture is the placeholder Guerilla Piece
+4. Add a Text Label showing the number of Pieces the Guerilla has left
+5. Add a Text Label showing the current turn
+6. Implement code to convert the Encoding of the Game State into a Graphical representation on the 
+board (correct positions, correct Guerilla piece counter) and vice versa
+Turn-Taking Logic and Hotseat Multiplayer (January 22
+nd to January 29th, 2024):
+1. Add a “take turn” method, which updates this game State to be the game State corresponding to the 
+move being taken
+2. Add two Player Selectors into the Main Menu, with a name field and a list of options, with initially
+one option - “Human Player”
+3. Implement functionality for the player to be able to move/place pieces, if it is their turn, updating 
+the game State and layout of the board
+4. Implement a Victory Screen for when one of the players wins
+Rules-Based Computer Player (January 29th to February 2nd, 2024):
+1. For the Class Encoding the Game State, implement helper functions to get all relevant situations 
+(counting no. pieces, counting threatened pieces, Counterinsurgent pieces on edges, etc.)
+2. In the Main Menu, add “Rules-Based Computer Player” as options for player types
+3. Implement the Rules-Based Computer Player’s Logic as described in the design section, and FR-2
+Phase 2 (February 2nd to March 8th)
+Minimax Prototype (February 2nd to February 9th, 2024):
+1. In the Main Menu, add “Minimax Player” as an option for the player type
+2. Implement the Minimax Algorithm with Alpha-Beta Pruning and a default cutoff of 3, as well as a 
+simple evaluation function of “Number of Guerilla Pieces minus (Number of Counterinsurgent 
+Checkers * 11)”
+37
+Customizable Minimax Profiles (February 9th to February 16th, 2024):
+1. Implement the Customizable Evaluation Function, per the parameters outlined in NFR-5
+2. Implement a customizable cutoff, from 1 to 10
+3. Implement the 4 Sorting Algorithms, per NFR-21
+4. Implement interface functionality to create, name, edit, save and use Minimax Profiles, per FR-5
+Tournament System (February 16th to February 23rd, 2024):
+1. Create option in Menu for a Tournament mode
+2. Implement logic for the game not returning to the main menu when a game in the tournament is 
+played, decrementing the number of games left until it is zero
+3. Add the option for “Rapidly” doing a Tournament, wherein, if the two players are ComputerControlled, the games are rapidly played without any graphical representation
+4. Add a final result for how many games each player won
+Optimization (February 23rd to March 1st, 2024):
+1. Instead of calculating different situations in the board game, make them be saved (e.g. instead of 
+going through all pieces on the board and counting number of pieces, save the number of pieces)
+2. Implement Transposition Tables – it is possible that different moves could lead to the same game 
+configuration. Therefore, it would be a good idea to store future moves of a Game State, and looking 
+them up if that configuration appears again. The transposition table will be saved in RAM between 
+games, to allow for tournaments with hundreds of games to be sped up by not having to recalculate 
+many of the same Game States
+3. Research other state of the art Minimax Optimization Techniques, and, if feasible, implement them, 
+making a note of them for the report
+Testing (March 1st to March 8th, 2024):
+1. Use the application, trying out all features, and noting down any bugs or errors, and fixing them
+Phase 3 (March 8th to April 5th)
+Running the Experiment (March 8th to March 11th, 2024):
+1. Ensure that there is a set Random Seed, to make any random result reproducible
+2. Carry out the Experiment per the Methodology Section
+Analyzing the Data (March 11th to March 15th, 2024):
+1. Write down the data into tables
+2. Produce meaningful charts from the data tables
+3. Based on the data and charts, produce conclusions
+38
+Writeup (March 15th to April 5th, 2024):
+1. Write in the Results and Data Analysis
+2. Report relevant work done using the Progress Log
+3. Write in any new techniques discovered into the Literature Review
+4. Write a conclusion based on the data acquired
+5. Format the Report to be in accordance with guidelines from the Project Handbook
+6. Decide the most important features
+7. Arrange them into relevant categories
+8. Add figures and tables as needed
+9. Print out the Poster
+Lower-Priority Requirements(April 5th to April 15th, 2024):
+1. Implement any incomplete “Should Haves”, per the Requirements
+2. Implement any “Could Haves”, per the Requirements
+
+
+Update to MIT License at project end
+
+The Rules-Based Computer Player(RBCP) plays as follows:
+1. For every possible move, the RBCP assigns a value of “utility” to it, the sum of situations 
+described below
+2. The RBCP then picks the move with the best Utility
+3. If there are several moves with the best Utility, the RBCP picks randomly among them
+Utilities for an RBCP playing as a Guerilla:
+1. +10 to take a Counterinsurgent Checker 
+2. +1 to place a piece in a corner diagonally between two Counterinsurgent Checkers
+3. +100 to take the last Counterinsurgent Checker
+4. +1 to place a piece if it threatens one of the Counterinsurgent's Checkers
+5. -1 to place a piece if it is threatened by one of the Counterinsurgent's Checkers
+Utilities for an RBCP playing as a Counterinsurgent:
+1. +1 for every Guerilla Piece it can take at once
+2. +100 to take the last Guerilla Piece
+3. -5 to move a checker to the edge of the board
+4. -10 to move a checker to the corner of the board
+
+The Requirements are prioritized using the MoSCoW (Must, Should, Could, Will not) system.
+6.1 – Functional Requirements:
+FR-1: The System shall implement Guerilla Checkers
+FR-1.1: The System shall enforce all game rules
+FR-1.2: The User shall be able to play as either of the sides
+FR-1.3: The User shall be able to leave the game during its duration, returning to the Main Menu, by 
+pressing ESCAPE – when they do so, a dialog asking “Are you sure?” pops up
+Priority: Must Have
+FR-2: The System shall have a Rules-Based Computer Player(RBCP) of Guerilla Checkers
+FR-2.1: The RBCP shall be able to play both as a Guerilla and Counterinsurgent
+Priority: Must Have
+FR-3: The System shall have a Minimax Guerilla Checkers Player
+FR-3.1: There shall be a Guerilla and Counterinsurgent Minimax Player, using an Evaluation Function to 
+quantify states’ utility
+FR-3.2: If there are several best actions, pick one randomly
+FR-3.3: If there is only one possible action, take it without doing a search
+FR-3.4: The Minimax player shall have adjustable parameters, (choice of sorting algorithm – NFR-17, 
+evaluation function – NFR-5, and Cutoff – 1 to 10)
+Priority: Must Have
+22
+FR-4: The System shall have a Main Menu
+FR-4.1: The User shall be able to set the players of Guerilla Checkers:
+1. The User shall be able to name the Guerilla and Counterinsurgent
+2. The User shall be able to select the player type of each side:
+a. Human Player – played by a Human
+b. Rules-Based Computer Player – played as described in the Design
+c. Minimax Player – played by a Minimax Player, with a Minimax Profile the user can set 
+(see FR-5)
+Priority: Must Have
+FR-5: The User shall be able to create their own Minimax Profiles for Minimax Players
+FR-5.1: The User shall be able to create, name, save, edit and delete Minimax Profiles
+FR-5.2: The User shall be able to customize all 8 Evaluation Parameters (see NFR-5.1)
+FR-5.3: The User shall be able to determine the cutoff of the Minimax Search Tree (1 to 10)
+FR-5.4: The User shall be able to select the Sorting function of the Minimax Algorithm
+Priority: Must Have
+FR-6: The User shall be able to run a “Tournament”
+FR-6.1: The User shall be able to, in the Main Menu, specify the number of games to be played in a 
+Tournament
+FR-6.2: The User shall be able to rapidly play games, skipping any animations and letting The System rapidly 
+play the game (not available if one of the players is Human)
+FR-6.3: The System shall alternate the player sides in each round of the Tournament (e.g. a Human plays a 
+Guerilla in one round, and a Counterinsurgent in the next)
+FR-6.3: The System shall show the final result (how many games each player won as each side) when all 
+games are played
+Priority: Must Have
+23
+FR-7: The System shall provide an Interactive Tutorial
+FR-7.1: Users shall be able to, if one of the sides’ players is Human, activate a “Tutorial” setting
+FR-7.2: When active, Users shall be explained the outcomes of possible moves they could take
+Priority: Could Have
+FR-8: The System Shall Log Games
+FR-8.1: As each move is taken, the System shall keep a “log” of the game, which it saves on disk
+FR-8.2: The User shall be able to access these logs, the game replayed in accordance with it
+FR-8.3: For Tournaments, only the Opening Move and Winning Move will be saved
+Priority: Should Have
+6.2 – Non-Functional Requirements
+NFR-1: The System shall be implemented in Godot Version 4.1.3, using GDScript
+Priority: Must Have
+NFR-2: The Minimax algorithm’s evaluation function will be implemented with respect to the Guerilla 
+Player, the Counterinsurgent player’s evaluation function negating its result
+Priority: Must Have
+NFR-3: A Minimax Player playing at Cutoff Depth 10 shall take at most 10 seconds to move
+NFR-3.1: The Minimax Algorithm will keep track of the best move to take, given the current search result
+NFR-3.2: It will have a timeout of 10 seconds to carry out its search and, if it does not complete the search, it 
+will pick the best move so far
+Priority: Must Have
+NFR-4: The Minimax Algorithm shall be optimized using Alpha-Beta Pruning
+Priority: Must Have
+24
+NFR-5: There shall be an adjustable Evaluation Function that Minimax Algorithm will use to evaluate 
+states
+NFR-5.1: The Evaluation Function will produce a total utility, using these 8 Evaluation Parameters:
+1. Victory Utility – This is added to Utility if there are no Counterinsurgent Checkers on the board
+2. Defeat Utility – This is added to Utility if there are no Guerilla Pieces present on the board, or 
+the Guerilla has no pieces to place
+3. Pieces Left Utility – Number of Pieces the Guerilla has left multiplied by this, and added to total 
+Utility
+4. Pieces on Board Utility – Number of Guerilla Pieces present on board multiplied by this amount 
+and added to total Utility
+5. Checkers Utility – Number of Counterinsurgent Checkers present on board multiplied by this 
+and added to total Utility
+6. Guerilla-Threatened Checkers Utility – Number of Counterinsurgent Checkers “threatened” by 
+the Guerilla’s Pieces (2 Guerilla Pieces next to each other in corners of a square where a 
+Counterinsurgent Checker is present) multiplied by this and added to total Utility
+7. Edge-Threatened Checkers Utility – Number of Counterinsurgent Checkers present on the edge 
+of the board multiplied by this and added to total Utility
+8. Threatened Guerilla Pieces Utility – Number of Guerilla Pieces threatened by the 
+Counterinsurgent’s Checkers (a piece is in a corner without another piece next to it, in a corner 
+of a square with a Counterinsurgent Checker present) multiplied by this and added to total 
+Utility
+NFR-5.2: If any of the above parameters are zero, as an optimization, the Evaluation Function will not check 
+for situations related to those parameters
+Priority: Must Have
+NFR-6: The User shall be able to understand how the Opponent makes their Move
+NFR-6.1: There shall be animations for placing, moving and taking pieces
+Priority: Could Have
+NFR-7: The User, if they are playing, shall understand what legal moves they can make
+NFR-7.1: As a Counterinsurgent, the square(s) the User can move to will be highlighted
+NFR-7.2: As a Guerilla, the corners into which the User can place their next piece will be highlighted
+Priority: Could Have
+NFR-8: The System Implementation shall be Backed Up on a GitHub Repository
+Priority: Must Have
+25
+NFR-9: Drafts of the Dissertation shall be backed up
+NFR-9.1: Drafts shall be backed up on Heriot-Watt’s OneDrive Server
+NFR-9.2: Drafts shall be backed up on Google Drive
+Priority: Must Have
+NFR-10: The Development of the System shall follow an Object-Oriented Pattern
+Priority: Must Have
+NFR-11: The User’s Settings in the Main Menu shall be saved when the Application is closed
+Priority: Should Have
+NFR-12: The System shall be developed for a Windows 10 Desktop
+Priority: Must Have
+NFR-13: The Minimax Algorithm shall be implemented in C#
+Priority: Will Not Have
+NFR-14: Steps will be taken to improve the System’s Accessibility
+NFR-15.1: A Color palette for graphics will be selected that is suitable for colorblind people
+NFR-15.2: Parameters of the Minimax Implementation will be explained to those wishing to create a 
+Minimax Profile
+NFR-15.3: The System shall be explicit about the presence of a tutorial, for those who are unaware of the 
+rules of Guerilla Checkers
+Priority: Could Have
+NFR-15: All Third Parties will be Credited
+Priority: Must Have
+26
+NFR-16: Future Move Calculation Shall be Optimized using Transposition Tables
+NFR-16.1: When future moves of a Game State are looked at, they are added to a Transposition Table
+NFR-16.2: If that Game State is reached again, instead of recalculating moves, they will be looked up in the 
+Table
+NFR-16.3: The Transposition Table will be saved between games, so that (particularly in tournaments with 
+hundreds of games) time is saved in calculating moves
+Priority: Should Have
+NFR-17: There will be different choices of Sorting Algorithm for the Minimax AI
+NFR-17.1: The Sorting Algorithms are as follows:
+1. Unchanged – do not sort the future Moves of the Minimax in any way after the Game State returns 
+future moves
+2. End-take-other - places moves that end the game in the beginning, moves that take pieces after 
+that, all others in the end
+3. By Utility – sort moves by descending order of their utility
+4. Random Shuffle – randomly-shuffle moves
