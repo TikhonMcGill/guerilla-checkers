@@ -1,9 +1,3 @@
-Preliminary Steps(January 5 th to January 6th, 2024):
-	1. Create an Empty Draft of the Dissertation
-	2. Copy the Literature Review into the Draft
-	3. Upload the Draft to OneDrive
-	4. Upload the Draft to Google Drive
-
 The Main Menu(January 7th to January 8th, 2024):
 	1. Create a Main Menu Scene
 	2. Create a Game Scene
