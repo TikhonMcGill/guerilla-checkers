@@ -40,10 +40,20 @@ enum PLAYER{
 } 
 
 ##All of the Cells on the board into which COIN Checkers may be moved
-const CELLS : Array[int] = []
+const CELLS : Array[int] = [
+	0,1,2,3,4,5,6,7,8,9,10,11,12,
+	13,14,15,16,17,18,19,20,21,22,
+	23,24,25,26,27,28,29,30,31
+]
 
 ##All Corners in which Guerilla Pieces may be placed
-const CORNERS : Array[int] = []
+const CORNERS : Array[int] = [
+	0,1,2,3,4,5,6,7,8,9,10,11,12,
+	13,14,15,16,17,18,19,20,21,22,
+	23,24,25,26,27,28,29,30,31,32,
+	33,34,35,36,37,38,39,40,41,42,
+	43,44,45,46,47,48
+]
 
 ##The corners of every cell
 const CELL_CORNERS : Array[Array] = []

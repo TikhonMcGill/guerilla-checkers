@@ -241,3 +241,4 @@ Lower-Priority Requirements:
 
 Consider experimenting with timeout - make it tunable
 Make sure to explain how to leave the game - press ESCAPE
+Consider making a "Random Computer Player"
