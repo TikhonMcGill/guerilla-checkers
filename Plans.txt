@@ -239,4 +239,5 @@ Lower-Priority Requirements:
 		FR-7.1: Users shall be able to, if one of the sides’ players is Human, activate a “Tutorial” setting
 		FR-7.2: When active, Users shall be explained the outcomes of possible moves they could take
 
-Consider experimenting with timeout
+Consider experimenting with timeout - make it tunable
+Make sure to explain how to leave the game - press ESCAPE
