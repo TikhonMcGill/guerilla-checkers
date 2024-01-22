@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://csqyjihnbesyu"]
+[gd_scene load_steps=2 format=3 uid="uid://csqyjihnbesyu"]
+
+[ext_resource type="Script" path="res://assets/scenes/main_menu/main_menu.gd" id="1_3duge"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -7,6 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_3duge")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -90,3 +93,5 @@ layout_mode = 2
 size_flags_vertical = 10
 text = "See Rules of Guerilla Checkers"
 uri = "https://www.di.fc.ul.pt/~jpn/gv/guerrilla.htm"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]

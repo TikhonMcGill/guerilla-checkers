@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://bimlqxwg5scw4"]
+
+[ext_resource type="Script" path="res://assets/scenes/game_scene/game_scene.gd" id="1_i1tu6"]
+
+[node name="GameScene" type="Node"]
+script = ExtResource("1_i1tu6")
+
+[node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="."]
+title = "Return to Main Menu?"
+ok_button_text = "Yes"
+dialog_text = "Are you sure you want to return to the Main Menu?"
+cancel_button_text = "No"
+
+[connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]

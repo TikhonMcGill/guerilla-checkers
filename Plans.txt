@@ -1,11 +1,3 @@
-The Main Menu(January 7th to January 8th, 2024):
-	1. Create a Main Menu Scene
-	2. Create a Game Scene
-	3. In the Main Menu Scene, add a “Play” Button, which transfers the game to the Game Scene
-	4. In the Game Scene, add functionality for Pressing ESCAPE, producing an “Are you sure?” Pop-up 
-	window and, if yes, returning to the Main Menu
-	5. Write in credits to Brian Train for devising the rules of Guerilla Checkers
-
 Game State(January 8th to January 15th, 2024):
 	1. Produce a Class for modeling the Game State (no. Guerilla Pieces left, positions of pieces)
 	2. Add a method to check if the Guerilla is Victorious
@@ -13,14 +5,13 @@ Game State(January 8th to January 15th, 2024):
 	4. Add a method to get future legal moves, either as a Guerilla or Counterinsurgent based on the 
 	current Game State
 
-Graphical Representation of Game State(January 15th to January 22 nd, 2024):
-	1. Add the Game Board Asset Into the Game Scene
-	2. Create a Counterinsurgent Checker Scene, with a 2D Sprite whose texture is the placeholder 
+Graphical Representation of Game State(January 15th to January 22nd, 2024):
+	1. Create a Counterinsurgent Checker Scene, with a 2D Sprite whose texture is the placeholder 
 	Counterinsurgent Checker 
-	3. Create a Guerilla Piece Scene, with a 2D Sprite whose texture is the placeholder Guerilla Piece
-	4. Add a Text Label showing the number of Pieces the Guerilla has left
-	5. Add a Text Label showing the current turn
-	6. Implement code to convert the Encoding of the Game State into a Graphical representation on the 
+	2. Create a Guerilla Piece Scene, with a 2D Sprite whose texture is the placeholder Guerilla Piece
+	3. Add a Text Label showing the number of Pieces the Guerilla has left
+	4. Add a Text Label showing the current turn
+	5. Implement code to convert the Encoding of the Game State into a Graphical representation on the 
 	board (correct positions, correct Guerilla piece counter) and vice versa
 
 Turn-Taking Logic and Hotseat Multiplayer (January 22nd to January 29th, 2024):
