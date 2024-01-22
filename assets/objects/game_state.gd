@@ -59,3 +59,21 @@ const EDGE_CELLS : Array[int] = []
 
 ##Corner cells of the board (the Guerilla need place only 1 piece to capture a COIN Checker in those cells)
 const CORNER_CELLS : Array[int] = []
+
+##The current game state - initially, the First Turn
+var game_state : STATE = STATE.FIRST_TURN
+
+##The number of pieces the Guerilla has left to place - initially, 66
+var guerilla_pieces_left : int = 66
+
+##The corner into which the Guerilla has placed their first piece - saved so that the Game State knows next to which corner next piece must be placed
+var first_placed_piece_corner : int = -1
+
+##The cell in which the COIN Checker which has taken a Guerilla Piece is present - saved so that the Game State knows, per the rules of Guerilla Checkers, which Checker will have to take all pieces it can
+var attacking_checker_cell : int = -1
+
+##The positions of the COIN Checkers - initially they are in positions corresponding to the diagram on https://www.di.fc.ul.pt/~jpn/gv/guerrilla.htm
+var coin_checker_positions : Array[int] = [9, 13, 14, 17, 18, 22]
+
+##The corners in which the Guerilla Pieces are present - initially, none are on the board
+var guerilla_piece_positions : Array[int] = []
