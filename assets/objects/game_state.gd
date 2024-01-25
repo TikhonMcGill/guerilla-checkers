@@ -378,6 +378,11 @@ func check_coin_checker_capture():
 func is_guerilla_victorious() -> bool:
 	return len(coin_checker_positions) == 0
 
+##A Method to check if the COIN Player is victorious (Guerilla has no more pieces to place, 
+##or no more pieces left on the board)
+func is_coin_victorious() -> bool:
+	return len(guerilla_piece_positions) == 0 or guerilla_pieces_left == 0
+
 ##A Method to place a Guerilla Piece, updating the Game State accordingly
 func place_guerilla_piece(corner : int) -> void:
 	assert(corner >= 0 and corner <= 48,"Corner to place into must be between 0 and 48")

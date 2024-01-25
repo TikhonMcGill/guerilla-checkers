@@ -1,8 +1,6 @@
 Game State(January 8th to January 15th, 2024):
 	1. Produce a Class for modeling the Game State (no. Guerilla Pieces left, positions of pieces)
-	2. Add a method to check if the Guerilla is Victorious
-	3. Add a method to check if the Counterinsurgent is Victorious
-	4. Add a method to get future legal moves, either as a Guerilla or Counterinsurgent based on the 
+	2. Add a method to get future legal moves, either as a Guerilla or Counterinsurgent based on the 
 	current Game State
 
 Graphical Representation of Game State(January 15th to January 22nd, 2024):
