@@ -252,3 +252,32 @@ func get_corner_between_cells(cell1: int, cell2: int) -> int:
 			return corner
 	
 	return -1
+
+##Get the Possible Corners into which the Guerilla Player can place their pieces
+func get_placeable_corners() -> Array[int]:
+	#If it's the first turn, the Guerilla can place their piece anywhere, so return all corners
+	if game_state == STATE.FIRST_TURN:
+		return CORNERS
+	#If it's not the Guerilla's First Turn, they can place their first piece in any corner orthogonally-adjacent to
+	#an existing piece, so we must go through all pieces and get empty adjacent corners, ensuring no duplicates
+	elif game_state == STATE.FIRST_GUERILLA_PIECE:
+		var result : Array[int] = []
+		for occupied_corner in guerilla_piece_positions:
+			var occupied_corner_neighbors = get_adjacent_corners(occupied_corner)
+			for neighbor in occupied_corner_neighbors:
+				if is_corner_occupied(neighbor) == false and result.has(neighbor) == false:
+					result.append(neighbor)
+		
+		return result
+	#When the Guerilla places their second piece, it must be adjacent to the one initially-placed
+	elif game_state == STATE.SECOND_GUERILLA_PIECE:
+		var result : Array[int] = []
+		var first_piece_neighbors = get_adjacent_corners(first_placed_piece_corner)
+		for neighbor in first_piece_neighbors:
+			if is_corner_occupied(neighbor) == false:
+				result.append(neighbor)
+		
+		return result
+	#In any other Game State, it's not the Guerilla's Turn, so it can't place any pieces, so return empty array
+	else:
+		return []
