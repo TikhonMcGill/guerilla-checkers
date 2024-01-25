@@ -462,6 +462,24 @@ func move_coin_checker(from_cell : int,to_cell : int) -> void:
 			#chose to do so, it will have to take all possible pieces
 			game_state = STATE.COIN_TOOK_PIECE
 
+##Method to get all possible moves, dependent on the Game, as an Array of special "Move" objects
+func get_possible_moves() -> Array[Move]:
+	var current_player = get_current_player()
+	
+	var moves = []
+	
+	if current_player == PLAYER.GUERILLA:
+		var placeable_corners = get_placeable_corners()
+		for p in placeable_corners:
+			moves.append(GuerillaPiecePlacementMove.new(p))
+	elif current_player == PLAYER.COIN:
+		for checker in coin_checker_positions:
+			var moveable_cells = get_moveable_cells(checker)
+			for m in moveable_cells:
+				moves.append(COINCheckerMovementMove.new(checker,m))
+	
+	return moves
+
 ##Setter method for setting the State (namely to emit the "state_changed" signal and write less lines of code)
 func _set_state(state : STATE) -> void:
 	game_state = state
