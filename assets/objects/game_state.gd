@@ -213,9 +213,6 @@ var guerilla_pieces_left : int = 66
 ##The corner into which the Guerilla has placed their first piece - saved so that the Game State knows next to which corner next piece must be placed
 var first_placed_piece_corner : int = -1
 
-##The cell in which the COIN Checker which has taken a Guerilla Piece is present - saved so that the Game State knows, per the rules of Guerilla Checkers, which Checker will have to take all pieces it can
-var attacking_checker_cell : int = -1
-
 ##The positions of the COIN Checkers - initially they are in positions corresponding to the diagram on https://www.di.fc.ul.pt/~jpn/gv/guerrilla.htm
 var coin_checker_positions : Array[int] = [9, 13, 14, 17, 18, 22]
 
@@ -406,8 +403,11 @@ func place_guerilla_piece(corner : int) -> void:
 	if is_guerilla_victorious() == true:
 		game_state = STATE.GUERILLA_VICTORY
 	#If the Guerilla has placed the first piece (be it in the first turn or otherwise), switch to the Second Piece State
+	#Also, set the first piece placed variable, since we need to know to which first piece the second piece must be
+	#adjacent
 	elif game_state == STATE.FIRST_TURN or game_state == STATE.FIRST_GUERILLA_PIECE:
 		game_state = STATE.SECOND_GUERILLA_PIECE
+		first_placed_piece_corner = corner
 	elif game_state == STATE.SECOND_GUERILLA_PIECE:
 		#If the Guerilla still has more pieces to place, it is now the COIN's Turn
 		if guerilla_pieces_left > 0:
@@ -415,6 +415,51 @@ func place_guerilla_piece(corner : int) -> void:
 		#If the Guerilla has no more pieces to place, per the rules, the COIN is victorious
 		else:
 			game_state = STATE.COIN_VICTORY
+
+##A Method to move a COIN Checker, updating the Game State accordingly
+func move_coin_checker(from_cell : int,to_cell : int) -> void:
+	assert(is_cell_occupied(from_cell),"Cell to move from must be occupied")
+	assert(from_cell >= 0 and from_cell <= 31,"Cell to move from must be between 0 and 31")
+	assert(to_cell >= 0 and to_cell <= 31,"Cell to move to must be between 0 and 31")
+	assert(to_cell in get_moveable_cells(from_cell),"Cell to move to must be valid")
+	
+	#Update the Position of the Checker, and emit the corresponding signal
+	coin_checker_positions.erase(from_cell)
+	coin_checker_positions.append(to_cell)
+	coin_checker_moved.emit(from_cell,to_cell)
+	
+	#Check if, by moving, the COIN Player jumped over and took a Guerilla Piece
+	#If it did, we will need to update the Game State to "Coin Took Piece"
+	var corner_between = get_corner_between_cells(from_cell,to_cell)
+	if is_corner_occupied(corner_between) == true:
+		guerilla_piece_positions.erase(corner_between)
+		guerilla_piece_captured.emit(corner_between)
+		game_state = STATE.COIN_TOOK_PIECE
+	
+	#Update the Game State
+	
+	#If the COIN Player is victorious (no Guerilla Pieces left on the board in this case), update the Game State
+	#to COIN Victory
+	if is_coin_victorious() == true:
+		game_state = STATE.COIN_VICTORY
+	#If the COIN Player moved their Checker without taking anything, it becomes the Guerilla's Turn
+	elif game_state == STATE.COIN_TURN:
+		game_state = STATE.FIRST_GUERILLA_PIECE
+	elif game_state == STATE.COIN_TOOK_PIECE:
+		#Get the Possible Cells the COIN could move to after it moved to the position 
+		#(since the State is "Coin Took Piece", these are the Cells which have a Guerilla Piece between them
+		#and the Cell the COIN Player just moved to, meaning it can be taken)
+		var movable_positions = get_moveable_cells(to_cell)
+		
+		#If there are no movable positions (i.e. the COIN Player can take no more Guerilla Pieces), it's now
+		#the Guerilla's Turn
+		if len(movable_positions) == 0:
+			game_state = STATE.FIRST_GUERILLA_PIECE
+		else:
+			#If there ARE movable positions (i.e. the COIN Player can take more pieces), it's still the COIN Player's
+			#turn, since, per the rules of Guerilla Checkers, while taking the first piece is optional, if the COIN
+			#chose to do so, it will have to take all possible pieces
+			game_state = STATE.COIN_TOOK_PIECE
 
 ##Setter method for setting the State (namely to emit the "state_changed" signal and write less lines of code)
 func _set_state(state : STATE) -> void:
