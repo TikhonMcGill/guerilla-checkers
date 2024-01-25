@@ -39,6 +39,7 @@ enum PLAYER{
 	GAME_OVER ##The Game is over
 } 
 
+#region Constants
 ##All of the Cells on the board into which COIN Checkers may be moved
 const CELLS : Array[int] = [
 	0,1,2,3,4,5,6,7,8,9,10,11,12,
@@ -192,6 +193,8 @@ const EDGE_CELLS : Array[int] = []
 ##Corner cells of the board (the Guerilla need place only 1 piece to capture a COIN Checker in those cells)
 const CORNER_CELLS : Array[int] = []
 
+#endregion
+
 ##The current game state - initially, the First Turn
 var game_state : STATE = STATE.FIRST_TURN
 
@@ -209,3 +212,13 @@ var coin_checker_positions : Array[int] = [9, 13, 14, 17, 18, 22]
 
 ##The corners in which the Guerilla Pieces are present - initially, none are on the board
 var guerilla_piece_positions : Array[int] = []
+
+##Get the diagonally-adjacent Cells to this cell
+func get_adjacent_cells(cell : int) -> Array[int]:
+	assert(cell >= 0 and cell <= 31,"Cell must be between 0 and 31")
+	return CELL_ADJACENCIES[cell]
+
+##Get the Orthogonally-adjacent Corners to this corner
+func get_adjacent_corners(corner : int) -> Array[int]:
+	assert(corner >= 0 and corner <= 48,"The Corner must be between 0 and 48")
+	return CORNER_ADJACENCIES[corner]
