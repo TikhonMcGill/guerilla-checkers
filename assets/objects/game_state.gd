@@ -5,6 +5,8 @@ class_name GameState
 ##Class representing the Game State of Guerilla Checkers
 ##
 ##This Class provides helper functions to get possible moves, and to take moves
+##Note - the term "COIN" and "Counterinsurgent" is used interchangeably, and means the
+##Player that is playing using Checkers.
 
 ##Emitted when the Guerilla Places a piece - used for animation
 signal guerilla_piece_placed(corner : int)
@@ -188,15 +190,22 @@ const CORNER_ADJACENCIES : Array[Array] = [
 ]
 
 ##Cells that are on the edge of the board (the Guerilla need place only 2 pieces to capture COIN Checkers in those cells)
-const EDGE_CELLS : Array[int] = []
+const EDGE_CELLS : Array[int] = [
+	0,1,2,3,
+	4,11,12,
+	19,20,27,
+	28,29,30,31
+]
 
 ##Corner cells of the board (the Guerilla need place only 1 piece to capture a COIN Checker in those cells)
-const CORNER_CELLS : Array[int] = []
+const CORNER_CELLS : Array[int] = [
+	3,28
+]
 
 #endregion
 
 ##The current game state - initially, the First Turn
-var game_state : STATE = STATE.FIRST_TURN
+var game_state : STATE = STATE.FIRST_TURN : set = _set_state
 
 ##The number of pieces the Guerilla has left to place - initially, 66
 var guerilla_pieces_left : int = 66
@@ -279,7 +288,8 @@ func get_placeable_corners() -> Array[int]:
 		
 		return result
 	
-	#In any other Game State, it's not the Guerilla's Turn, so they can't place any pieces, so return empty array
+	#In any other Game State, it's not the Guerilla's Turn (or they have won/lost), 
+	#so they can't place any pieces, so return empty array
 	return []
 
 ##Get the Possible Cells into which the COIN Player can move their Checker
@@ -315,7 +325,8 @@ func get_moveable_cells(from_cell : int) -> Array[int]:
 		
 		return result
 	
-	#In any other Game State, it's not the COIN's Turn, so they can't move any checkers, so return empty array
+	#In any other Game State, it's not the COIN's Turn (or they have won/lost), 
+	#so they can't move any checkers, so return empty array
 	return []
 
 ##Get the Current player (i.e. the one whose turn it is)
@@ -326,3 +337,81 @@ func get_current_player() -> PLAYER:
 		return PLAYER.COIN
 	else:
 		return PLAYER.GAME_OVER
+
+##A Method to check how much corners of a Cell have been occupied by Checkers (used for captures by Guerilla)
+func count_threatening_corners(cell : int) -> int:
+	assert(cell >= 0 and cell <= 31,"Cell to count Threats of must be between 0 and 31")
+	var threats = 0
+	#If the cell is in the Corner of the board, it requires at most 2 Guerilla Pieces to take it,
+	#So add 2 to the threats
+	if cell in EDGE_CELLS:
+		threats += 2
+	#If the cell is also a Corner cell, add +1 Threat, since then it will only require 1 Guerilla Piece
+	#to take it
+	if cell in CORNER_CELLS:
+		threats += 1
+	
+	#Count the Occupied Corners of the Cell, and add them to threats
+	for corner in get_cell_corners(cell):
+		if is_corner_occupied(corner) == true:
+			threats += 1
+	
+	return threats
+
+##A Method to check if any of the COIN Player's Checkers have been captured
+func check_coin_checker_capture():
+	var checkers_to_capture : Array[int] = []
+	
+	#Get the Checkers that will be captured - these must be surrounded on all 4 corners
+	#by either Guerilla Pieces or empty space (when they're on edge/corner cells of the board)
+	for checker in coin_checker_positions:
+		if count_threatening_corners(checker) == 4:
+			checkers_to_capture.append(checker)
+	
+	#Godot does not support erasing in an array while iterating, so iterate through the "checkers_to_capture"
+	#Array and remove it from Coin Checker Positions, also emitting the corresponding signal
+	for captive in checkers_to_capture:
+		coin_checker_positions.erase(captive)
+		coin_checker_captured.emit(captive)
+
+##A Method to check if the Guerilla is victorious (no more COIN Checkers remain)
+func is_guerilla_victorious() -> bool:
+	return len(coin_checker_positions) == 0
+
+##A Method to place a Guerilla Piece, updating the Game State accordingly
+func place_guerilla_piece(corner : int) -> void:
+	assert(corner >= 0 and corner <= 48,"Corner to place into must be between 0 and 48")
+	assert(corner in get_placeable_corners(),"Corner to place into must be valid")
+	
+	#Decrement number of pieces left by 1, since a Piece was placed
+	guerilla_pieces_left -= 1
+	
+	#Place the Piece in the corner
+	guerilla_piece_positions.append(corner)
+	
+	#Emit the signal that the piece was placed
+	guerilla_piece_placed.emit(corner)
+	
+	#Check if any COIN Checkers were captured after the Guerilla Placed their piece
+	check_coin_checker_capture()
+	
+	#Update the Game State based on the situation
+	
+	#If the Guerilla is victorious (i.e. no more COIN Pieces remain), switch to the Guerilla Victory Game State
+	if is_guerilla_victorious() == true:
+		game_state = STATE.GUERILLA_VICTORY
+	#If the Guerilla has placed the first piece (be it in the first turn or otherwise), switch to the Second Piece State
+	elif game_state == STATE.FIRST_TURN or game_state == STATE.FIRST_GUERILLA_PIECE:
+		game_state = STATE.SECOND_GUERILLA_PIECE
+	elif game_state == STATE.SECOND_GUERILLA_PIECE:
+		#If the Guerilla still has more pieces to place, it is now the COIN's Turn
+		if guerilla_pieces_left > 0:
+			game_state = STATE.COIN_TURN
+		#If the Guerilla has no more pieces to place, per the rules, the COIN is victorious
+		else:
+			game_state = STATE.COIN_VICTORY
+
+##Setter method for setting the State (namely to emit the "state_changed" signal and write less lines of code)
+func _set_state(state : STATE) -> void:
+	game_state = state
+	game_state_changed.emit()

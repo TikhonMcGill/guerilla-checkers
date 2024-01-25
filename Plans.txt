@@ -242,3 +242,5 @@ Lower-Priority Requirements:
 Consider experimenting with timeout - make it tunable
 Make sure to explain how to leave the game - press ESCAPE
 Consider making a "Random Computer Player"
+Consider refactoring Minimax Parameters not to number of Threatened COIN Checkers, but to number of THREATENING CORNERS
+(which counts for BOTH Guerilla Pieces AND Empty corners of the board)
