@@ -317,3 +317,12 @@ func get_moveable_cells(from_cell : int) -> Array[int]:
 	
 	#In any other Game State, it's not the COIN's Turn, so they can't move any checkers, so return empty array
 	return []
+
+##Get the Current player (i.e. the one whose turn it is)
+func get_current_player() -> PLAYER:
+	if game_state == STATE.FIRST_TURN or game_state == STATE.FIRST_GUERILLA_PIECE or game_state == STATE.SECOND_GUERILLA_PIECE:
+		return PLAYER.GUERILLA
+	elif game_state == STATE.COIN_TURN or game_state == STATE.COIN_TOOK_PIECE:
+		return PLAYER.COIN
+	else:
+		return PLAYER.GAME_OVER
