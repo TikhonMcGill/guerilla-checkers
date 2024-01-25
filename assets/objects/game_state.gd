@@ -278,6 +278,42 @@ func get_placeable_corners() -> Array[int]:
 				result.append(neighbor)
 		
 		return result
-	#In any other Game State, it's not the Guerilla's Turn, so it can't place any pieces, so return empty array
-	else:
-		return []
+	
+	#In any other Game State, it's not the Guerilla's Turn, so they can't place any pieces, so return empty array
+	return []
+
+##Get the Possible Cells into which the COIN Player can move their Checker
+func get_moveable_cells(from_cell : int) -> Array[int]:
+	assert(from_cell >= 0 and from_cell <= 31,"Cell to get Moveable cells of must be between 0 and 31")
+	
+	#If it's the COIN Player's turn and they haven't taken a piece, the Checker can move to any unoccupied
+	#diagonally-adjacent Cell
+	if game_state == STATE.COIN_TURN:
+		var movement_options := get_adjacent_cells(from_cell)
+		var result = []
+		
+		for m in movement_options:
+			if is_cell_occupied(m) == false:
+				result.append(m)
+		
+		return result
+	#If the COIN Player took 1 or more pieces, then they can only move to an adjacent cell if it means taking another
+	#Guerilla Piece (per the rules of Guerilla Checkers)
+	elif game_state == STATE.COIN_TOOK_PIECE:
+		var movement_options := get_adjacent_cells(from_cell)
+		var result = []
+		
+		for m in movement_options:
+			#Get the corner between the current Cell and the possible one to move to
+			var shared_corner := get_corner_between_cells(from_cell,m)
+			
+			#Can only move there if the next Cell is not occupied already by a Checker, and
+			#There exists a Guerilla piece in the corner between the 2 cells that can be taken
+			#(i.e. it's occupied)
+			if is_cell_occupied(m) == false and is_corner_occupied(shared_corner) == true:
+				result.append(m)
+		
+		return result
+	
+	#In any other Game State, it's not the COIN's Turn, so they can't move any checkers, so return empty array
+	return []
