@@ -480,6 +480,13 @@ func get_possible_moves() -> Array[Move]:
 	
 	return moves
 
+##Method to take a specific move, given by the Move class
+func take_move(move : Move) -> void:
+	if move is GuerillaPiecePlacementMove:
+		place_guerilla_piece(move.corner)
+	elif move is COINCheckerMovementMove:
+		move_coin_checker(move.cell_from,move.cell_to)
+
 ##Setter method for setting the State (namely to emit the "state_changed" signal and write less lines of code)
 func _set_state(state : STATE) -> void:
 	game_state = state
