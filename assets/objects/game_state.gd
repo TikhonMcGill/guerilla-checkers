@@ -222,3 +222,8 @@ func get_adjacent_cells(cell : int) -> Array[int]:
 func get_adjacent_corners(corner : int) -> Array[int]:
 	assert(corner >= 0 and corner <= 48,"The Corner must be between 0 and 48")
 	return CORNER_ADJACENCIES[corner]
+
+##Get the Corners in this Cell
+func get_cell_corners(cell : int) -> Array[int]:
+	assert(cell >= 0 and cell <= 31,"Cell must be between 0 and 31")
+	return CELL_CORNERS[cell]
