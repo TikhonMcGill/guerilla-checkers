@@ -237,3 +237,18 @@ func is_cell_occupied(cell : int) -> bool:
 func is_corner_occupied(corner : int) -> bool:
 	assert(corner >= 0 and corner <= 48,"Corner to check for Occupation must be between 0 and 48")
 	return corner in guerilla_piece_positions
+
+##Get the corner between two Cells (useful for checking if a Guerilla piece is taken by a COIN Checker)
+func get_corner_between_cells(cell1: int, cell2: int) -> int:
+	assert(cell1 >= 0 and cell1 <= 31,"Cell1 to get Corner between it and Cell2 must be between 0 and 31")
+	assert(cell2 >= 0 and cell2 <= 31,"Cell2 to get Corner between it and Cell1 must be between 0 and 31")
+	var cell_1_corners := get_cell_corners(cell1)
+	var cell_2_corners := get_cell_corners(cell2)
+	
+	for corner in cell_1_corners:
+		if corner in cell_2_corners:
+			#Since there's only one color of cell used, two cells can only share one corner,
+			#meaning if the two cells share a common corner, that's the one between them
+			return corner
+	
+	return -1
