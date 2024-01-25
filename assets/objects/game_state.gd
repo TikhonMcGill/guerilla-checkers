@@ -421,6 +421,7 @@ func move_coin_checker(from_cell : int,to_cell : int) -> void:
 	assert(is_cell_occupied(from_cell),"Cell to move from must be occupied")
 	assert(from_cell >= 0 and from_cell <= 31,"Cell to move from must be between 0 and 31")
 	assert(to_cell >= 0 and to_cell <= 31,"Cell to move to must be between 0 and 31")
+	assert(to_cell in get_adjacent_cells(from_cell),"Cell to move to must be adjacent to cell to move from")
 	assert(to_cell in get_moveable_cells(from_cell),"Cell to move to must be valid")
 	
 	#Update the Position of the Checker, and emit the corresponding signal
