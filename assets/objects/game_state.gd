@@ -215,15 +215,25 @@ var guerilla_piece_positions : Array[int] = []
 
 ##Get the diagonally-adjacent Cells to this cell
 func get_adjacent_cells(cell : int) -> Array[int]:
-	assert(cell >= 0 and cell <= 31,"Cell must be between 0 and 31")
+	assert(cell >= 0 and cell <= 31,"Cell to get adjacencies of must be between 0 and 31")
 	return CELL_ADJACENCIES[cell]
 
 ##Get the Orthogonally-adjacent Corners to this corner
 func get_adjacent_corners(corner : int) -> Array[int]:
-	assert(corner >= 0 and corner <= 48,"The Corner must be between 0 and 48")
+	assert(corner >= 0 and corner <= 48,"Corner to get adjacencies of must be between 0 and 48")
 	return CORNER_ADJACENCIES[corner]
 
 ##Get the Corners in this Cell
 func get_cell_corners(cell : int) -> Array[int]:
-	assert(cell >= 0 and cell <= 31,"Cell must be between 0 and 31")
+	assert(cell >= 0 and cell <= 31,"Cell to get Corners of must be between 0 and 31")
 	return CELL_CORNERS[cell]
+
+##Check if the Cell is occupied (i.e. the Counterinsurgent has a Checker present there)
+func is_cell_occupied(cell : int) -> bool:
+	assert(cell >= 0 and cell <= 31,"Cell to check for Occupation must be between 0 and 31")
+	return cell in coin_checker_positions
+
+##Check if the Corner is occupied (i.e. the Guerilla has a Piece placed there)
+func is_corner_occupied(corner : int) -> bool:
+	assert(corner >= 0 and corner <= 48,"Corner to check for Occupation must be between 0 and 48")
+	return corner in guerilla_piece_positions
