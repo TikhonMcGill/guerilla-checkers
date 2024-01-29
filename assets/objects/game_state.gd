@@ -43,14 +43,14 @@ enum PLAYER{
 
 #region Constants
 ##All of the Cells on the board into which COIN Checkers may be moved
-const CELLS : Array[int] = [
+const CELLS = [
 	0,1,2,3,4,5,6,7,8,9,10,11,12,
 	13,14,15,16,17,18,19,20,21,22,
 	23,24,25,26,27,28,29,30,31
 ]
 
 ##All Corners in which Guerilla Pieces may be placed
-const CORNERS : Array[int] = [
+const CORNERS = [
 	0,1,2,3,4,5,6,7,8,9,10,11,12,
 	13,14,15,16,17,18,19,20,21,22,
 	23,24,25,26,27,28,29,30,31,32,
@@ -59,7 +59,7 @@ const CORNERS : Array[int] = [
 ]
 
 ##The corners of every cell
-const CELL_CORNERS : Array[Array] = [
+const CELL_CORNERS = [
 	[0,1],
 	[2,3],
 	[4,5],
@@ -95,7 +95,7 @@ const CELL_CORNERS : Array[Array] = [
 ]
 
 ##The cells adjacent to every cell
-const CELL_ADJACENCIES : Array[Array] = [
+const CELL_ADJACENCIES = [
 	[4,5],
 	[5,6],
 	[6,7],
@@ -131,7 +131,7 @@ const CELL_ADJACENCIES : Array[Array] = [
 ]
 
 ##The corners adjacent to every corner
-const CORNER_ADJACENCIES : Array[Array] = [
+const CORNER_ADJACENCIES = [
 	[1,7],
 	[0,2,8],
 	[1,3,9],
@@ -220,7 +220,7 @@ var coin_checker_positions : Array[int] = [9, 13, 14, 17, 18, 22]
 var guerilla_piece_positions : Array[int] = []
 
 ##Get the diagonally-adjacent Cells to this cell
-func get_adjacent_cells(cell : int) -> Array[int]:
+func get_adjacent_cells(cell : int):
 	assert(cell >= 0 and cell <= 31,"Cell to get adjacencies of must be between 0 and 31")
 	return CELL_ADJACENCIES[cell]
 
@@ -296,7 +296,7 @@ func get_moveable_cells(from_cell : int) -> Array[int]:
 	#If it's the COIN Player's turn and they haven't taken a piece, the Checker can move to any unoccupied
 	#diagonally-adjacent Cell
 	if game_state == STATE.COIN_TURN:
-		var movement_options := get_adjacent_cells(from_cell)
+		var movement_options = get_adjacent_cells(from_cell)
 		var result = []
 		
 		for m in movement_options:
@@ -307,7 +307,7 @@ func get_moveable_cells(from_cell : int) -> Array[int]:
 	#If the COIN Player took 1 or more pieces, then they can only move to an adjacent cell if it means taking another
 	#Guerilla Piece (per the rules of Guerilla Checkers)
 	elif game_state == STATE.COIN_TOOK_PIECE:
-		var movement_options := get_adjacent_cells(from_cell)
+		var movement_options = get_adjacent_cells(from_cell)
 		var result = []
 		
 		for m in movement_options:
