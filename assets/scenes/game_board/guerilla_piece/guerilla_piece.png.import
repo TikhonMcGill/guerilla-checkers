@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cnowo5he2x7d3"
-path="res://.godot/imported/coin_checker.png-551881e9d1d72abf220594fc62a7004d.ctex"
+uid="uid://bge3stc4ftrug"
+path="res://.godot/imported/guerilla_piece.png-2d7661bd8e3141041638b313e0d89c0b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://coin_checker.png"
-dest_files=["res://.godot/imported/coin_checker.png-551881e9d1d72abf220594fc62a7004d.ctex"]
+source_file="res://assets/scenes/game_board/guerilla_piece/guerilla_piece.png"
+dest_files=["res://.godot/imported/guerilla_piece.png-2d7661bd8e3141041638b313e0d89c0b.ctex"]
 
 [params]
 
