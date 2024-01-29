@@ -18,7 +18,4 @@ tile_size = 64
 label_cells = true
 label_corners = true
 
-[node name="AdjacencyTestTimer" type="Timer" parent="."]
-wait_time = 0.5
-
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]
