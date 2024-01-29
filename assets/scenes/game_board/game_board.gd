@@ -8,10 +8,11 @@ signal mouse_over_corner(corner : Corner)
 
 @export_color_no_alpha var tile_color_1 = Color.WHITE
 @export_color_no_alpha var tile_color_2 = Color.BLACK
-@export_color_no_alpha var corner_color = Color.WEB_GRAY
+@export_color_no_alpha var corner_color = Color.DIM_GRAY
 
 @export var tile_size : int = 48
 @export var label_cells : bool = false
+@export var label_corners : bool = false
 
 @onready var tiles = $Tiles
 @onready var corners = $Corners
@@ -25,8 +26,10 @@ func _ready():
 
 func _initialize_board():
 	_initialize_cells()
+	_initialize_corners()
 	_initialize_label()
 
+##Place all Cells of the Board in an 8-by-8 grid
 func _initialize_cells():
 	var col1 = true
 	for y in range(8):
@@ -46,6 +49,33 @@ func _initialize_cells():
 			
 			col1 = not col1
 		col1 = not col1
+
+##Place all corners of the board
+func _initialize_corners():
+	#The idea is to place a corner into the bottom-right of every
+	#cell which HAS a cell below it and to the right of it
+	#
+	#This means the bottom 8 cells are not suitable, as they have
+	#nothing below them (hence iterating through 56)
+	#
+	#As for the remaining 56 cells, if the Cell is a multiple of 8,
+	#it is at the end of the row, meaning there is nothing to the right
+	#of it, so we do NOT create a corner in its bottom-right corner
+	for cell in range(56):
+		if cell % 8 != 0:
+			#Admittedly, this position offset was determined experimentally
+			var tile : Tile = tiles.get_child(cell)
+			var placement_position : Vector2i = tile.global_position
+			placement_position.x -= tile.size.x
+			
+			#Subtract half of the Corner's size, so that it is in the middle of
+			#the corner
+			placement_position -= Vector2i(tile_size,tile_size)/8
+			
+			var corner := _create_corner(placement_position)
+			
+			if label_corners == true:
+				corner.get_node("Label").text = str(corner.get_index())
 
 func _initialize_label():
 	pieces_left_label.text = "Guerilla Pieces Left: 66"
@@ -67,10 +97,21 @@ func _create_tile(_tile_col : Color,_tile_pos : Vector2i) -> Tile:
 	
 	return new_tile
 
-##Create a Corner with the selected color at the selected position
-func _create_corner(_corner_col : Color,_corner_pos : Vector2i) -> Corner:
+##Create a Corner at the selected position, its color dictated by the export variable
+func _create_corner(_corner_pos : Vector2i) -> Corner:
 	var new_corner : Corner = CORNER_SCENE.instantiate()
 	new_corner.size = Vector2i(tile_size/4,tile_size/4)
+	
+	#Set the Corner's pivot to be in the center
+	new_corner.pivot_offset = new_corner.size/2
+	
+	new_corner.global_position = _corner_pos
+	
+	new_corner.color = corner_color
+	
+	new_corner.mouse_entered_corner.connect(handle_mouse_corner_enter)
+	
+	corners.add_child(new_corner)
 	
 	return new_corner
 

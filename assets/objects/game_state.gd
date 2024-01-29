@@ -225,12 +225,12 @@ func get_adjacent_cells(cell : int):
 	return CELL_ADJACENCIES[cell]
 
 ##Get the Orthogonally-adjacent Corners to this corner
-func get_adjacent_corners(corner : int) -> Array[int]:
+func get_adjacent_corners(corner : int):
 	assert(corner >= 0 and corner <= 48,"Corner to get adjacencies of must be between 0 and 48")
 	return CORNER_ADJACENCIES[corner]
 
 ##Get the Corners in this Cell
-func get_cell_corners(cell : int) -> Array[int]:
+func get_cell_corners(cell : int):
 	assert(cell >= 0 and cell <= 31,"Cell to get Corners of must be between 0 and 31")
 	return CELL_CORNERS[cell]
 
@@ -248,8 +248,8 @@ func is_corner_occupied(corner : int) -> bool:
 func get_corner_between_cells(cell1: int, cell2: int) -> int:
 	assert(cell1 >= 0 and cell1 <= 31,"Cell1 to get Corner between it and Cell2 must be between 0 and 31")
 	assert(cell2 >= 0 and cell2 <= 31,"Cell2 to get Corner between it and Cell1 must be between 0 and 31")
-	var cell_1_corners := get_cell_corners(cell1)
-	var cell_2_corners := get_cell_corners(cell2)
+	var cell_1_corners = get_cell_corners(cell1)
+	var cell_2_corners = get_cell_corners(cell2)
 	
 	for corner in cell_1_corners:
 		if corner in cell_2_corners:

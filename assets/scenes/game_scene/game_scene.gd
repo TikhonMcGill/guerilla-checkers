@@ -27,6 +27,16 @@ func _on_game_board_mouse_over_tile(tile : Tile):
 	
 	tile.color = tile.color.inverted()
 	
-	for x in game_state.get_adjacent_cells(tile_index):
-		var tile2 : Tile = game_board.get_cell_tile(x)
-		tile2.color = tile2.color.inverted()
+	for x in game_state.get_cell_corners(tile_index):
+		var corner : Corner = game_board.corners.get_child(x)
+		corner.color = corner.color.inverted()
+
+func _on_game_board_mouse_over_corner(corner : Corner):
+	var corner_index : int = corner.get_index()
+	
+	corner.color = corner.color.inverted()
+	
+	for x in game_state.get_adjacent_corners(corner_index):
+		print(x)
+		var corner2 : Corner = game_board.corners.get_child(x)
+		corner2.color = corner2.color.inverted()
