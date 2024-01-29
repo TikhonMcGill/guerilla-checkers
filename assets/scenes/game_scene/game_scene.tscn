@@ -14,9 +14,6 @@ cancel_button_text = "No"
 
 [node name="GameBoard" parent="." instance=ExtResource("2_s2l1n")]
 position = Vector2(64, 64)
-tile_color_1 = Color(1, 0, 0, 1)
-tile_color_2 = Color(0, 0, 1, 1)
-corner_color = Color(0, 1, 0, 1)
 tile_size = 64
 label_cells = true
 label_corners = true
@@ -25,4 +22,3 @@ label_corners = true
 wait_time = 0.5
 
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]
-[connection signal="mouse_over_tile" from="GameBoard" to="." method="_on_game_board_mouse_over_tile"]
