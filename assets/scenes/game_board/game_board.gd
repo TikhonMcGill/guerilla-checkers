@@ -10,6 +10,9 @@ signal mouse_over_corner(corner : Corner)
 @export_color_no_alpha var tile_color_2 = Color.BLACK
 @export_color_no_alpha var corner_color = Color.DIM_GRAY
 
+@export_color_no_alpha var coin_checker_color = Color.BLUE
+@export_color_no_alpha var guerilla_piece_color = Color.RED
+
 @export var tile_size : int = 48
 @export var label_cells : bool = false
 @export var label_corners : bool = false
