@@ -1,7 +1,19 @@
 extends Node2D
 
+class_name GameBoard
+
 const TILE_SCENE := preload("res://assets/scenes/game_board/tile/tile.tscn")
 const CORNER_SCENE := preload("res://assets/scenes/game_board/corner/corner.tscn")
+
+const COIN_CHECKER_SCENE := preload("res://assets/scenes/game_board/coin_checker/coin_checker.tscn")
+const GUERILLA_PIECE_SCENE := preload("res://assets/scenes/game_board/guerilla_piece/guerilla_piece.tscn")
+
+##Enum representing types of players, used to visualize whose turn it is
+enum PLAYER{
+	GUERILLA, ##The Guerilla
+	COIN, ##The Counterinsurgent (COIN)
+	GAME_OVER ##The Game is over
+} 
 
 signal mouse_over_tile(tile : Tile)
 signal mouse_over_corner(corner : Corner)
@@ -10,7 +22,7 @@ signal mouse_over_corner(corner : Corner)
 @export_color_no_alpha var tile_color_2 = Color.BLACK
 @export_color_no_alpha var corner_color = Color.DIM_GRAY
 
-@export_color_no_alpha var coin_checker_color = Color.BLUE
+@export_color_no_alpha var coin_checker_color = Color.DODGER_BLUE
 @export_color_no_alpha var guerilla_piece_color = Color.RED
 
 @export var tile_size : int = 48
@@ -20,7 +32,11 @@ signal mouse_over_corner(corner : Corner)
 @onready var tiles = $Tiles
 @onready var corners = $Corners
 
+@onready var coin_checkers = $COINCheckers
+@onready var guerilla_pieces = $GuerillaPieces
+
 @onready var pieces_left_label = $PiecesLeftLabel
+@onready var current_player_label = $CurrentPlayerLabel
 
 var cells : Array[Tile] = []
 
@@ -30,8 +46,32 @@ func _ready():
 func _initialize_board():
 	_initialize_cells()
 	_initialize_corners()
-	_initialize_label()
+	_initialize_labels()
 
+##Clear all pieces present on the board
+func _clear_pieces() -> void:
+	#Clear all COIN Checkers
+	for checker in coin_checkers.get_children():
+		checker.queue_free()
+	
+	#Clear all Guerilla Pieces
+	for piece in guerilla_pieces.get_children():
+		piece.queue_free()
+
+##Represent a Game State
+func represent_game_state(_game_state : GameState) -> void:
+	_clear_pieces()
+	#Place the COIN Checkers based on their Cell positions in the Game State
+	for checker in _game_state.coin_checker_positions:
+		_create_coin_checker(checker)
+	
+	#Place the Guerilla Pieces based on their Corner positions in the Game State
+	for piece in _game_state.guerilla_piece_positions:
+		_create_guerilla_piece(piece)
+	
+	pieces_left_label.text = "Guerilla Pieces Left: %d" % _game_state.guerilla_pieces_left
+	_show_current_player(_game_state.get_current_player())
+	
 ##Place all Cells of the Board in an 8-by-8 grid
 func _initialize_cells():
 	var col1 = true
@@ -80,10 +120,23 @@ func _initialize_corners():
 			if label_corners == true:
 				corner.get_node("Label").text = str(corner.get_index())
 
-func _initialize_label():
+func _initialize_labels():
 	pieces_left_label.text = "Guerilla Pieces Left: 66"
 	pieces_left_label.add_theme_font_size_override("font_size",tile_size / 2)
 	pieces_left_label.position = Vector2i(0,-pieces_left_label.size.y)
+	
+	current_player_label.text = "Current Player: Guerilla"
+	current_player_label.add_theme_font_size_override("font_size",tile_size/2)
+	current_player_label.position = Vector2i(0,8 * tile_size)
+
+##Method to write in the label which player's turn it is
+func _show_current_player(player : int):
+	if player == PLAYER.COIN:
+		current_player_label.text = "Current Player: Counterinsurgent (COIN)"
+	elif player == PLAYER.GUERILLA:
+		current_player_label.text = "Current Player: Guerilla"
+	else:
+		current_player_label.text = "Game Over"
 
 ##Create a Tile representing a cell with the selected color at the selected position
 func _create_tile(_tile_col : Color,_tile_pos : Vector2i) -> Tile:
@@ -105,9 +158,6 @@ func _create_corner(_corner_pos : Vector2i) -> Corner:
 	var new_corner : Corner = CORNER_SCENE.instantiate()
 	new_corner.size = Vector2i(tile_size/4,tile_size/4)
 	
-	#Set the Corner's pivot to be in the center
-	new_corner.pivot_offset = new_corner.size/2
-	
 	new_corner.global_position = _corner_pos
 	
 	new_corner.color = corner_color
@@ -117,6 +167,37 @@ func _create_corner(_corner_pos : Vector2i) -> Corner:
 	corners.add_child(new_corner)
 	
 	return new_corner
+
+##Function to create a COIN Checker at a specific cell
+func _create_coin_checker(cell : int) -> void:
+	var new_coin_checker : CoinChecker = COIN_CHECKER_SCENE.instantiate()
+	
+	new_coin_checker.my_cell = cell
+	
+	var cell_tile = get_cell_tile(cell)
+	
+	new_coin_checker.size = cell_tile.size
+	
+	new_coin_checker.modulate = coin_checker_color
+	
+	new_coin_checker.position = cell_tile.position
+	
+	coin_checkers.add_child(new_coin_checker)
+
+##Function to create a Guerilla Piece at a specific corner
+func _create_guerilla_piece(corner : int) -> void:
+	var new_guerilla_piece : GuerillaPiece = GUERILLA_PIECE_SCENE.instantiate()
+	
+	new_guerilla_piece.my_corner = corner
+	
+	var graphical_corner = corners.get_child(corner)
+	
+	new_guerilla_piece.modulate = guerilla_piece_color
+	
+	new_guerilla_piece.position = graphical_corner.position
+	new_guerilla_piece.size = graphical_corner.size
+	
+	guerilla_pieces.add_child(new_guerilla_piece)
 
 func handle_mouse_tile_enter(tile : Tile):
 	mouse_over_tile.emit(tile)

@@ -12,10 +12,12 @@ ok_button_text = "Yes"
 dialog_text = "Are you sure you want to return to the Main Menu?"
 cancel_button_text = "No"
 
+[node name="GameTestTimer" type="Timer" parent="."]
+autostart = true
+
 [node name="GameBoard" parent="." instance=ExtResource("2_s2l1n")]
 position = Vector2(64, 64)
 tile_size = 64
-label_cells = true
-label_corners = true
 
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]
+[connection signal="timeout" from="GameTestTimer" to="." method="_on_game_test_timer_timeout"]

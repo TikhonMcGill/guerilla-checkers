@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://assets/scenes/game_board/corner/corner.gd" id="1_24edk"]
 
 [node name="Corner" type="ColorRect"]
+z_index = 1
 script = ExtResource("1_24edk")
 
 [node name="Label" type="Label" parent="."]

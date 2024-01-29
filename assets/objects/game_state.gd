@@ -213,6 +213,9 @@ var guerilla_pieces_left : int = 66
 ##The corner into which the Guerilla has placed their first piece - saved so that the Game State knows next to which corner next piece must be placed
 var first_placed_piece_corner : int = -1
 
+##The COIN Checker that took a Guerilla Piece - this one will have to take all other available pieces
+var taking_coin_checker : int = -1
+
 ##The positions of the COIN Checkers - initially they are in positions corresponding to the diagram on https://www.di.fc.ul.pt/~jpn/gv/guerrilla.htm
 var coin_checker_positions : Array[int] = [9, 13, 14, 17, 18, 22]
 
@@ -260,7 +263,7 @@ func get_corner_between_cells(cell1: int, cell2: int) -> int:
 	return -1
 
 ##Get the Possible Corners into which the Guerilla Player can place their pieces
-func get_placeable_corners() -> Array[int]:
+func get_placeable_corners():
 	#If it's the first turn, the Guerilla can place their piece anywhere, so return all corners
 	if game_state == STATE.FIRST_TURN:
 		return CORNERS
@@ -290,7 +293,7 @@ func get_placeable_corners() -> Array[int]:
 	return []
 
 ##Get the Possible Cells into which the COIN Player can move their Checker
-func get_moveable_cells(from_cell : int) -> Array[int]:
+func get_moveable_cells(from_cell : int):
 	assert(from_cell >= 0 and from_cell <= 31,"Cell to get Moveable cells of must be between 0 and 31")
 	
 	#If it's the COIN Player's turn and they haven't taken a piece, the Checker can move to any unoccupied
@@ -307,12 +310,12 @@ func get_moveable_cells(from_cell : int) -> Array[int]:
 	#If the COIN Player took 1 or more pieces, then they can only move to an adjacent cell if it means taking another
 	#Guerilla Piece (per the rules of Guerilla Checkers)
 	elif game_state == STATE.COIN_TOOK_PIECE:
-		var movement_options = get_adjacent_cells(from_cell)
+		var movement_options = get_adjacent_cells(taking_coin_checker)
 		var result = []
 		
 		for m in movement_options:
 			#Get the corner between the current Cell and the possible one to move to
-			var shared_corner := get_corner_between_cells(from_cell,m)
+			var shared_corner := get_corner_between_cells(taking_coin_checker,m)
 			
 			#Can only move there if the next Cell is not occupied already by a Checker, and
 			#There exists a Guerilla piece in the corner between the 2 cells that can be taken
@@ -436,6 +439,7 @@ func move_coin_checker(from_cell : int,to_cell : int) -> void:
 		guerilla_piece_positions.erase(corner_between)
 		guerilla_piece_captured.emit(corner_between)
 		game_state = STATE.COIN_TOOK_PIECE
+		taking_coin_checker = to_cell
 	
 	#Update the Game State
 	
@@ -466,17 +470,22 @@ func move_coin_checker(from_cell : int,to_cell : int) -> void:
 func get_possible_moves() -> Array[Move]:
 	var current_player = get_current_player()
 	
-	var moves = []
+	var moves : Array[Move] = []
 	
 	if current_player == PLAYER.GUERILLA:
 		var placeable_corners = get_placeable_corners()
 		for p in placeable_corners:
 			moves.append(GuerillaPiecePlacementMove.new(p))
 	elif current_player == PLAYER.COIN:
-		for checker in coin_checker_positions:
-			var moveable_cells = get_moveable_cells(checker)
+		if game_state == STATE.COIN_TURN:
+			for checker in coin_checker_positions:
+				var moveable_cells = get_moveable_cells(checker)
+				for m in moveable_cells:
+					moves.append(COINCheckerMovementMove.new(checker,m))
+		elif game_state == STATE.COIN_TOOK_PIECE:
+			var moveable_cells = get_moveable_cells(taking_coin_checker)
 			for m in moveable_cells:
-				moves.append(COINCheckerMovementMove.new(checker,m))
+				moves.append(COINCheckerMovementMove.new(taking_coin_checker,m))
 	
 	return moves
 

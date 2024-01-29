@@ -9,6 +9,14 @@ script = ExtResource("1_x8jch")
 
 [node name="Corners" type="Node2D" parent="."]
 
+[node name="COINCheckers" type="Node2D" parent="."]
+
+[node name="GuerillaPieces" type="Node2D" parent="."]
+
 [node name="PiecesLeftLabel" type="Label" parent="."]
+offset_top = -23.0
+offset_right = 248.0
+
+[node name="CurrentPlayerLabel" type="Label" parent="."]
 offset_top = -23.0
 offset_right = 248.0
