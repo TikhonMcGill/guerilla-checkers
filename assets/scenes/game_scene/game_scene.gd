@@ -12,7 +12,10 @@ var game_board : GameBoard
 var guerilla_player : Player
 var coin_player : Player
 
-@onready var quit_confirmation_dialog = $QuitConfirmationDialog
+@onready var quit_confirmation_dialog : ConfirmationDialog = $QuitConfirmationDialog
+
+@onready var game_over_container = $GameOverContainer
+@onready var winner_discussion_label = $GameOverContainer/MarginContainer/VBoxContainer/WinnerDiscussionLabel
 
 func _ready():
 	game_state = GameState.new()
@@ -78,12 +81,19 @@ func _process(delta):
 	game_board.show_current_player(game_state.get_current_player())
 
 func _on_game_state_game_over(winner : GameState.PLAYER):
+	var discussion_string = ""
+	
 	if winner == GameState.PLAYER.GUERILLA:
-		print("Guerilla Victorious!")
+		discussion_string = "The Guerilla(%s) was victorious, succeeding in their struggle against The Counterinsurgent(%s)!" % [GameManager.guerilla_player_name,GameManager.coin_player_name]
 	elif winner == GameState.PLAYER.COIN:
-		print("COIN Victorious!")
+		discussion_string = "The Counterinsurgent(%s) was victorious, succeeding in quashing the Guerilla(%s)!" % [GameManager.coin_player_name,GameManager.guerilla_player_name]
 	elif winner == GameState.PLAYER.NOBODY:
-		print("Draw!")
+		discussion_string = "Neither the Guerilla(%s) nor Counterinsurgent(%s) was victorious - this Game ended in a Draw." % [GameManager.guerilla_player_name,GameManager.coin_player_name]
+	
+	game_over_container.position = Vector2i((game_board.tile_size * 8) + game_board.tile_size,game_board.position.y)
+	game_over_container.size.y = game_board.tile_size * 8
+	winner_discussion_label.text = discussion_string
+	game_over_container.visible = true
 
 func simulate_move(move : Move) -> void:
 	game_state.take_move(move)
@@ -92,3 +102,9 @@ func simulate_move(move : Move) -> void:
 		guerilla_player.do_move()
 	elif game_state.get_current_player() == GameState.PLAYER.COIN:
 		coin_player.do_move()
+
+func _on_replay_button_pressed():
+	get_tree().reload_current_scene()
+
+func _on_back_to_menu_button_pressed():
+	get_tree().change_scene_to_file(MAIN_MENU_PATH)

@@ -44,6 +44,10 @@ layout_mode = 2
 layout_mode = 2
 text = "Customize Guerilla Player"
 
+[node name="GuerillaNameEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Enter the name of the Guerilla Player"
+
 [node name="GuerillaPlayerSelect" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 item_count = 4
@@ -60,6 +64,10 @@ popup/item_3/id = 3
 [node name="CounterinsurgentPlayerLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Customize Counterinsurgent (COIN) Player"
+
+[node name="CounterinsurgentNameEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Enter the name of the Counterinsurgent(COIN) Player"
 
 [node name="CounterinsurgentPlayerSelect" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2

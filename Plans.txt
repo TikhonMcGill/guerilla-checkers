@@ -1,18 +1,10 @@
 Plan for February 1st, 2024:
-	1. Add a "winner" property to the GameManager Singleton
-	2. Have the "winner" property be set on the "game_over" signal of the Game State in the Game Scene
-	3. Implement Two LineEdits to name the Guerilla and Counterinsurgent (COIN) players, saving them
-		in the GameManager Singleton as "guerilla_player_name" and "coin_player_name"
-	4. Implement a "Game Over" Window, which shows the name of the Player who won, and their player type, and lets
-	the player either Replay, or Return to Main Menu
-	5. Make the Game Scene Function, to which the Game State's "game_over" signal is connected, show the User
-	to the "Game Over" Window
-	6. Implement Human Move-taking as the Guerilla
-	7. Implement Human Move-taking as the Counterinsurgent (COIN)
-	8. Play 3 games of Two Random Players against each other
-	9. Play 3 games as a Guerilla against a Random Computer Player COIN
-	10. Play 3 games as a Counterinsurgent against a Random Computer Player Guerilla
-	11. Play 5 Hotseat games, with a Human Guerilla and Human Counterinsurgent
+	1. Implement Human Move-taking as the Guerilla
+	2. Implement Human Move-taking as the Counterinsurgent (COIN)
+	3. Play 3 games of Two Random Players against each other
+	4. Play 3 games as a Guerilla against a Random Computer Player COIN
+	5. Play 3 games as a Counterinsurgent against a Random Computer Player Guerilla
+	6. Play 5 Hotseat games, with a Human Guerilla and Human Counterinsurgent
 
 Turn-Taking Logic and Hotseat Multiplayer (January 22nd to January 29th, 2024):
 	1. Add two Player Selectors into the Main Menu, with a name field and a list of options, with initially
