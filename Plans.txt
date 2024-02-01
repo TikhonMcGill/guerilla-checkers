@@ -1,24 +1,23 @@
 Plan for February 1st, 2024:
-	1. Make the Starting Menu set the GameManager's values for player types
-	2. In the Game Scene, create an initialization function that, depending on player types 
+	1. In the Game Scene, create an initialization function that, depending on player types 
 	(do nothing initially for Utility and Minmax, fail with assertions that not implemented yet),
 	instantiates the right player scene, and sets its Guerilla and COIN Player to those scenes
-	3. Create a "RandomPlayer" Node, extending from Player Class, and taking random moves (for testing)
-	4. Test to see that Random Move Taking works with two Random Players
-	5. Add a "winner" property to the GameManager Singleton
-	6. Have the "winner" property be set on the "game_over" signal of the Game State in the Game Scene
-	7. Implement Two LineEdits to name the Guerilla and Counterinsurgent (COIN) players, saving them
+	2. Create a "RandomPlayer" Node, extending from Player Class, and taking random moves (for testing)
+	3. Test to see that Random Move Taking works with two Random Players
+	4. Add a "winner" property to the GameManager Singleton
+	5. Have the "winner" property be set on the "game_over" signal of the Game State in the Game Scene
+	6. Implement Two LineEdits to name the Guerilla and Counterinsurgent (COIN) players, saving them
 		in the GameManager Singleton as "guerilla_player_name" and "coin_player_name"
-	8. Implement a "Game Over" Window, which shows the name of the Player who won, and their player type, and lets
+	7. Implement a "Game Over" Window, which shows the name of the Player who won, and their player type, and lets
 	the player either Replay, or Return to Main Menu
-	9. Make the Game Scene Function, to which the Game State's "game_over" signal is connected, show the User
+	8. Make the Game Scene Function, to which the Game State's "game_over" signal is connected, show the User
 	to the "Game Over" Window
-	10. Implement Human Move-taking as the Guerilla
-	11. Implement Human Move-taking as the Counterinsurgent (COIN)
-	12. Play 5 games of Two Random Players against each other
-	13. Play 3 games as a Guerilla against a Random Computer Player COIN
-	14. Play 3 games as a Counterinsurgent against a Random Computer Player Guerilla
-	15. Play 5 Hotseat games, with a Human Guerilla and Human Counterinsurgent
+	9. Implement Human Move-taking as the Guerilla
+	10. Implement Human Move-taking as the Counterinsurgent (COIN)
+	11. Play 5 games of Two Random Players against each other
+	12. Play 3 games as a Guerilla against a Random Computer Player COIN
+	13. Play 3 games as a Counterinsurgent against a Random Computer Player Guerilla
+	14. Play 5 Hotseat games, with a Human Guerilla and Human Counterinsurgent
 
 Turn-Taking Logic and Hotseat Multiplayer (January 22nd to January 29th, 2024):
 	1. Add two Player Selectors into the Main Menu, with a name field and a list of options, with initially

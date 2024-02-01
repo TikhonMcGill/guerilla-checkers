@@ -42,33 +42,37 @@ layout_mode = 2
 
 [node name="GuerillaPlayerLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Select who will play as the Guerilla:"
+text = "Customize Guerilla Player"
 
 [node name="GuerillaPlayerSelect" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-item_count = 3
+item_count = 4
 selected = 0
-popup/item_0/text = "Human"
+popup/item_0/text = "Player Type: Human"
 popup/item_0/id = 0
-popup/item_1/text = "Utility-Based Computer Player (UBCP)"
+popup/item_1/text = "Player Type: Random Player"
 popup/item_1/id = 1
-popup/item_2/text = "Minimax Player"
+popup/item_2/text = "Player Type: Utility Computer Player (UCP)"
 popup/item_2/id = 2
+popup/item_3/text = "Player Type: Minimax Player"
+popup/item_3/id = 3
 
 [node name="CounterinsurgentPlayerLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Select who will play as the Counterinsurgent (COIN):"
+text = "Customize Counterinsurgent (COIN) Player"
 
 [node name="CounterinsurgentPlayerSelect" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-item_count = 3
+item_count = 4
 selected = 0
-popup/item_0/text = "Human"
+popup/item_0/text = "Player Type: Human"
 popup/item_0/id = 0
-popup/item_1/text = "Utility-Based Computer Player (UBCP)"
+popup/item_1/text = "Player Type: Random Player"
 popup/item_1/id = 1
-popup/item_2/text = "Minimax Player"
+popup/item_2/text = "Player Type: Utility Computer Player (UCP)"
 popup/item_2/id = 2
+popup/item_3/text = "Player Type: Minimax Player"
+popup/item_3/id = 3
 
 [node name="PlayButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
