@@ -199,6 +199,22 @@ func _create_guerilla_piece(corner : int) -> void:
 	
 	guerilla_pieces.add_child(new_guerilla_piece)
 
+##Get the Checker Graphic at the Cell, if it exists
+func get_checker_at_cell(cell : int) -> CoinChecker:
+	for checker : CoinChecker in coin_checkers.get_children():
+		if checker.my_cell == cell:
+			return checker
+	push_warning("Checker not found at cell %d" % cell)
+	return null
+
+##Get the Guerilla Piece in the Corner, if it exists
+func get_piece_in_corner(corner : int) -> GuerillaPiece:
+	for piece : GuerillaPiece in guerilla_pieces.get_children():
+		if piece.my_corner == corner:
+			return piece
+	push_warning("Piece not found in corner %d" % corner)
+	return null
+
 func handle_mouse_tile_enter(tile : Tile):
 	mouse_over_tile.emit(tile)
 
