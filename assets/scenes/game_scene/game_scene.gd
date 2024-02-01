@@ -11,6 +11,8 @@ func _ready():
 	game_state = GameState.new()
 	game_board = $GameBoard
 	
+	game_state.game_over.connect(_on_game_state_game_over)
+	
 	game_board.represent_game_state(game_state)
 
 func _unhandled_key_input(event):
@@ -29,3 +31,11 @@ func _on_game_test_timer_timeout():
 	var move : Move = moves.pick_random()
 	game_state.take_move(move)
 	game_board.represent_game_state(game_state)
+
+func _on_game_state_game_over(winner : GameState.PLAYER):
+	if winner == GameState.PLAYER.GUERILLA:
+		print("Guerilla Victorious!")
+	elif winner == GameState.PLAYER.COIN:
+		print("COIN Victorious!")
+	elif winner == GameState.PLAYER.NOBODY:
+		print("Draw!")

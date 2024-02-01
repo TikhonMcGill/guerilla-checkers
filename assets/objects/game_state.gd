@@ -23,6 +23,9 @@ signal coin_checker_captured(cell : int)
 ##Emitted when the Game State changes - used to determine whose turn it is in the Game Scene
 signal game_state_changed
 
+##Emitted when the Game is over (i.e. a Player wins)
+signal game_over(winner : PLAYER)
+
 ##The State of the Game - used for determining possible moves in [code]get_possible_moves()[/code]
 enum STATE{
 	FIRST_TURN, ##It is the first Turn, and the Guerilla can place their first piece in ANY corner
@@ -31,14 +34,15 @@ enum STATE{
 	COIN_TURN, ##It is the COIN Player's turn (entered after SECOND_GUERILLA_PIECE)
 	COIN_TOOK_PIECE, ##This State is entered when the COIN Player takes a Guerilla's Piece, and is only left when there are no more Pieces to Place
 	GUERILLA_VICTORY, ##The Guerilla is victorious - no more COIN Checkers remain
-	COIN_VICTORY ##The Counterinsurgent is victorious - either the Guerilla ran out of Pieces to place, or the COIN player took all Guerilla Pieces on the board
+	COIN_VICTORY, ##The Counterinsurgent is victorious - either the Guerilla ran out of Pieces to place, or the COIN player took all Guerilla Pieces on the board
+	DRAW ##Nobody won - this state is reached when the Guerilla Places their first piece in a corner whcih has no free corners adjacent to it, rendering them unable to place the second piece
 } 
 
-##Enum representing types of players, used in the [code]get_current_player()[/code] method
+##Enum representing types of players, used in the [code]get_current_player()[/code] method, and emitted with the "game_over" signal
 enum PLAYER{
 	GUERILLA, ##The Guerilla
 	COIN, ##The Counterinsurgent (COIN)
-	GAME_OVER ##The Game is over
+	NOBODY, ##Nobody - either the Game is Over, so it's nobody's turn, or it's a draw, and this is emitted when the game is over in a Draw
 } 
 
 #region Constants
@@ -336,7 +340,7 @@ func get_current_player() -> PLAYER:
 	elif game_state == STATE.COIN_TURN or game_state == STATE.COIN_TOOK_PIECE:
 		return PLAYER.COIN
 	else:
-		return PLAYER.GAME_OVER
+		return PLAYER.NOBODY
 
 ##A Method to check how much corners of a Cell have been occupied by Checkers (used for captures by Guerilla)
 func count_threatening_corners(cell : int) -> int:
@@ -476,6 +480,12 @@ func get_possible_moves() -> Array[Move]:
 		var placeable_corners = get_placeable_corners()
 		for p in placeable_corners:
 			moves.append(GuerillaPiecePlacementMove.new(p))
+		
+		#If it's the Second Piece of the Guerilla to place, and they have no pieces
+		#to place in, then it's a draw
+		if len(moves) == 0 and game_state == STATE.SECOND_GUERILLA_PIECE:
+			game_state = STATE.DRAW
+		
 	elif current_player == PLAYER.COIN:
 		if game_state == STATE.COIN_TURN:
 			for checker in coin_checker_positions:
@@ -497,6 +507,15 @@ func take_move(move : Move) -> void:
 		move_coin_checker(move.cell_from,move.cell_to)
 
 ##Setter method for setting the State (namely to emit the "state_changed" signal and write less lines of code)
+##This method also checks if the Game State is a victory and, if it is, emits the "game_over" signal
+##with the winner's Player Type
 func _set_state(state : STATE) -> void:
 	game_state = state
 	game_state_changed.emit()
+	
+	if game_state == STATE.GUERILLA_VICTORY:
+		game_over.emit(PLAYER.GUERILLA)
+	elif game_state == STATE.COIN_VICTORY:
+		game_over.emit(PLAYER.COIN)
+	elif game_state == STATE.DRAW:
+		game_over.emit(PLAYER.NOBODY)
