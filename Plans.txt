@@ -1,25 +1,9 @@
-Game State(January 8th to January 15th, 2024):
-	1. Produce a Class for modeling the Game State (no. Guerilla Pieces left, positions of pieces)
-	2. Add a method to get future legal moves, either as a Guerilla or Counterinsurgent based on the 
-	current Game State
-
-Graphical Representation of Game State(January 15th to January 22nd, 2024):
-	1. Create a Counterinsurgent Checker Scene, with a 2D Sprite whose texture is the placeholder 
-	Counterinsurgent Checker 
-	2. Create a Guerilla Piece Scene, with a 2D Sprite whose texture is the placeholder Guerilla Piece
-	3. Add a Text Label showing the number of Pieces the Guerilla has left
-	4. Add a Text Label showing the current turn
-	5. Implement code to convert the Encoding of the Game State into a Graphical representation on the 
-	board (correct positions, correct Guerilla piece counter) and vice versa
-
 Turn-Taking Logic and Hotseat Multiplayer (January 22nd to January 29th, 2024):
-	1. Add a “take turn” method, which updates this game State to be the game State corresponding to the 
-	move being taken
-	2. Add two Player Selectors into the Main Menu, with a name field and a list of options, with initially
+	1. Add two Player Selectors into the Main Menu, with a name field and a list of options, with initially
 	one option - “Human Player”
-	3. Implement functionality for the player to be able to move/place pieces, if it is their turn, updating 
+	2. Implement functionality for the player to be able to move/place pieces, if it is their turn, updating 
 	the game State and layout of the board
-	4. Implement a Victory Screen for when one of the players wins
+	3. Implement a Victory Screen for when one of the players wins
 
 Rules-Based Computer Player (January 29th to February 2nd, 2024):
 	1. For the Class Encoding the Game State, implement helper functions to get all relevant situations 
