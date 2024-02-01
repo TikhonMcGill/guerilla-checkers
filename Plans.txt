@@ -1,30 +1,28 @@
 Plan for February 1st, 2024:
-	1. Create a “Player” base Class, extending Node, with a “move_taken(move: Move)” signal
-	2. Add two types Player variables to Game Scene - guerilla_player and coin_player
-	3. Create a “HumanPlayer” node, extending from Player Class
-	4. Create a “GameManager” Singleton
-	5. Add an Enum - “PLAYER_TYPE” which can be HUMAN, RANDOM, UTILITY or MINMAX
-	6. Add 2 properties - guerilla_player_type and coin_player_type, both of type PLAYER_TYPE
-	7. Make the Starting Menu set the GameManager's values for player types
-	8. In the Game Scene, create an initialization function that, depending on player types 
+	1. Create a “HumanPlayer” node, extending from Player Class
+	2. Create a “GameManager” Singleton
+	3. Add an Enum - “PLAYER_TYPE” which can be HUMAN, RANDOM, UTILITY or MINMAX
+	4. Add 2 properties - guerilla_player_type and coin_player_type, both of type PLAYER_TYPE
+	5. Make the Starting Menu set the GameManager's values for player types
+	6. In the Game Scene, create an initialization function that, depending on player types 
 	(do nothing initially for Utility and Minmax, fail with assertions that not implemented yet),
 	instantiates the right player scene, and sets its Guerilla and COIN Player to those scenes
-	9. Create a "RandomPlayer" Node, extending from Player Class, and taking random moves (for testing)
-	10. Test to see that Random Move Taking works with two Random Players
-	11. Add a "winner" property to the GameManager Singleton
-	12. Have the "winner" property be set on the "game_over" signal of the Game State in the Game Scene
-	13. Implement Two LineEdits to name the Guerilla and Counterinsurgent (COIN) players, saving them
+	7. Create a "RandomPlayer" Node, extending from Player Class, and taking random moves (for testing)
+	8. Test to see that Random Move Taking works with two Random Players
+	9. Add a "winner" property to the GameManager Singleton
+	10. Have the "winner" property be set on the "game_over" signal of the Game State in the Game Scene
+	11. Implement Two LineEdits to name the Guerilla and Counterinsurgent (COIN) players, saving them
 		in the GameManager Singleton as "guerilla_player_name" and "coin_player_name"
-	14. Implement a "Game Over" Window, which shows the name of the Player who won, and their player type, and lets
+	12. Implement a "Game Over" Window, which shows the name of the Player who won, and their player type, and lets
 	the player either Replay, or Return to Main Menu
-	15. Make the Game Scene Function, to which the Game State's "game_over" signal is connected, show the User
+	13. Make the Game Scene Function, to which the Game State's "game_over" signal is connected, show the User
 	to the "Game Over" Window
-	16. Implement Human Move-taking as the Guerilla
-	17. Implement Human Move-taking as the Counterinsurgent (COIN)
-	18. Play 5 games of Two Random Players against each other
-	19. Play 3 games as a Guerilla against a Random Computer Player COIN
-	20. Play 3 games as a Counterinsurgent against a Random Computer Player Guerilla
-	21. Play 5 Hotseat games, with a Human Guerilla and Human Counterinsurgent
+	14. Implement Human Move-taking as the Guerilla
+	15. Implement Human Move-taking as the Counterinsurgent (COIN)
+	16. Play 5 games of Two Random Players against each other
+	17. Play 3 games as a Guerilla against a Random Computer Player COIN
+	18. Play 3 games as a Counterinsurgent against a Random Computer Player Guerilla
+	19. Play 5 Hotseat games, with a Human Guerilla and Human Counterinsurgent
 
 Turn-Taking Logic and Hotseat Multiplayer (January 22nd to January 29th, 2024):
 	1. Add two Player Selectors into the Main Menu, with a name field and a list of options, with initially

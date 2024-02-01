@@ -5,6 +5,9 @@ const MAIN_MENU_PATH := "res://assets/scenes/main_menu/main_menu.tscn"
 var game_state : GameState
 var game_board : GameBoard
 
+var guerilla_player : Player
+var coin_player : Player
+
 @onready var quit_confirmation_dialog = $QuitConfirmationDialog
 
 func _ready():
