@@ -4,6 +4,7 @@ const MAIN_MENU_PATH := "res://assets/scenes/main_menu/main_menu.tscn"
 
 #Scenes for Different Player Types
 const HUMAN_PLAYER_SCENE := preload("res://assets/scenes/player/human_player/human_player.tscn")
+const RANDOM_PLAYER_SCENE := preload("res://assets/scenes/player/random_player/random_player.tscn")
 
 var game_state : GameState
 var game_board : GameBoard
@@ -28,9 +29,12 @@ func _ready():
 	
 	_create_players(GameManager.guerilla_player_type,GameManager.coin_player_type)
 	
+	guerilla_player.do_move()
+	
 func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameManager.PLAYER_TYPE):
 	var implemented_types = [
-		GameManager.PLAYER_TYPE.HUMAN
+		GameManager.PLAYER_TYPE.HUMAN,
+		GameManager.PLAYER_TYPE.RANDOM
 	]
 	assert(guerilla_type in implemented_types,"Selected player type not implemented yet")
 	assert(coin_type in implemented_types,"Selected player type not implemented yet")
@@ -39,11 +43,28 @@ func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameMan
 		var new_human_guerilla := HUMAN_PLAYER_SCENE.instantiate()
 		add_child(new_human_guerilla)
 		guerilla_player = new_human_guerilla
+	elif guerilla_type == GameManager.PLAYER_TYPE.RANDOM:
+		var new_random_guerilla := RANDOM_PLAYER_SCENE.instantiate()
+		add_child(new_random_guerilla)
+		guerilla_player = new_random_guerilla
 	
 	if coin_type == GameManager.PLAYER_TYPE.HUMAN:
 		var new_human_coin := HUMAN_PLAYER_SCENE.instantiate()
 		add_child(new_human_coin)
 		coin_player = new_human_coin
+	elif coin_type == GameManager.PLAYER_TYPE.RANDOM:
+		var new_random_coin := RANDOM_PLAYER_SCENE.instantiate()
+		add_child(new_random_coin)
+		coin_player = new_random_coin
+	
+	guerilla_player.game_state = game_state
+	coin_player.game_state = game_state
+	
+	guerilla_player.my_type = GameState.PLAYER.GUERILLA
+	coin_player.my_type = GameState.PLAYER.COIN
+	
+	guerilla_player.move_taken.connect(simulate_move)
+	coin_player.move_taken.connect(simulate_move)
 
 func _unhandled_key_input(event):
 	if event.is_action_pressed("escape") == true:
@@ -63,3 +84,11 @@ func _on_game_state_game_over(winner : GameState.PLAYER):
 		print("COIN Victorious!")
 	elif winner == GameState.PLAYER.NOBODY:
 		print("Draw!")
+
+func simulate_move(move : Move) -> void:
+	game_state.take_move(move)
+	
+	if game_state.get_current_player() == GameState.PLAYER.GUERILLA:
+		guerilla_player.do_move()
+	elif game_state.get_current_player() == GameState.PLAYER.COIN:
+		coin_player.do_move()

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://comlct0javomy"]
+
+[ext_resource type="Script" path="res://assets/scenes/player/random_player/random_player.gd" id="1_wrcoy"]
+
+[node name="RandomPlayer" type="Node"]
+script = ExtResource("1_wrcoy")
+
+[node name="WaitTimer" type="Timer" parent="."]
+one_shot = true
