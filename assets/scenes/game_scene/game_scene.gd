@@ -31,15 +31,6 @@ func _process(delta):
 	game_board.update_guerilla_piece_left_label(game_state.guerilla_pieces_left)
 	game_board.show_current_player(game_state.get_current_player())
 
-func _on_game_test_timer_timeout():
-	var moves := game_state.get_possible_moves()
-	
-	if len(moves) == 0:
-		return
-	
-	var move : Move = moves.pick_random()
-	game_state.take_move(move)
-
 func _on_game_state_game_over(winner : GameState.PLAYER):
 	if winner == GameState.PLAYER.GUERILLA:
 		print("Guerilla Victorious!")
