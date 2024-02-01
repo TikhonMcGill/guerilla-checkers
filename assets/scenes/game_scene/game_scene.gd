@@ -84,11 +84,11 @@ func _on_game_state_game_over(winner : GameState.PLAYER):
 	var discussion_string = ""
 	
 	if winner == GameState.PLAYER.GUERILLA:
-		discussion_string = "The Guerilla(%s) was victorious, succeeding in their struggle against The Counterinsurgent(%s)!" % [GameManager.guerilla_player_name,GameManager.coin_player_name]
+		discussion_string = "%s (Guerilla) was victorious, succeeding in their struggle against %s!" % [GameManager.guerilla_player_name,GameManager.coin_player_name]
 	elif winner == GameState.PLAYER.COIN:
-		discussion_string = "The Counterinsurgent(%s) was victorious, succeeding in quashing the Guerilla(%s)!" % [GameManager.coin_player_name,GameManager.guerilla_player_name]
+		discussion_string = "%s (COIN) was victorious, quashing %s!" % [GameManager.coin_player_name,GameManager.guerilla_player_name]
 	elif winner == GameState.PLAYER.NOBODY:
-		discussion_string = "Neither the Guerilla(%s) nor Counterinsurgent(%s) was victorious - this Game ended in a Draw." % [GameManager.guerilla_player_name,GameManager.coin_player_name]
+		discussion_string = "Neither the %s(Guerilla) nor %s(COIN) was victorious - this Game ended in a Draw." % [GameManager.guerilla_player_name,GameManager.coin_player_name]
 	
 	game_over_container.position = Vector2i((game_board.tile_size * 8) + game_board.tile_size,game_board.position.y)
 	game_over_container.size.y = game_board.tile_size * 8

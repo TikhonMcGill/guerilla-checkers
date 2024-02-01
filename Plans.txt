@@ -1,10 +1,9 @@
 Plan for February 1st, 2024:
 	1. Implement Human Move-taking as the Guerilla
 	2. Implement Human Move-taking as the Counterinsurgent (COIN)
-	3. Play 3 games of Two Random Players against each other
-	4. Play 3 games as a Guerilla against a Random Computer Player COIN
-	5. Play 3 games as a Counterinsurgent against a Random Computer Player Guerilla
-	6. Play 5 Hotseat games, with a Human Guerilla and Human Counterinsurgent
+	3. Play 3 games as a Guerilla against a Random Computer Player COIN
+	4. Play 3 games as a Counterinsurgent against a Random Computer Player Guerilla
+	5. Play 5 Hotseat games, with a Human Guerilla and Human Counterinsurgent
 
 Turn-Taking Logic and Hotseat Multiplayer (January 22nd to January 29th, 2024):
 	1. Add two Player Selectors into the Main Menu, with a name field and a list of options, with initially
