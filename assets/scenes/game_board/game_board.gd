@@ -8,13 +8,6 @@ const CORNER_SCENE := preload("res://assets/scenes/game_board/corner/corner.tscn
 const COIN_CHECKER_SCENE := preload("res://assets/scenes/game_board/coin_checker/coin_checker.tscn")
 const GUERILLA_PIECE_SCENE := preload("res://assets/scenes/game_board/guerilla_piece/guerilla_piece.tscn")
 
-##Enum representing types of players, used to visualize whose turn it is
-enum PLAYER{
-	GUERILLA, ##The Guerilla
-	COIN, ##The Counterinsurgent (COIN)
-	GAME_OVER ##The Game is over
-} 
-
 signal mouse_over_tile(tile : Tile)
 signal mouse_over_corner(corner : Corner)
 
@@ -70,7 +63,7 @@ func represent_game_state(_game_state : GameState) -> void:
 		_create_guerilla_piece(piece)
 	
 	pieces_left_label.text = "Guerilla Pieces Left: %d" % _game_state.guerilla_pieces_left
-	_show_current_player(_game_state.get_current_player())
+	show_current_player(_game_state.get_current_player())
 	
 ##Place all Cells of the Board in an 8-by-8 grid
 func _initialize_cells():
@@ -120,8 +113,11 @@ func _initialize_corners():
 			if label_corners == true:
 				corner.get_node("Label").text = str(corner.get_index())
 
+func update_guerilla_piece_left_label(amount : int):
+	pieces_left_label.text = "Guerilla Pieces Left: %d" % amount
+
 func _initialize_labels():
-	pieces_left_label.text = "Guerilla Pieces Left: 66"
+	update_guerilla_piece_left_label(66)
 	pieces_left_label.add_theme_font_size_override("font_size",tile_size / 2)
 	pieces_left_label.position = Vector2i(0,-pieces_left_label.size.y)
 	
@@ -130,10 +126,10 @@ func _initialize_labels():
 	current_player_label.position = Vector2i(0,8 * tile_size)
 
 ##Method to write in the label which player's turn it is
-func _show_current_player(player : int):
-	if player == PLAYER.COIN:
+func show_current_player(player : GameState.PLAYER):
+	if player == GameState.PLAYER.COIN:
 		current_player_label.text = "Current Player: Counterinsurgent (COIN)"
-	elif player == PLAYER.GUERILLA:
+	elif player == GameState.PLAYER.GUERILLA:
 		current_player_label.text = "Current Player: Guerilla"
 	else:
 		current_player_label.text = "Game Over"
@@ -169,7 +165,7 @@ func _create_corner(_corner_pos : Vector2i) -> Corner:
 	return new_corner
 
 ##Function to create a COIN Checker at a specific cell
-func _create_coin_checker(cell : int) -> void:
+func _create_coin_checker(cell : int) -> CoinChecker:
 	var new_coin_checker : CoinChecker = COIN_CHECKER_SCENE.instantiate()
 	
 	new_coin_checker.my_cell = cell
@@ -183,9 +179,11 @@ func _create_coin_checker(cell : int) -> void:
 	new_coin_checker.position = cell_tile.position
 	
 	coin_checkers.add_child(new_coin_checker)
+	
+	return new_coin_checker
 
 ##Function to create a Guerilla Piece at a specific corner
-func _create_guerilla_piece(corner : int) -> void:
+func _create_guerilla_piece(corner : int,piece_visible:bool=true) -> GuerillaPiece:
 	var new_guerilla_piece : GuerillaPiece = GUERILLA_PIECE_SCENE.instantiate()
 	
 	new_guerilla_piece.my_corner = corner
@@ -194,10 +192,17 @@ func _create_guerilla_piece(corner : int) -> void:
 	
 	new_guerilla_piece.modulate = guerilla_piece_color
 	
+	#If the Piece is not set to visible, make it hidden - useful for instantiating a piece
+	#and animating its appearance
+	if piece_visible == false:
+		new_guerilla_piece.modulate.a = 0
+	
 	new_guerilla_piece.position = graphical_corner.position
 	new_guerilla_piece.size = graphical_corner.size
 	
 	guerilla_pieces.add_child(new_guerilla_piece)
+	
+	return new_guerilla_piece
 
 ##Get the Checker Graphic at the Cell, if it exists
 func get_checker_at_cell(cell : int) -> CoinChecker:
@@ -223,3 +228,33 @@ func handle_mouse_corner_enter(corner : Corner):
 
 func get_cell_tile(cell : int) -> Tile:
 	return cells[cell]
+
+func _on_game_state_guerilla_piece_placed(corner : int):
+	var new_piece := _create_guerilla_piece(corner,false)
+	var tween := get_tree().create_tween()
+	
+	tween.tween_property(new_piece,"modulate:a",1.0,0.5)
+
+func _on_game_state_coin_checker_moved(cell_from : int, cell_to : int):
+	var coin_checker := get_checker_at_cell(cell_from)
+	coin_checker.my_cell = cell_to
+	
+	var tween := get_tree().create_tween()
+	
+	tween.tween_property(coin_checker,"position",get_cell_tile(cell_to).position,0.5)
+
+func _on_game_state_guerilla_piece_captured(corner : int):
+	var captured_piece := get_piece_in_corner(corner)
+	
+	var tween := get_tree().create_tween()
+	
+	tween.tween_property(captured_piece,"modulate:a",0,0.5)
+	tween.tween_callback(captured_piece.queue_free)
+
+func _on_game_state_coin_checker_captured(cell : int):
+	var captured_checker := get_checker_at_cell(cell)
+	
+	var tween := get_tree().create_tween()
+	
+	tween.tween_property(captured_checker,"modulate:a",0,0.5)
+	tween.tween_callback(captured_checker.queue_free)
