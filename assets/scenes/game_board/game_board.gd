@@ -11,12 +11,12 @@ const GUERILLA_PIECE_SCENE := preload("res://assets/scenes/game_board/guerilla_p
 signal mouse_over_tile(tile : Tile)
 signal mouse_over_corner(corner : Corner)
 
-@export_color_no_alpha var tile_color_1 = Color.WHITE
+@export_color_no_alpha var tile_color_1 = Color.LIGHT_GRAY
 @export_color_no_alpha var tile_color_2 = Color.BLACK
 @export_color_no_alpha var corner_color = Color.DIM_GRAY
 
 @export_color_no_alpha var coin_checker_color = Color.DODGER_BLUE
-@export_color_no_alpha var guerilla_piece_color = Color.RED
+@export_color_no_alpha var guerilla_piece_color = Color.ORANGE
 
 @export var tile_size : int = 48
 @export var label_cells : bool = false
