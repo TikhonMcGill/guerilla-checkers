@@ -46,6 +46,7 @@ func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameMan
 		var new_human_guerilla := HUMAN_PLAYER_SCENE.instantiate()
 		add_child(new_human_guerilla)
 		guerilla_player = new_human_guerilla
+		guerilla_player.setup_ui(game_board)
 	elif guerilla_type == GameManager.PLAYER_TYPE.RANDOM:
 		var new_random_guerilla := RANDOM_PLAYER_SCENE.instantiate()
 		add_child(new_random_guerilla)
@@ -55,6 +56,7 @@ func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameMan
 		var new_human_coin := HUMAN_PLAYER_SCENE.instantiate()
 		add_child(new_human_coin)
 		coin_player = new_human_coin
+		coin_player.setup_ui(game_board)
 	elif coin_type == GameManager.PLAYER_TYPE.RANDOM:
 		var new_random_coin := RANDOM_PLAYER_SCENE.instantiate()
 		add_child(new_random_coin)
@@ -97,6 +99,7 @@ func _on_game_state_game_over(winner : GameState.PLAYER):
 
 func simulate_move(move : Move) -> void:
 	game_state.take_move(move)
+	game_board.default_color_board()
 	
 	if game_state.get_current_player() == GameState.PLAYER.GUERILLA:
 		guerilla_player.do_move()

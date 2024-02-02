@@ -12,3 +12,12 @@ var my_type : GameState.PLAYER ##The type of the player (i.e. whether they're a 
 
 func do_move() -> void:
 	pass
+
+func is_guerilla() -> bool:
+	return my_type == GameState.PLAYER.GUERILLA
+
+func is_coin() -> bool:
+	return my_type == GameState.PLAYER.COIN
+
+func is_my_turn() -> bool:
+	return game_state.get_current_player() == my_type

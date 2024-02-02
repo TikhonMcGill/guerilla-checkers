@@ -11,9 +11,15 @@ const GUERILLA_PIECE_SCENE := preload("res://assets/scenes/game_board/guerilla_p
 signal mouse_over_tile(tile : Tile)
 signal mouse_over_corner(corner : Corner)
 
+signal mouse_exit_tile
+signal mouse_exit_corner
+
 @export_color_no_alpha var tile_color_1 = Color.LIGHT_GRAY
 @export_color_no_alpha var tile_color_2 = Color.BLACK
 @export_color_no_alpha var corner_color = Color.DIM_GRAY
+
+@export_color_no_alpha var placeable_corner_color = Color.LIGHT_GREEN
+@export_color_no_alpha var moveable_cell_color = Color.GREEN
 
 @export_color_no_alpha var coin_checker_color = Color.DODGER_BLUE
 @export_color_no_alpha var guerilla_piece_color = Color.ORANGE
@@ -76,10 +82,13 @@ func _initialize_cells():
 			
 			var tile = _create_tile(col,Vector2i(x,y))
 			
+			
 			#It is at the second color (e.g. the blacks) that the COIN Checkers are placed,
 			#So we keep track of those specifically
 			if col1 == false:
 				cells.append(tile)
+				tile.mouse_entered_tile.connect(handle_mouse_tile_enter)
+				tile.mouse_exited.connect(handle_mouse_tile_exit)
 				if label_cells == true:
 					tile.get_node("Label").text = str(len(cells)-1)
 			
@@ -143,8 +152,6 @@ func _create_tile(_tile_col : Color,_tile_pos : Vector2i) -> Tile:
 	
 	new_tile.color = _tile_col
 	
-	new_tile.mouse_entered_tile.connect(handle_mouse_tile_enter)
-	
 	tiles.add_child(new_tile)
 	
 	return new_tile
@@ -159,10 +166,23 @@ func _create_corner(_corner_pos : Vector2i) -> Corner:
 	new_corner.color = corner_color
 	
 	new_corner.mouse_entered_corner.connect(handle_mouse_corner_enter)
+	new_corner.mouse_exited.connect(handle_mouse_corner_exit)
 	
 	corners.add_child(new_corner)
 	
 	return new_corner
+
+##Function to color the board by default
+func default_color_board():
+	for corner : Corner in corners.get_children():
+		corner.modulate = corner_color
+	
+	for cell_tile : Tile in cells:
+		cell_tile.modulate = tile_color_2
+
+##Function to get the index of the Corner from the board
+func get_corner_index(corner : Corner) -> int:
+	return corner.get_index()
 
 ##Function to create a COIN Checker at a specific cell
 func _create_coin_checker(cell : int) -> CoinChecker:
@@ -223,11 +243,20 @@ func get_piece_in_corner(corner : int) -> GuerillaPiece:
 func handle_mouse_tile_enter(tile : Tile):
 	mouse_over_tile.emit(tile)
 
+func handle_mouse_tile_exit():
+	mouse_exit_tile.emit()
+
 func handle_mouse_corner_enter(corner : Corner):
 	mouse_over_corner.emit(corner)
 
+func handle_mouse_corner_exit():
+	mouse_exit_corner.emit()
+
 func get_cell_tile(cell : int) -> Tile:
 	return cells[cell]
+
+func get_graphical_corner(corner : int) -> Corner:
+	return corners.get_child(corner)
 
 func _on_game_state_guerilla_piece_placed(corner : int):
 	var new_piece := _create_guerilla_piece(corner,false)
