@@ -70,19 +70,21 @@ func _click_on_corner(corner : Corner):
 		move_taken.emit(move)
 
 func _click_on_tile(tile : Tile):
-	if is_my_turn() == false:
+	if is_my_turn() == false or tile == selected_tile or game_board.cells.has(tile) == false:
 		return
 	
 	var clicked_index = game_board.get_tile_cell(tile)
 	
 	if selected_tile != tile and game_state.is_cell_occupied(clicked_index) == true:
+		if game_state.game_state == GameState.STATE.COIN_TOOK_PIECE:
+			return
 		_clear_coin_grid_selections()
 		_select_tile(tile)
 	else:
 		
 		var selected_index = game_board.get_tile_cell(selected_tile)
 		
-		if selected_index == -1:
+		if game_state.get_moveable_cells(selected_index).has(clicked_index) == false:
 			return
 		
 		selected_tile = null
