@@ -64,8 +64,11 @@ func setup_ui(_board : GameBoard):
 		game_board.tile_pressed.connect(_click_on_tile)
 
 func _click_on_corner(corner : Corner):
-	if is_my_turn() == true and corner != null:
+	if is_my_turn() == true and corner != null and corner:
 		var index = game_board.get_corner_index(corner)
+		if game_state.get_placeable_corners().has(index) == false:
+			return
+		
 		var move = GuerillaPiecePlacementMove.new(index)
 		move_taken.emit(move)
 
@@ -84,7 +87,7 @@ func _click_on_tile(tile : Tile):
 		
 		var selected_index = game_board.get_tile_cell(selected_tile)
 		
-		if game_state.get_moveable_cells(selected_index).has(clicked_index) == false:
+		if selected_index == -1 or game_state.get_moveable_cells(selected_index).has(clicked_index) == false:
 			return
 		
 		selected_tile = null

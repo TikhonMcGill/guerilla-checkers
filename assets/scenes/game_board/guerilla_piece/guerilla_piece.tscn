@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://assets/scenes/game_board/guerilla_piece/guerilla_piece.gd" id="2_0xc5f"]
 
 [node name="GuerillaPiece" type="TextureRect"]
-z_index = 3
+z_index = 2
 mouse_filter = 2
 texture = ExtResource("1_2uocs")
 script = ExtResource("2_0xc5f")

@@ -10,5 +10,4 @@ func set_color(col : Color):
 	color_rect.color = col
 
 func _on_pressed():
-	print("Pressed!")
 	tile_pressed.emit(self)

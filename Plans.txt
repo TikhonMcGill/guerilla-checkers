@@ -1,17 +1,3 @@
-Plan for February 1st, 2024:
-	1. Implement Human Move-taking as the Guerilla
-	2. Implement Human Move-taking as the Counterinsurgent (COIN)
-	3. Play 3 games as a Guerilla against a Random Computer Player COIN
-	4. Play 3 games as a Counterinsurgent against a Random Computer Player Guerilla
-	5. Play 5 Hotseat games, with a Human Guerilla and Human Counterinsurgent
-
-Turn-Taking Logic and Hotseat Multiplayer (January 22nd to January 29th, 2024):
-	1. Add two Player Selectors into the Main Menu, with a name field and a list of options, with initially
-	one option - “Human Player”
-	2. Implement functionality for the player to be able to move/place pieces, if it is their turn, updating 
-	the game State and layout of the board
-	3. Implement a Victory Screen for when one of the players wins
-
 Rules-Based Computer Player (January 29th to February 2nd, 2024):
 	1. For the Class Encoding the Game State, implement helper functions to get all relevant situations 
 	(counting no. pieces, counting threatened pieces, Counterinsurgent pieces on edges, etc.)
@@ -227,6 +213,8 @@ Lower-Priority Requirements:
 	4. FR-7: The System shall provide an Interactive Tutorial
 		FR-7.1: Users shall be able to, if one of the sides’ players is Human, activate a “Tutorial” setting
 		FR-7.2: When active, Users shall be explained the outcomes of possible moves they could take
+
+(Prevent player from moving until after animatino finished, or end animation prematurely)
 
 Consider experimenting with timeout - make it tunable
 Make sure to explain how to leave the game - press ESCAPE
