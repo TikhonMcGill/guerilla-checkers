@@ -1,8 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://bibmdxpg714md"]
+[gd_scene load_steps=4 format=3 uid="uid://bibmdxpg714md"]
 
 [ext_resource type="Script" path="res://assets/scenes/game_board/tile/tile.gd" id="1_wqv4k"]
 
-[node name="Tile" type="ColorRect"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fbx2t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2ckl7"]
+
+[node name="Tile" type="Button"]
+self_modulate = Color(1, 1, 1, 0)
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_fbx2t")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2ckl7")
+flat = true
 script = ExtResource("1_wqv4k")
 
 [node name="Label" type="Label" parent="."]
@@ -15,4 +25,14 @@ grow_vertical = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]

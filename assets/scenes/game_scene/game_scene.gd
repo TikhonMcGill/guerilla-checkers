@@ -46,7 +46,6 @@ func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameMan
 		var new_human_guerilla := HUMAN_PLAYER_SCENE.instantiate()
 		add_child(new_human_guerilla)
 		guerilla_player = new_human_guerilla
-		guerilla_player.setup_ui(game_board)
 	elif guerilla_type == GameManager.PLAYER_TYPE.RANDOM:
 		var new_random_guerilla := RANDOM_PLAYER_SCENE.instantiate()
 		add_child(new_random_guerilla)
@@ -56,7 +55,6 @@ func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameMan
 		var new_human_coin := HUMAN_PLAYER_SCENE.instantiate()
 		add_child(new_human_coin)
 		coin_player = new_human_coin
-		coin_player.setup_ui(game_board)
 	elif coin_type == GameManager.PLAYER_TYPE.RANDOM:
 		var new_random_coin := RANDOM_PLAYER_SCENE.instantiate()
 		add_child(new_random_coin)
@@ -70,6 +68,14 @@ func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameMan
 	
 	guerilla_player.move_taken.connect(simulate_move)
 	coin_player.move_taken.connect(simulate_move)
+	
+	if guerilla_player is HumanPlayer:
+		guerilla_player.setup_ui(game_board)
+		game_state.game_state_changed.connect(guerilla_player.update_interface)
+	
+	if coin_player is HumanPlayer:
+		coin_player.setup_ui(game_board)
+		game_state.game_state_changed.connect(coin_player.update_interface)
 
 func _unhandled_key_input(event):
 	if event.is_action_pressed("escape") == true:

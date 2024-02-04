@@ -300,6 +300,10 @@ func get_placeable_corners():
 func get_moveable_cells(from_cell : int):
 	assert(from_cell >= 0 and from_cell <= 31,"Cell to get Moveable cells of must be between 0 and 31")
 	
+	#If the cell is not occupied, there's no checker to check movement of, so return empty
+	if is_cell_occupied(from_cell) == false:
+		return []
+	
 	#If it's the COIN Player's turn and they haven't taken a piece, the Checker can move to any unoccupied
 	#diagonally-adjacent Cell
 	if game_state == STATE.COIN_TURN:

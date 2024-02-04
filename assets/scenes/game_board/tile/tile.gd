@@ -1,8 +1,14 @@
-extends ColorRect
+extends Button
 
 class_name Tile
 
-signal mouse_entered_tile(tile : Tile)
+signal tile_pressed(tile : Tile)
 
-func _on_mouse_entered():
-	mouse_entered_tile.emit(self)
+@onready var color_rect = $ColorRect
+
+func set_color(col : Color):
+	color_rect.color = col
+
+func _on_pressed():
+	print("Pressed!")
+	tile_pressed.emit(self)

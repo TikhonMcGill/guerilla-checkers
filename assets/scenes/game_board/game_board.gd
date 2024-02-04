@@ -8,10 +8,9 @@ const CORNER_SCENE := preload("res://assets/scenes/game_board/corner/corner.tscn
 const COIN_CHECKER_SCENE := preload("res://assets/scenes/game_board/coin_checker/coin_checker.tscn")
 const GUERILLA_PIECE_SCENE := preload("res://assets/scenes/game_board/guerilla_piece/guerilla_piece.tscn")
 
-signal mouse_over_tile(tile : Tile)
-signal mouse_over_corner(corner : Corner)
+signal tile_pressed(tile : Tile)
 
-signal mouse_exit_tile
+signal mouse_over_corner(corner : Corner)
 signal mouse_exit_corner
 
 @export_color_no_alpha var tile_color_1 = Color.LIGHT_GRAY
@@ -23,6 +22,8 @@ signal mouse_exit_corner
 
 @export_color_no_alpha var coin_checker_color = Color.DODGER_BLUE
 @export_color_no_alpha var guerilla_piece_color = Color.ORANGE
+
+@export_color_no_alpha var selected_coin_checker_color = Color.CYAN
 
 @export var tile_size : int = 48
 @export var label_cells : bool = false
@@ -87,8 +88,7 @@ func _initialize_cells():
 			#So we keep track of those specifically
 			if col1 == false:
 				cells.append(tile)
-				tile.mouse_entered_tile.connect(handle_mouse_tile_enter)
-				tile.mouse_exited.connect(handle_mouse_tile_exit)
+				tile.tile_pressed.connect(handle_tile_pressed)
 				if label_cells == true:
 					tile.get_node("Label").text = str(len(cells)-1)
 			
@@ -150,9 +150,9 @@ func _create_tile(_tile_col : Color,_tile_pos : Vector2i) -> Tile:
 	
 	new_tile.global_position = _tile_pos * tile_size
 	
-	new_tile.color = _tile_col
-	
 	tiles.add_child(new_tile)
+	
+	new_tile.set_color(_tile_col)
 	
 	return new_tile
 
@@ -175,10 +175,10 @@ func _create_corner(_corner_pos : Vector2i) -> Corner:
 ##Function to color the board by default
 func default_color_board():
 	for corner : Corner in corners.get_children():
-		corner.modulate = corner_color
+		corner.color = corner_color
 	
 	for cell_tile : Tile in cells:
-		cell_tile.modulate = tile_color_2
+		cell_tile.set_color(tile_color_2)
 
 ##Function to get the index of the Corner from the board
 func get_corner_index(corner : Corner) -> int:
@@ -240,11 +240,8 @@ func get_piece_in_corner(corner : int) -> GuerillaPiece:
 	push_warning("Piece not found in corner %d" % corner)
 	return null
 
-func handle_mouse_tile_enter(tile : Tile):
-	mouse_over_tile.emit(tile)
-
-func handle_mouse_tile_exit():
-	mouse_exit_tile.emit()
+func handle_tile_pressed(tile : Tile):
+	tile_pressed.emit(tile)
 
 func handle_mouse_corner_enter(corner : Corner):
 	mouse_over_corner.emit(corner)
@@ -267,6 +264,7 @@ func _on_game_state_guerilla_piece_placed(corner : int):
 func _on_game_state_coin_checker_moved(cell_from : int, cell_to : int):
 	var coin_checker := get_checker_at_cell(cell_from)
 	coin_checker.my_cell = cell_to
+	coin_checker.position = get_cell_tile(cell_from).position
 	
 	var tween := get_tree().create_tween()
 	
@@ -287,3 +285,6 @@ func _on_game_state_coin_checker_captured(cell : int):
 	
 	tween.tween_property(captured_checker,"modulate:a",0,0.5)
 	tween.tween_callback(captured_checker.queue_free)
+
+func get_tile_cell(tile : Tile) -> int:
+	return cells.find(tile)
