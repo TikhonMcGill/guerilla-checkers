@@ -12,6 +12,13 @@ func update_interface():
 	prepare_graphics()
 	if is_coin() == true:
 		_clear_coin_grid_selections()
+		if game_state.game_state == GameState.STATE.COIN_TOOK_PIECE:
+			
+			var possible_tile = game_board.cells[game_state.taking_coin_checker]
+			print("POssible tile:")
+			print(possible_tile)
+			
+			_select_tile(possible_tile)
 
 func _clear_coin_grid_selections():
 	for tile : Tile in game_board.cells:
@@ -36,6 +43,7 @@ func setup_guerilla_graphics():
 
 func _select_tile(tile : Tile) -> void:
 	selected_tile = tile
+	print(selected_tile)
 	var moveable_cells = game_state.get_moveable_cells(game_board.cells.find(tile))
 	
 	for m in moveable_cells:
@@ -71,14 +79,15 @@ func _click_on_tile(tile : Tile):
 		_clear_coin_grid_selections()
 		_select_tile(tile)
 	else:
+		
 		var selected_index = game_board.get_tile_cell(selected_tile)
 		
 		if selected_index == -1:
 			return
 		
+		selected_tile = null
 		var move = COINCheckerMovementMove.new(selected_index,clicked_index)
 		move_taken.emit(move)
-		selected_tile = null
 
 func _select_corner(corner : Corner):
 	if corner.color == game_board.placeable_corner_color:
