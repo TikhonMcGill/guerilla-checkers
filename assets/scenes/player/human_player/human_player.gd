@@ -73,9 +73,7 @@ func _click_on_tile(tile : Tile):
 	else:
 		var selected_index = game_board.get_tile_cell(selected_tile)
 		
-		print(selected_index)
-		
-		if (clicked_index in game_state.get_moveable_cells(selected_index)) == false:
+		if selected_index == -1:
 			return
 		
 		var move = COINCheckerMovementMove.new(selected_index,clicked_index)
