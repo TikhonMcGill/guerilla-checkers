@@ -30,9 +30,9 @@ func setup_guerilla_graphics():
 	for g in range(len(game_board.corners.get_children())):
 		var corner : Corner = game_board.corners.get_child(g)
 		if g in placeable_corners:
-			corner.color = game_board.placeable_corner_color
+			corner.set_color(game_board.placeable_corner_color)
 		else:
-			corner.color = game_board.corner_color
+			corner.set_color(game_board.corner_color)
 
 func _select_tile(tile : Tile) -> void:
 	selected_tile = tile
@@ -50,19 +50,16 @@ func setup_ui(_board : GameBoard):
 	game_board = _board
 	
 	if is_guerilla() == true:
-		game_board.mouse_over_corner.connect(_select_corner)
-		game_board.mouse_exit_corner.connect(_deselect_corner)
+		game_board.corner_pressed.connect(_click_on_corner)
 		update_interface()
 	elif is_coin() == true:
 		game_board.tile_pressed.connect(_click_on_tile)
 
-func _input(event):
-	if Input.is_action_just_pressed("left_click") == true and is_my_turn() == true:
-		if is_guerilla() == true and selected_corner != null:
-			var move = GuerillaPiecePlacementMove.new(game_board.get_corner_index(selected_corner))
-			move_taken.emit(move)
-		
-		#Check for Is Instance Valid with Checker
+func _click_on_corner(corner : Corner):
+	if is_my_turn() == true and corner != null:
+		var index = game_board.get_corner_index(corner)
+		var move = GuerillaPiecePlacementMove.new(index)
+		move_taken.emit(move)
 
 func _click_on_tile(tile : Tile):
 	if is_my_turn() == false:

@@ -10,8 +10,7 @@ const GUERILLA_PIECE_SCENE := preload("res://assets/scenes/game_board/guerilla_p
 
 signal tile_pressed(tile : Tile)
 
-signal mouse_over_corner(corner : Corner)
-signal mouse_exit_corner
+signal corner_pressed(corner : Corner)
 
 @export_color_no_alpha var tile_color_1 = Color.LIGHT_GRAY
 @export_color_no_alpha var tile_color_2 = Color.BLACK
@@ -163,19 +162,18 @@ func _create_corner(_corner_pos : Vector2i) -> Corner:
 	
 	new_corner.global_position = _corner_pos
 	
-	new_corner.color = corner_color
 	
-	new_corner.mouse_entered_corner.connect(handle_mouse_corner_enter)
-	new_corner.mouse_exited.connect(handle_mouse_corner_exit)
+	new_corner.corner_pressed.connect(handle_corner_pressed)
 	
 	corners.add_child(new_corner)
+	new_corner.set_color(corner_color)
 	
 	return new_corner
 
 ##Function to color the board by default
 func default_color_board():
 	for corner : Corner in corners.get_children():
-		corner.color = corner_color
+		corner.set_color(corner_color)
 	
 	for cell_tile : Tile in cells:
 		cell_tile.set_color(tile_color_2)
@@ -243,11 +241,8 @@ func get_piece_in_corner(corner : int) -> GuerillaPiece:
 func handle_tile_pressed(tile : Tile):
 	tile_pressed.emit(tile)
 
-func handle_mouse_corner_enter(corner : Corner):
-	mouse_over_corner.emit(corner)
-
-func handle_mouse_corner_exit():
-	mouse_exit_corner.emit()
+func handle_corner_pressed(corner : Corner):
+	corner_pressed.emit(corner)
 
 func get_cell_tile(cell : int) -> Tile:
 	return cells[cell]

@@ -6,6 +6,8 @@ const MAIN_MENU_PATH := "res://assets/scenes/main_menu/main_menu.tscn"
 const HUMAN_PLAYER_SCENE := preload("res://assets/scenes/player/human_player/human_player.tscn")
 const RANDOM_PLAYER_SCENE := preload("res://assets/scenes/player/random_player/random_player.tscn")
 
+signal move_simulated
+
 var game_state : GameState
 var game_board : GameBoard
 
@@ -71,11 +73,11 @@ func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameMan
 	
 	if guerilla_player is HumanPlayer:
 		guerilla_player.setup_ui(game_board)
-		game_state.game_state_changed.connect(guerilla_player.update_interface)
+		move_simulated.connect(guerilla_player.update_interface)
 	
 	if coin_player is HumanPlayer:
 		coin_player.setup_ui(game_board)
-		game_state.game_state_changed.connect(coin_player.update_interface)
+		move_simulated.connect(coin_player.update_interface)
 
 func _unhandled_key_input(event):
 	if event.is_action_pressed("escape") == true:
@@ -106,6 +108,8 @@ func _on_game_state_game_over(winner : GameState.PLAYER):
 func simulate_move(move : Move) -> void:
 	game_state.take_move(move)
 	game_board.default_color_board()
+	
+	move_simulated.emit()
 	
 	if game_state.get_current_player() == GameState.PLAYER.GUERILLA:
 		guerilla_player.do_move()

@@ -2,9 +2,19 @@
 
 [ext_resource type="Script" path="res://assets/scenes/game_board/corner/corner.gd" id="1_24edk"]
 
-[node name="Corner" type="ColorRect"]
+[node name="Corner" type="Button"]
+self_modulate = Color(1, 1, 1, 0)
 z_index = 1
 script = ExtResource("1_24edk")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -16,4 +26,4 @@ grow_vertical = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
