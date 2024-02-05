@@ -1,8 +1,8 @@
 Utility Computer Player:
-1. For the Guerilla, -10 for every COIN Checker present (so that taking it increases Utility by 10)
+1. For the Guerilla, +5 if the State after the move has less COIN Checker (i.e. one was taken)
 2. For the Guerilla, -1 for every Guerilla Piece threatened (which means +1 if it’s placed in a diagonal between 2 COIN Checkers, and a -1 if it’s threatened, obviously)
 3. For the Guerilla, +100 if they are Victorious (meaning taking the last Checker gives +100 Utility)
-4. For the Guerilla, +1 for every threatened COIN Piece
+4. For the Guerilla, +5 for every threatened COIN Checker (by Edge OR Guerilla piece)
 5. For the Counterinsurgent, -1 for every Guerilla Piece present on the board (so that taking it, and it implies that taking it at once is also +1 for each, gives +1 point) 
 6. For the Counterinsurgent, +100 for Victory (which means taking the last piece gives +100 Utility, just as the Guerilla running out of pieces will give +100 points as well, but the COIN player can’t look ahead that far)
 7. For the Counterinsurgent, -5 for every edge-threatened Checker
@@ -11,6 +11,8 @@ Utility Computer Player:
 10. For every possible move, simulate it using GameStateAnalyzer's "simulate_move" method, and assign a utility to it, the sum of the above
 situations
 11. Pick the Move with the highest utility, OR randomly-choose top moves if utilities are tied
+12. The UCP doesn't have a utility for the opposing player winning, because they cannot look into the future
+
 
 Rules-Based Computer Player (January 29th to February 2nd, 2024):
 	1. For the Class Encoding the Game State, implement helper functions to get all relevant situations 
@@ -81,10 +83,10 @@ Update to MIT License at project end
 
 
 Utility Computer Player:
-1. For the Guerilla, -10 for every COIN Checker present (so that taking it increases Utility by 10)
+1. For the Guerilla, +10 if the State after the move has less COIN Checker (i.e. one was taken)
 2. For the Guerilla, -1 for every Guerilla Piece threatened (which means +1 if it’s placed in a diagonal between 2 COIN Checkers, and a -1 if it’s threatened, obviously)
 3. For the Guerilla, +100 if they are Victorious (meaning taking the last Checker gives +100 Utility)
-4. For the Guerilla, +1 for every threatened COIN Piece
+4. For the Guerilla, +5 for every threatened COIN Checker (by Edge OR Guerilla piece)
 5. For the Counterinsurgent, -1 for every Guerilla Piece present on the board (so that taking it, and it implies that taking it at once is also +1 for each, gives +1 point) 
 6. For the Counterinsurgent, +100 for Victory (which means taking the last piece gives +100 Utility, just as the Guerilla running out of pieces will give +100 points as well, but the COIN player can’t look ahead that far)
 7. For the Counterinsurgent, -5 for every edge-threatened Checker
@@ -95,6 +97,7 @@ in GameStateAnalyzer, since for every Checker in a Corner, +1 is added to the co
 10. For every possible move, simulate it using GameStateAnalyzer's "simulate_move" method, and assign a utility to it, the sum of the above
 situations
 11. Pick the Move with the highest utility, OR randomly-choose top moves if utilities are tied
+12. The UCP doesn't have a utility for the opposing player winning, because they cannot look into the future
 
 The Rules-Based Computer Player(RBCP) plays as follows:
 	1. For every possible move, the RBCP assigns a value of “utility” to it, the sum of situations 

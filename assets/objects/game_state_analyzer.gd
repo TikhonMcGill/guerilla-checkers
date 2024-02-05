@@ -26,13 +26,17 @@ func count_guerilla_pieces_on_board(game_state : GameState) -> int:
 func count_coin_checkers_on_board(game_state : GameState) -> int:
 	return len(game_state.coin_checker_positions)
 
+##Method to return if the game is a draw
+func is_draw(game_state : GameState) -> bool:
+	return game_state.game_state == GameState.STATE.DRAW
+
 ##Count the number of COIN Checkers threatened by Guerilla pieces (2 Corners in a COIN
 ##Checker's cell, orthogonally adjacent to each other, threaten it) 
 func count_guerilla_threatened_coin_checkers(game_state : GameState) -> int:
 	var count := 0
 	
 	for checker in game_state.coin_checker_positions:
-		var corners : Array[int] = game_state.get_cell_corners(checker)
+		var corners = game_state.get_cell_corners(checker)
 		var occupied_corners : Array[int] = []
 		for c in corners:
 			if game_state.is_corner_occupied(c) == true:
@@ -50,7 +54,11 @@ func count_guerilla_threatened_coin_checkers(game_state : GameState) -> int:
 			
 			if game_state.are_corners_adjacent(piece1,piece2) == true:
 				count += 1
-			
+		elif len(occupied_corners) == 1 and checker in GameState.EDGE_CELLS:
+			#If the COIN Checker is on a cell at the edge (corners don't count here because it would
+			#already be captured), then all it takes is one Guerilla Piece to capture it, and since
+			#1 is already placed, the Checker is threatened, hence +1 to count
+			count += 1
 	
 	return count
 
@@ -73,10 +81,7 @@ func count_threatened_guerilla_pieces(game_state : GameState) -> int:
 	var count := 0
 	
 	for checker in game_state.coin_checker_positions:
-		#The corners in which Guerilla pieces can be taken
-		var takeable_corners : Array[int] = []
-		
-		var adjacent_cells : Array[int] = game_state.get_adjacent_cells(checker)
+		var adjacent_cells = game_state.get_adjacent_cells(checker)
 		#Go through all adjacent cells, i.e. cells into which a COIN Checker could go after
 		#jumping over and capturing the Guerilla Piece
 		for cell in adjacent_cells:
