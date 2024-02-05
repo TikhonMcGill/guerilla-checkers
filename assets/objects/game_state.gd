@@ -523,3 +523,21 @@ func _set_state(state : STATE) -> void:
 		game_over.emit(PLAYER.COIN)
 	elif game_state == STATE.DRAW:
 		game_over.emit(PLAYER.NOBODY)
+
+##Method to check if two corners are adjacent
+func are_corners_adjacent(corner1: int, corner2: int) -> bool:
+	return get_adjacent_corners(corner1).has(corner2)
+
+##Method to duplicate the Game State
+func duplicate() -> GameState:
+	var new_state := GameState.new()
+	
+	new_state.coin_checker_positions = coin_checker_positions.duplicate()
+	new_state.guerilla_piece_positions = guerilla_piece_positions.duplicate()
+	new_state.guerilla_pieces_left = guerilla_pieces_left
+	new_state.game_state = game_state
+	
+	new_state.first_placed_piece_corner = first_placed_piece_corner
+	new_state.taking_coin_checker = taking_coin_checker
+	
+	return new_state

@@ -1,8 +1,21 @@
+Utility Computer Player:
+1. For the Guerilla, -10 for every COIN Checker present (so that taking it increases Utility by 10)
+2. For the Guerilla, -1 for every Guerilla Piece threatened (which means +1 if it’s placed in a diagonal between 2 COIN Checkers, and a -1 if it’s threatened, obviously)
+3. For the Guerilla, +100 if they are Victorious (meaning taking the last Checker gives +100 Utility)
+4. For the Guerilla, +1 for every threatened COIN Piece
+5. For the Counterinsurgent, -1 for every Guerilla Piece present on the board (so that taking it, and it implies that taking it at once is also +1 for each, gives +1 point) 
+6. For the Counterinsurgent, +100 for Victory (which means taking the last piece gives +100 Utility, just as the Guerilla running out of pieces will give +100 points as well, but the COIN player can’t look ahead that far)
+7. For the Counterinsurgent, -5 for every edge-threatened Checker
+8. For the Counterinsurgent, -5 for every Guerilla-threatened Checker
+9. For the Counterinsurgent, -5 for every Checker in a corner
+10. For every possible move, simulate it using GameStateAnalyzer's "simulate_move" method, and assign a utility to it, the sum of the above
+situations
+11. Pick the Move with the highest utility, OR randomly-choose top moves if utilities are tied
+
 Rules-Based Computer Player (January 29th to February 2nd, 2024):
 	1. For the Class Encoding the Game State, implement helper functions to get all relevant situations 
 	(counting no. pieces, counting threatened pieces, Counterinsurgent pieces on edges, etc.)
-	2. In the Main Menu, add “Rules-Based Computer Player” as options for player types
-	3. Implement the Rules-Based Computer Player’s Logic as described in the design section, and FR-2
+	2. Implement the Rules-Based Computer Player’s Logic as described in the design section, and FR-2
 
 Phase 2 (February 2nd to March 8th)
 
@@ -65,6 +78,23 @@ Lower-Priority Requirements(April 5th to April 15th, 2024):
 	2. Implement any “Could Haves”, per the Requirements
 
 Update to MIT License at project end
+
+
+Utility Computer Player:
+1. For the Guerilla, -10 for every COIN Checker present (so that taking it increases Utility by 10)
+2. For the Guerilla, -1 for every Guerilla Piece threatened (which means +1 if it’s placed in a diagonal between 2 COIN Checkers, and a -1 if it’s threatened, obviously)
+3. For the Guerilla, +100 if they are Victorious (meaning taking the last Checker gives +100 Utility)
+4. For the Guerilla, +1 for every threatened COIN Piece
+5. For the Counterinsurgent, -1 for every Guerilla Piece present on the board (so that taking it, and it implies that taking it at once is also +1 for each, gives +1 point) 
+6. For the Counterinsurgent, +100 for Victory (which means taking the last piece gives +100 Utility, just as the Guerilla running out of pieces will give +100 points as well, but the COIN player can’t look ahead that far)
+7. For the Counterinsurgent, -5 for every edge-threatened Checker
+8. For the Counterinsurgent, -5 for every Guerilla-threatened Checker
+9. For the Counterinsurgent, -5 for every Checker in a corner 
+(this is automatically handled by the "count_edge_threatened_coin_checkers" method 
+in GameStateAnalyzer, since for every Checker in a Corner, +1 is added to the count)
+10. For every possible move, simulate it using GameStateAnalyzer's "simulate_move" method, and assign a utility to it, the sum of the above
+situations
+11. Pick the Move with the highest utility, OR randomly-choose top moves if utilities are tied
 
 The Rules-Based Computer Player(RBCP) plays as follows:
 	1. For every possible move, the RBCP assigns a value of “utility” to it, the sum of situations 
