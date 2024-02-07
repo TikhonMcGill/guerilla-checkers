@@ -1,0 +1,52 @@
+Do flowchart, UML, text planning also suitable
+For modelling the game itself, go for class diagram, and write UML diagram of main classes - would be useful in dissertation, to explain how things are developed
+Once you have done the modelling steps, translate it into code
+Convert my notes into plan (particularly for Background and areas discussed with Hans-Wolfgang)
+Fix the Rules images' checkers to be on BLACK Cells, and emphasize that they are on BLACK cells
+In Organization of Dissertation, mention that the term "COIN" and "Counterinsurgent" are used interchangeably
+Look through all Self-Analyses and determine important points
+Mention that Godot has no notion of Private Functions (they can be underscored, but that only makes them invisible in the code editor)
+Copy UML Diagrams
+Categorize UML Diagrams appropriately
+Consider how to demonstrate it for Project
+As future extension, mention how I could've experimented with non-linear utility functions (as all were just multiples of board game situations)
+Reword the Rules-Based Computer Player:
+	1. Make it the Utility-Based Comptuter Player (UBCP)
+	2. Make it gain +1 Utility for taking a Guerilla Piece (as COIN), not for EVERY POSSIBLE TAKEABLE PIECE - reason being that the aim of the UCP is to create
+	a Player that thinks only IN THE CURRENT MOVE, and shouldn't think ahead - given that taking several Guerilla pieces is several moves, that would mean thinking several moves ahead
+	and so not applicable.
+	3. Make it gain -5 Utility (as COIN) for having a piece threatened by Guerillas - wasn't there before
+Discuss that, theoretically, it would be faster to do lookup of point adjacencies than to calculate them
+
+Consider, potentially, discussion of Constants:
+https://godotforums.org/d/22919-do-constants-use-up-memory-in-object-instances/6
+
+Nested Type Collections not supported, a limitation not noticed until implementation
+
+Mention that Assertions in Godot are NOT compiled into the Release build, which means that any slowdowns in performance from assertions are
+negated when the Game is compiled.
+
+Another limitation is that erasing elements from arrays while iterating through them is not supported in Godot. 
+
+Convert all important objects etc. into UML Diagrams (and update existing Class Diagrams for all important Classes, namely GameState and GameStateAnalyzer)
+
+Mention Godot's use of Signals as the Observer pattern
+
+Mention the limitation of being unable to transfer data between Scenes, requiring a Singleton "Autoload" to save settings
+
+Discuss discrepancies between Project Plan and implementation
+
+When testing the game, a situation occurred that was not discussed in the Game Rules - if the first Guerilla Piece is placed into a corner which has no empty corners adjacent to it.
+
+The Rules of Guerilla Checkers by Brian Train do not mention what to do in this case. 
+
+However, a 2021 Implementation by "mischa_u" provided a solution - to create a new way of ending the Game State - a "Draw". This implementation will be used as a precedent for this situation.
+
+https://mischa-u.itch.io/guerrilla-checkers
+
+The initial configuration of Utility for the Players made them timid - the Guerilla did not want to place pieces in corners of COIN Checkers unless they were between COIN Checkers (which meant that the COIN would always win due to the Guerilla running out of pieces
+
+Therefore, utilities were altered somewhat:
+	1. Added a "is_draw()" method to the GameStateAnalyzer, and made its utility -50 for the Guerilla, so that it doesn't back itself into a corner
+	2. Programmed, explicitly (i.e. not using the GameStateAnalyzer), +10 Utility for if there are less COIN Checkers in the hypothetical game state than in the reality, to incentivize taking the
+	COIN Checker (this is in place of -10 Utility per COIN Checker present)
