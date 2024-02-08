@@ -60,6 +60,8 @@ Create Class Diagrams for every class
 
 Add page numbers
 
+Could also have, for MinMax move sorting, by Ascending order of Utility as well
+
 _____________________________________________
 
 1 – Abstract
