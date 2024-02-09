@@ -1,11 +1,9 @@
-1. Implement MinMaxProfile Resource
-2. Implement MinMaxPlayer Player
-3. Implement Basic Minmax (just look at evaluation function) with cutoff
-4. Implement Basic Cutoff
-5. Implement Alpha-Beta Pruning
-6. Implement Move Sorting
-7. Implement Timeout
-8. Connect MinMax Profiles to MinMax Players through Main Menu
+1. Implement Basic Minmax (just look at evaluation function) with cutoff of 3
+2. Implement Basic Cutoff
+3. Implement Alpha-Beta Pruning
+4. Implement Move Sorting
+5. Implement Timeout
+6. Connect MinMax Profiles to MinMax Players through Main Menu
 
 Minimax Prototype (February 2nd to February 9th, 2024):
 	1. Implement the Minimax Algorithm with Alpha-Beta Pruning and a default cutoff of 3, as well as a 

@@ -16,6 +16,8 @@ Consider how to demonstrate it for Project
 
 As future extension, mention how I could've experimented with non-linear utility functions (as all were just multiples of board game situations)
 
+Consider adding "DRAW" as another Evaluation Parameter
+
 Reword the Rules-Based Computer Player:
 	1. Make it the Utility-Based Comptuter Player (UBCP)
 	2. Make it gain +1 Utility for taking a Guerilla Piece (as COIN), not for EVERY POSSIBLE TAKEABLE PIECE - reason being that the aim of the UCP is to create
@@ -143,7 +145,8 @@ _____________________________________________
 9 – PLES Issues
 1.	Some of the PLES things (e.g. Logs and Version Control) should be moved into the Project Management
 
-
+Additionally, could discuss using a Neural Network to get the Utility of a Particular State given the
+Parameters, rather than just multiplying.
 
 
 

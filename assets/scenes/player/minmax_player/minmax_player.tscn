@@ -4,3 +4,6 @@
 
 [node name="MinMaxPlayer" type="Node"]
 script = ExtResource("1_fvas6")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
