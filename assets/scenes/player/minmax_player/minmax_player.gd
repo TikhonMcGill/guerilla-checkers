@@ -21,19 +21,79 @@ var analyzer : GameStateAnalyzer = GameStateAnalyzer.new()
 func do_move() -> void:
 	timer.start()
 	
-	var move := _get_minmax_move(game_state,0)
+	var move := _get_minmax_move(game_state,4,true)
 	
 	await timer.timeout
 	
 	move_taken.emit(move)
 
-##FIXME A Method to get the best move using MinMax
-func _get_minmax_move(state:GameState,depth : int) -> Move:
-	#If the Depth is 0, then we take the best move right now, not looking ahead whatsoever
-	if depth == 0:
-		return _get_best_move(state)
+##A Method to get the best move using MinMax
+func _get_minmax_move(state:GameState,depth : int,maximizing : bool) -> Move:
+	if depth == 0 or len(state.get_possible_moves()) == 0:
+		if maximizing == true:
+			return _get_best_move(state)
+		else:
+			return _get_worst_move(state)
 	
-	return null
+	if maximizing == true:
+		var best_utility := -INF
+		var best_moves = []
+		
+		var moves = state.get_possible_moves()
+		
+		for m : Move in moves:
+			var child_state = analyzer.simulate_move(state,m)
+			var child_utility = _get_minmax_utility(child_state,depth-1,_is_my_hypothetical_turn(child_state))
+			
+			if child_utility > best_utility:
+				best_moves = [m]
+				best_utility = child_utility
+			elif child_utility == best_utility:
+				best_moves.append(m)
+		
+		return best_moves.pick_random()
+	else:
+		var worst_utility := INF
+		var worst_moves = []
+		
+		var moves = state.get_possible_moves()
+		for m : Move in moves:
+			var child_state = analyzer.simulate_move(state,m)
+			var child_utility = _get_minmax_utility(child_state,depth-1,not _is_my_hypothetical_turn(child_state))
+			
+			if child_utility < worst_utility:
+				worst_moves = [m]
+				worst_utility = child_utility
+			elif child_utility == worst_utility:
+				worst_moves.append(m)
+		
+		return worst_moves.pick_random()
+
+##A method to get the utility of a state, by constructing the tree
+func _get_minmax_utility(state : GameState,depth : int,maximizing : bool) -> int:
+	if depth == 0 or len(state.get_possible_moves()) == 0:
+		return _evaluate_state(state)
+	
+	if maximizing == true:
+		var best_utility := -INF
+		
+		var moves = state.get_possible_moves()
+		for m : Move in moves:
+			var child_state = analyzer.simulate_move(state,m)
+			var child_utility = _get_minmax_utility(child_state,depth-1,_is_my_hypothetical_turn(child_state))
+			best_utility = max(best_utility, child_utility)
+		
+		return best_utility
+	else:
+		var worst_utility := INF
+		
+		var moves = state.get_possible_moves()
+		for m : Move in moves:
+			var child_state = analyzer.simulate_move(state,m)
+			var child_utility = _get_minmax_utility(child_state,depth-1,not _is_my_hypothetical_turn(child_state))
+			worst_utility = min(worst_utility,child_utility)
+		
+		return worst_utility
 
 ##A method to check if the player in the game_state is different from this Player
 func _is_different_player(state : GameState) -> bool:
@@ -44,6 +104,20 @@ func _is_different_player(state : GameState) -> bool:
 	
 	return false
 
+##Evaluate this state
+func _evaluate_state(state : GameState) -> int:
+	var guerilla_utility := analyzer.count_guerilla_pieces_on_board(state)
+	var checkers_utility := analyzer.count_coin_checkers_on_board(state) * 11
+	var utility = guerilla_utility - checkers_utility
+	
+	guerilla_utility += 100 * int(analyzer.is_guerilla_victorious(state))
+	
+	#If the player is the Counterinsurgent, the utility is the negation of the Guerilla's utility
+	if is_coin() == true:
+		utility = -utility
+	
+	return utility
+	
 ##Evaluate this move by simulating it in the State
 func _evaluate_move(move : Move,state : GameState) -> int:
 	#Simulate the Move
@@ -51,13 +125,7 @@ func _evaluate_move(move : Move,state : GameState) -> int:
 	next_game_state.take_move(move)
 	
 	#Get the Utility of the Move
-	var guerilla_utility := analyzer.count_guerilla_pieces_on_board(next_game_state)
-	var checkers_utility := analyzer.count_coin_checkers_on_board(next_game_state) * 11
-	var utility = guerilla_utility - checkers_utility
-	
-	#If the player is the Counterinsurgent, the utility is the negation of the Guerilla's utility
-	if is_coin() == true:
-		utility = -utility
+	var utility := _evaluate_state(next_game_state)
 	
 	return utility
 
