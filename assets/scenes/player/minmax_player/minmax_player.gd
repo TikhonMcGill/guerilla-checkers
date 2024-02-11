@@ -21,14 +21,20 @@ var analyzer : GameStateAnalyzer = GameStateAnalyzer.new()
 func do_move() -> void:
 	timer.start()
 	
-	var move := _get_minmax_move(game_state,4,true)
+	var start_time := Time.get_ticks_msec()
+	
+	var move := _get_minmax_move(game_state,6,true)
+	
+	var end_time := Time.get_ticks_msec()
+	
+	print("Time took: %d" % (end_time-start_time))
 	
 	await timer.timeout
 	
 	move_taken.emit(move)
 
 ##A Method to get the best move using MinMax
-func _get_minmax_move(state:GameState,depth : int,maximizing : bool) -> Move:
+func _get_minmax_move(state:GameState,depth : int,maximizing : bool,alpha:float=INF,beta:float=-INF) -> Move:
 	if depth == 0 or len(state.get_possible_moves()) == 0:
 		if maximizing == true:
 			return _get_best_move(state)
@@ -50,6 +56,12 @@ func _get_minmax_move(state:GameState,depth : int,maximizing : bool) -> Move:
 				best_utility = child_utility
 			elif child_utility == best_utility:
 				best_moves.append(m)
+			
+			#Update the alpha
+			alpha = max(alpha,child_utility)
+			#If the beta is smaller than the alpha, we can prune the search
+			if beta <= alpha:
+				break
 		
 		return best_moves.pick_random()
 	else:
@@ -66,6 +78,12 @@ func _get_minmax_move(state:GameState,depth : int,maximizing : bool) -> Move:
 				worst_utility = child_utility
 			elif child_utility == worst_utility:
 				worst_moves.append(m)
+			
+			#Update the beta
+			beta = min(beta,child_utility)
+			#If the beta is smaller than the alpha, we can prune the search
+			if beta <= alpha:
+				break
 		
 		return worst_moves.pick_random()
 

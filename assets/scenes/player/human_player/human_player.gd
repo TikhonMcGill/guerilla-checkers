@@ -15,8 +15,6 @@ func update_interface():
 		if game_state.game_state == GameState.STATE.COIN_TOOK_PIECE:
 			
 			var possible_tile = game_board.cells[game_state.taking_coin_checker]
-			print("POssible tile:")
-			print(possible_tile)
 			
 			_select_tile(possible_tile)
 
@@ -43,7 +41,6 @@ func setup_guerilla_graphics():
 
 func _select_tile(tile : Tile) -> void:
 	selected_tile = tile
-	print(selected_tile)
 	var moveable_cells = game_state.get_moveable_cells(game_board.cells.find(tile))
 	
 	for m in moveable_cells:
