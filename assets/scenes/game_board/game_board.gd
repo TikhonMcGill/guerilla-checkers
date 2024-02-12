@@ -254,18 +254,13 @@ func _on_game_state_guerilla_piece_placed(corner : int):
 	var new_piece := _create_guerilla_piece(corner,false)
 	var tween := get_tree().create_tween()
 	
-	tween.tween_property(new_piece,"modulate:a",1.0,0.5)
+	tween.tween_property(new_piece,"modulate:a",1.0,0.25)
 
-var tween
 func _on_game_state_coin_checker_moved(cell_from : int, cell_to : int):
 	var coin_checker := get_checker_at_cell(cell_from)
 	coin_checker.my_cell = cell_to
 	
-	if tween:
-		tween.kill()
-		coin_checker.position = get_cell_tile(cell_from).position
-	tween = create_tween()
-	
+	var tween = create_tween()
 	tween.tween_property(coin_checker,"position",get_cell_tile(cell_to).position,0.25)
 
 func _on_game_state_guerilla_piece_captured(corner : int):

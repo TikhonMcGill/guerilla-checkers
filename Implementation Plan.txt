@@ -1,14 +1,7 @@
-1. Implement Basic Minmax (just look at evaluation function) with cutoff of 3
-2. Implement Basic Cutoff
-3. Implement Alpha-Beta Pruning
-4. Implement Move Sorting
-5. Implement Timeout
-6. Connect MinMax Profiles to MinMax Players through Main Menu
-
-Minimax Prototype (February 2nd to February 9th, 2024):
-	1. Implement the Minimax Algorithm with Alpha-Beta Pruning and a default cutoff of 3, as well as a 
-	simple evaluation function of “Number of Guerilla Pieces minus (Number of Counterinsurgent 
-	Checkers * 11)”
+1. Implement Move Sorting
+2. Implement Timeout
+3. Connect MinMax Profiles to MinMax Players through Main Menu
+4. Rename MinMax to Minimax
 
 Customizable Minimax Profiles (February 9th to February 16th, 2024):
 	1. Implement the Customizable Evaluation Function, per the parameters outlined in NFR-5
@@ -140,15 +133,10 @@ FR-8: The System Shall Log Games
 	FR-8.3: For Tournaments, only the Opening Move and Winning Move will be saved
 	Priority: Should Have
 
-NFR-2: The Minimax algorithm’s evaluation function will be implemented with respect to the Guerilla 
-Player, the Counterinsurgent player’s evaluation function negating its result
-
 NFR-3: A Minimax Player playing at Cutoff Depth 10 shall take at most 10 seconds to move
 	NFR-3.1: The Minimax Algorithm will keep track of the best move to take, given the current search result
 	NFR-3.2: It will have a timeout of 10 seconds to carry out its search and, if it does not complete the search, it 
 	will pick the best move so far
-
-NFR-4: The Minimax Algorithm shall be optimized using Alpha-Beta Pruning
 
 NFR-5: There shall be an adjustable Evaluation Function that Minimax Algorithm will use to evaluate states
 	NFR-5.1: The Evaluation Function will produce a total utility, using these 8 Evaluation Parameters:
@@ -228,3 +216,4 @@ Consider refactoring Minimax Parameters not to number of Threatened COIN Checker
 (which counts for BOTH Guerilla Pieces AND Empty corners of the board)
 Consider making Colors customizable for board and pieces (and if I do so, mention in dissertation how that's a good accessibility step)
 Could optionally label cells and corners in main menu
+Consider emphasizing first Guerilla-placed piece (e.g. different color)

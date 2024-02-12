@@ -122,6 +122,9 @@ func simulate_move(move : Move) -> void:
 	
 	move_simulated.emit()
 	
+	next_move()
+
+func next_move() -> void:
 	if game_state.get_current_player() == GameState.PLAYER.GUERILLA:
 		guerilla_player.do_move()
 	elif game_state.get_current_player() == GameState.PLAYER.COIN:

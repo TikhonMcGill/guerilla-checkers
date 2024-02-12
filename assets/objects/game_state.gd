@@ -393,8 +393,10 @@ func is_coin_victorious() -> bool:
 
 ##A Method to place a Guerilla Piece, updating the Game State accordingly
 func place_guerilla_piece(corner : int) -> void:
+	var placeable_corners = get_placeable_corners()
+	
 	assert(corner >= 0 and corner <= 48,"Corner to place into must be between 0 and 48")
-	assert(corner in get_placeable_corners(),"Corner to place into must be valid")
+	assert(corner in placeable_corners,"Corner to place into must be valid")
 	
 	#Decrement number of pieces left by 1, since a Piece was placed
 	guerilla_pieces_left -= 1
