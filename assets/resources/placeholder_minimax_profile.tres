@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MinMaxProfile" load_steps=2 format=3 uid="uid://bsm0vnmgmupsc"]
+
+[ext_resource type="Script" path="res://assets/scenes/player/minmax_player/minmax_profile.gd" id="1_f42hn"]
+
+[resource]
+script = ExtResource("1_f42hn")
+profile_name = "Placeholder Minimax Profile"
+cutoff_depth = 5
+move_sorting = 0
+timeout = 0.0
+victory_utility = 0.0
+defeat_utility = 0.0
+draw_utility = 0.0
+pieces_left_utility = 0.0
+pieces_on_board_utility = 1.0
+checkers_utility = -11.0
+guerilla_threatened_checkers_utility = 0.0
+edge_threatened_checkers_utility = 0.0
+threatened_guerilla_pieces_utility = 0.0

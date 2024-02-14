@@ -13,7 +13,7 @@ class_name MinMaxPlayer
 
 @onready var timer: Timer = $Timer
 
-var profile : MinMaxProfile = null
+var profile : MinMaxProfile = preload("res://assets/resources/placeholder_minimax_profile.tres")
 
 var analyzer : GameStateAnalyzer = GameStateAnalyzer.new()
 
@@ -31,7 +31,7 @@ func do_move() -> void:
 	
 	var start_time := Time.get_ticks_msec()
 	
-	var output := _minmax(5,true,game_state,-INF,INF)
+	var output := _minmax(profile.cutoff_depth,true,game_state,-INF,INF)
 	
 	var end_time := Time.get_ticks_msec()
 	
@@ -55,13 +55,36 @@ func _is_terminal_state(state : GameState) -> bool:
 func _get_state_utility(state : GameState) -> float:
 	var utility := 0.0
 	
-	var guerilla_piece_utility = analyzer.count_guerilla_pieces_on_board(state)
-	var coin_checker_utility = analyzer.count_coin_checkers_on_board(state) * 11
+	if is_equal_approx(profile.victory_utility,0) == false and analyzer.is_guerilla_victorious(state) == true:
+		utility += profile.victory_utility
 	
-	utility = guerilla_piece_utility - coin_checker_utility
+	if is_equal_approx(profile.defeat_utility,0) == false and analyzer.is_coin_victorious(state) == true:
+		utility += profile.defeat_utility
+	
+	if is_equal_approx(profile.draw_utility,0) == false and analyzer.is_draw(state) == true:
+		utility += profile.draw_utility
+	
+	if is_equal_approx(profile.pieces_left_utility,0) == false:
+		utility += (state.guerilla_pieces_left * profile.pieces_left_utility)
+	
+	if is_equal_approx(profile.pieces_on_board_utility,0) == false:
+		utility += (analyzer.count_guerilla_pieces_on_board(state) * profile.pieces_on_board_utility)
+	
+	if is_equal_approx(profile.checkers_utility,0) == false:
+		utility += (analyzer.count_coin_checkers_on_board(state) * profile.checkers_utility)
+	
+	if is_equal_approx(profile.guerilla_threatened_checkers_utility,0) == false:
+		utility += (analyzer.count_guerilla_threatened_coin_checkers(state) * profile.guerilla_threatened_checkers_utility)
+	
+	if is_equal_approx(profile.edge_threatened_checkers_utility,0) == false:
+		utility += (analyzer.count_edge_threatened_coin_checkers(state) * profile.edge_threatened_checkers_utility)
+	
+	if is_equal_approx(profile.threatened_guerilla_pieces_utility,0) == false:
+		utility += (analyzer.count_threatened_guerilla_pieces(state) * profile.threatened_guerilla_pieces_utility)
 	
 	#Since the Utility is from the perspective of the Guerilla, if the Player is a Counterinsurgent,
 	#we negate the utility (the advantage of the guerilla is the disadvantage of the COIN, and vice versa)
+	
 	if is_coin() == true:
 		utility = -utility
 	
@@ -76,15 +99,16 @@ func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:
 	if _is_terminal_state(start_state) == true or depth == 0:
 		return MinMaxOutput.new(_get_state_utility(start_state),null)
 	
-	var best_moves : Array[Move] = []
+	var best_move : Move = null
 	
 	if maximizing == true:
 		var best_evaluation : float = -INF
 		
 		var actions := _get_actions(start_state)
-		if len(actions) == 1:
-			return MinMaxOutput.new(_get_state_utility(_get_result(start_state,actions[0])),actions[0])
 		
+		if len(actions) == 0:
+			var result := _get_state_utility(_get_result(start_state,actions[0]))
+			return MinMaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
 			var result := _get_result(start_state,a)
@@ -92,22 +116,22 @@ func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:
 			
 			if evaluation > best_evaluation:
 				best_evaluation = evaluation
-				best_moves = [a]
-			elif evaluation == best_evaluation:
-				best_moves.append(a)
-			
-			if evaluation >= beta:
-				return MinMaxOutput.new(evaluation,best_moves.pick_random())
+				best_move = a
 			
 			alpha = max(alpha,evaluation)
+			
+			if beta <= alpha:
+				return MinMaxOutput.new(evaluation,best_move)
 		
-		return MinMaxOutput.new(best_evaluation,best_moves.pick_random())
+		return MinMaxOutput.new(best_evaluation,best_move)
 	else:
 		var worst_evaluation : float = INF
 		
 		var actions := _get_actions(start_state)
-		if len(actions) == 1:
-			return MinMaxOutput.new(_get_state_utility(_get_result(start_state,actions[0])),actions[0])
+		
+		if len(actions) == 0:
+			var result := _get_state_utility(_get_result(start_state,actions[0]))
+			return MinMaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
 			var result := _get_result(start_state,a)
@@ -115,13 +139,11 @@ func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:
 			
 			if evaluation < worst_evaluation:
 				worst_evaluation = evaluation
-				best_moves = [a]
-			elif evaluation == worst_evaluation:
-				best_moves.append(a)
-			
-			if evaluation <= alpha:
-				return MinMaxOutput.new(evaluation,best_moves.pick_random())
+				best_move = a
 			
 			beta = min(beta,evaluation)
+			
+			if beta <= alpha:
+				return MinMaxOutput.new(evaluation,best_move)
 		
-		return MinMaxOutput.new(worst_evaluation,best_moves.pick_random())
+		return MinMaxOutput.new(worst_evaluation,best_move)

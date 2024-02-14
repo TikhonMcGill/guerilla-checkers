@@ -25,6 +25,8 @@ enum MOVE_SORT{
 #Evaluation Function Values
 @export var victory_utility : float = 1.0 ##How much utility will be added to a Game State if, from the perspective of the Guerilla, they win (i.e. no more COIN Pieces remain)
 @export var defeat_utility : float = -1.0 ##How much utility will be added to a Game State if, from the perspective of the Guerilla, they lose (no more pieces on the board or no more pieces left to place)
+@export var draw_utility : float = 0.0 ##How much utility will be added to a Game State it, from the perspective of the Guerilla, the game is a draw (i.e. they place their first piece in a corner with no available adjacent corners)
+
 @export var pieces_left_utility : float = 1.0 ##Multiply the number of pieces the Guerilla has left to place by this value, and add it to the Utility
 @export var pieces_on_board_utility : float = 1.0 ##Multiply the number of Guerilla pieces present on the board by this value, and add to total Utility
 @export var checkers_utility : float = -1.0 ##Multiply the number of COIN Checkers present on the board by this amount, and add it to Utility

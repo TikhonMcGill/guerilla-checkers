@@ -16,7 +16,11 @@ Consider how to demonstrate it for Project
 
 As future extension, mention how I could've experimented with non-linear utility functions (as all were just multiples of board game situations)
 
-Consider adding "DRAW" as another Evaluation Parameter
+Mention the "DRAW" Utility as another Evaluation parameter
+
+Mention that I decided to remove random choice among possible best moves, and to pick the first best one because:
+	1. This leads to unpredictable behavior - it was tested with a similar random seed, but when changes to the code were made,
+	the random choice became different, so there was no way to compare e.g. the validity of alpha-beta pruning
 
 Reword the Rules-Based Computer Player:
 	1. Make it the Utility-Based Comptuter Player (UBCP)

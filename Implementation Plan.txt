@@ -207,8 +207,6 @@ Lower-Priority Requirements:
 		FR-7.1: Users shall be able to, if one of the sides’ players is Human, activate a “Tutorial” setting
 		FR-7.2: When active, Users shall be explained the outcomes of possible moves they could take
 
-(Prevent player from moving until after animatino finished, or end animation prematurely)
-
 Consider experimenting with timeout - make it tunable
 Make sure to explain how to leave the game - press ESCAPE
 Consider making a "Random Computer Player"
@@ -217,3 +215,5 @@ Consider refactoring Minimax Parameters not to number of Threatened COIN Checker
 Consider making Colors customizable for board and pieces (and if I do so, mention in dissertation how that's a good accessibility step)
 Could optionally label cells and corners in main menu
 Consider emphasizing first Guerilla-placed piece (e.g. different color)
+Consider simplifying the end game string if the player is already named COIN/Counterinsurgent
+or Guerilla - e.g. "The Guerilla(Guerilla) was Victorious" could become "The Guerilla was Victorious"
