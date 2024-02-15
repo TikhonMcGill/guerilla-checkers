@@ -39,9 +39,70 @@ func do_move() -> void:
 	
 	move_taken.emit(output.move)
 
-##A Method to get the Actions in a State (just to have similar notation to Russell, Norvig pseudocode)
+##A Method to get the Actions in a State, with sorting of moves
 func _get_actions(state : GameState) -> Array[Move]:
-	return state.get_possible_moves()
+	var actions := state.get_possible_moves()
+	
+	#If no sorting function, just return the possible actions
+	if profile.move_sorting == MinMaxProfile.MOVE_SORT.NONE:
+		return actions
+	
+	#If random sorting, shuffle the moves
+	if profile.move_sorting == MinMaxProfile.MOVE_SORT.RANDOM_SHUFFLE:
+		actions.shuffle()
+		return actions
+	
+	#If End-Take-Other, have three arrays - one for moves that lead to game-ending states, 
+	#one for moves that lead to states with less Coin Checkers/Guerilla Pieces, 
+	#and one for everything else
+	if profile.move_sorting == MinMaxProfile.MOVE_SORT.END_TAKE_OTHER:
+		var end_moves : Array[Move] = []
+		var take_moves : Array[Move] = []
+		var other_moves : Array[Move] = []
+		
+		var current_guerilla_pieces := analyzer.count_guerilla_pieces_on_board(state)
+		var current_coin_checkers := analyzer.count_coin_checkers_on_board(state)
+		
+		for a in actions:
+			var result := _get_result(state,a)
+			if analyzer.is_guerilla_victorious(result) == true or analyzer.is_coin_victorious(result) == true or analyzer.is_draw(result) == true:
+				end_moves.append(a)
+			elif analyzer.count_guerilla_pieces_on_board(result) < current_guerilla_pieces or analyzer.count_coin_checkers_on_board(result) < current_coin_checkers:
+				take_moves.append(a)
+			else:
+				other_moves.append(a)
+		
+		var moves = end_moves + take_moves + other_moves
+		assert(len(moves) == len(actions))
+	
+	#If sorting by utility, sort moves by their utilities
+	if profile.move_sorting == MinMaxProfile.MOVE_SORT.BY_UTILITY:
+		#Construct Dictionary of Actions based on Utilities
+		var utilities_to_actions : Dictionary = {}
+		
+		for a in actions:
+			var utility := _get_state_utility(_get_result(state,a))
+			
+			#If there is an action with equal utility already, append it to that utility's array
+			if utilities_to_actions.has(utility) == true:
+				utilities_to_actions[utility].append(a)
+			#Otherwise, initialize a size-1 array
+			else:
+				var new_move_array : Array[Move] = []
+				new_move_array.append(a)
+				utilities_to_actions[utility] = new_move_array
+		
+		var ordered_utilities := utilities_to_actions.keys()
+		ordered_utilities.sort()
+		
+		var moves := []
+		
+		for o in ordered_utilities:
+			moves += utilities_to_actions[o]
+		
+		assert(len(moves) == len(actions))
+	
+	return actions
 
 ##A Method to get the result of taking an Action in a state (same reason as above)
 func _get_result(state : GameState,action : Move) -> GameState:

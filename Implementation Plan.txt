@@ -1,13 +1,11 @@
-1. Implement Move Sorting
-2. Implement Timeout
-3. Connect MinMax Profiles to MinMax Players through Main Menu
-4. Rename MinMax to Minimax
+1. Implement Timeout
+2. Connect MinMax Profiles to MinMax Players through Main Menu
+3. Rename MinMax to Minimax
 
 Customizable Minimax Profiles (February 9th to February 16th, 2024):
 	1. Implement the Customizable Evaluation Function, per the parameters outlined in NFR-5
 	2. Implement a customizable cutoff, from 1 to 10
-	3. Implement the 4 Sorting Algorithms, per NFR-21
-	4. Implement interface functionality to create, name, edit, save and use Minimax Profiles, per FR-5
+	3. Implement interface functionality to create, name, edit, save and use Minimax Profiles, per FR-5
 
 Tournament System (February 16th to February 23rd, 2024):
 	1. Create option in Menu for a Tournament mode
@@ -161,12 +159,6 @@ NFR-5: There shall be an adjustable Evaluation Function that Minimax Algorithm w
 	NFR-5.2: If any of the above parameters are zero, as an optimization, the Evaluation Function will not check 
 	for situations related to those parameters
 
-NFR-8: The System Implementation shall be Backed Up on a GitHub Repository
-
-NFR-9: Drafts of the Dissertation shall be backed up
-	NFR-9.1: Drafts shall be backed up on Heriot-Watt’s OneDrive Server
-	NFR-9.2: Drafts shall be backed up on Google Drive
-
 NFR-10: The Development of the System shall follow an Object-Oriented Pattern
 
 NFR-11: The User’s Settings in the Main Menu shall be saved when the Application is closed
@@ -185,15 +177,6 @@ NFR-16: Future Move Calculation Shall be Optimized using Transposition Tables
 	Table
 	NFR-16.3: The Transposition Table will be saved between games, so that (particularly in tournaments with 
 	hundreds of games) time is saved in calculating moves
-
-NFR-17: There will be different choices of Sorting Algorithm for the Minimax AI
-	NFR-17.1: The Sorting Algorithms are as follows:
-		1. Unchanged – do not sort the future Moves of the Minimax in any way after the Game State returns 
-		future moves
-		2. End-take-other - places moves that end the game in the beginning, moves that take pieces after 
-		that, all others in the end
-		3. By Utility – sort moves by descending order of their utility
-		4. Random Shuffle – randomly-shuffle moves
 
 Lower-Priority Requirements:
 	1. NFR-15.3: The System shall be explicit about the presence of a tutorial, for those who are unaware of the 
