@@ -160,7 +160,7 @@ func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:
 	if _is_terminal_state(start_state) == true or depth == 0:
 		return MinMaxOutput.new(_get_state_utility(start_state),null)
 	
-	var best_move : Move = null
+	var best_moves : Array[Move] = []
 	
 	if maximizing == true:
 		var best_evaluation : float = -INF
@@ -177,14 +177,16 @@ func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:
 			
 			if evaluation > best_evaluation:
 				best_evaluation = evaluation
-				best_move = a
+				best_moves = [a]
+			elif is_equal_approx(evaluation,best_evaluation) == true:
+				best_moves.append(a)
 			
 			alpha = max(alpha,evaluation)
 			
 			if beta <= alpha:
-				return MinMaxOutput.new(evaluation,best_move)
+				return MinMaxOutput.new(evaluation,best_moves.pick_random())
 		
-		return MinMaxOutput.new(best_evaluation,best_move)
+		return MinMaxOutput.new(best_evaluation,best_moves.pick_random())
 	else:
 		var worst_evaluation : float = INF
 		
@@ -200,11 +202,13 @@ func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:
 			
 			if evaluation < worst_evaluation:
 				worst_evaluation = evaluation
-				best_move = a
+				best_moves = [a]
+			elif is_equal_approx(evaluation,worst_evaluation) == true:
+				best_moves.append(a)
 			
 			beta = min(beta,evaluation)
 			
 			if beta <= alpha:
-				return MinMaxOutput.new(evaluation,best_move)
+				return MinMaxOutput.new(evaluation,best_moves.pick_random())
 		
-		return MinMaxOutput.new(worst_evaluation,best_move)
+		return MinMaxOutput.new(worst_evaluation,best_moves.pick_random())
