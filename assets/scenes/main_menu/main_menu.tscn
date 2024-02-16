@@ -92,6 +92,10 @@ text = "Play"
 [node name="HSeparator2" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
+[node name="MinimaxProfileEdit" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Customize Minimax Profiles"
+
 [node name="CreditsLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
@@ -107,3 +111,4 @@ text = "See Rules of Guerilla Checkers"
 uri = "https://www.di.fc.ul.pt/~jpn/gv/guerrilla.htm"
 
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/MinimaxProfileEdit" to="." method="_on_minimax_profile_edit_pressed"]

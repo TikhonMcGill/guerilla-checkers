@@ -1,6 +1,7 @@
 extends Control
 
 const GAME_SCENE_PATH := "res://assets/scenes/game_scene/game_scene.tscn"
+const MINIMAX_PROFILE_EDIT_PATH := "res://assets/scenes/minimax_profile_editor/minimax_profile_editor.tscn"
 
 @onready var guerilla_player_select = $PanelContainer/MarginContainer/VBoxContainer/GuerillaPlayerSelect
 @onready var counterinsurgent_player_select = $PanelContainer/MarginContainer/VBoxContainer/CounterinsurgentPlayerSelect
@@ -38,3 +39,6 @@ func _set_settings():
 	
 	GameManager.guerilla_player_name = guerilla_name_edit.text
 	GameManager.coin_player_name = counterinsurgent_name_edit.text
+
+func _on_minimax_profile_edit_pressed() -> void:
+	get_tree().change_scene_to_file(MINIMAX_PROFILE_EDIT_PATH)

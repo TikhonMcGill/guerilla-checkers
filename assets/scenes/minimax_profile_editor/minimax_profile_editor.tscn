@@ -49,6 +49,11 @@ layout_mode = 2
 size_flags_vertical = 8
 text = "Create new Minimax Profile"
 
+[node name="BackToMainMenuButton" type="Button" parent="PanelContainer/MarginContainer/MinimaxList"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Back to Main Menu"
+
 [node name="MinimaxEditor" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 visible = false
 layout_mode = 2
@@ -186,6 +191,7 @@ text = "Cancel"
 
 [connection signal="profile_edited" from="PanelContainer/MarginContainer/MinimaxList" to="." method="_on_minimax_list_profile_edited"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/MinimaxList/CreateNewProfileButton" to="." method="_on_create_new_profile_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/MinimaxList/BackToMainMenuButton" to="." method="_on_back_to_main_menu_button_pressed"]
 [connection signal="profile_completed" from="PanelContainer/MarginContainer/MinimaxEditor" to="." method="_on_minimax_editor_profile_completed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/MinimaxEditor/ConfirmButton" to="PanelContainer/MarginContainer/MinimaxEditor" method="_on_confirm_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/MinimaxEditor/CancelButton" to="PanelContainer/MarginContainer/MinimaxEditor" method="_on_cancel_button_pressed"]

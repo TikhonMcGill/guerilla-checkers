@@ -1,5 +1,7 @@
 extends Control
 
+const MAIN_MENU_SCENE_PATH := "res://assets/scenes/main_menu/main_menu.tscn"
+
 @onready var minimax_list: VBoxContainer = $PanelContainer/MarginContainer/MinimaxList
 @onready var minimax_editor: VBoxContainer = $PanelContainer/MarginContainer/MinimaxEditor
 
@@ -48,3 +50,6 @@ func _on_minimax_list_profile_edited(profile: MinimaxProfile) -> void:
 	_show_minimax_editor()
 	minimax_editor.clear()
 	minimax_editor.load_profile(profile)
+
+func _on_back_to_main_menu_button_pressed() -> void:
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
