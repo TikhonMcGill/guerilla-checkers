@@ -11,8 +11,6 @@ class_name MinMaxPlayer
 ##is exactly the disadvantage of the Counterinsurgent. Therefore, we have the evaluation function be 
 ##from the perspective of the Guerilla, and it is negated if the MinMax player is a COIN.
 
-@onready var timer: Timer = $Timer
-
 var profile : MinMaxProfile = preload("res://assets/resources/placeholder_minimax_profile.tres")
 
 var analyzer : GameStateAnalyzer = GameStateAnalyzer.new()
@@ -27,15 +25,11 @@ class MinMaxOutput:
 
 ##Pick the best move for Minmax
 func do_move() -> void:
-	timer.start()
-	
 	var start_time := Time.get_ticks_msec()
 	
-	var output := _minmax(profile.cutoff_depth,true,game_state,-INF,INF)
+	var output := _minmax(profile.cutoff_depth,true,game_state,-INF,INF,profile.timeout)
 	
 	var end_time := Time.get_ticks_msec()
-	
-	await timer.timeout
 	
 	move_taken.emit(output.move)
 
@@ -156,9 +150,11 @@ func _is_my_turn_in_state(state : GameState) -> bool:
 	return state.get_current_player() == my_type
 
 ##A Function running the MinMax algorithm, with cutoff - getting the Utility of a state and the best move
-func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:float) -> MinMaxOutput:
+func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:float,time_left:int) -> MinMaxOutput:
 	if _is_terminal_state(start_state) == true or depth == 0:
 		return MinMaxOutput.new(_get_state_utility(start_state),null)
+	
+	var start_time := Time.get_ticks_msec()
 	
 	var best_moves : Array[Move] = []
 	
@@ -167,13 +163,18 @@ func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:
 		
 		var actions := _get_actions(start_state)
 		
-		if len(actions) == 0:
+		if len(actions) == 1:
 			var result := _get_state_utility(_get_result(start_state,actions[0]))
 			return MinMaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
+			var end_time := Time.get_ticks_msec()
+			
+			var time_taken := end_time - start_time
+			time_left -= time_taken
+			
 			var result := _get_result(start_state,a)
-			var evaluation = _minmax(depth-1,_is_my_turn_in_state(result),result,alpha,beta).evaluation
+			var evaluation = _minmax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
 			if evaluation > best_evaluation:
 				best_evaluation = evaluation
@@ -183,7 +184,7 @@ func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:
 			
 			alpha = max(alpha,evaluation)
 			
-			if beta <= alpha:
+			if beta <= alpha or time_left <= 0:
 				return MinMaxOutput.new(evaluation,best_moves.pick_random())
 		
 		return MinMaxOutput.new(best_evaluation,best_moves.pick_random())
@@ -197,8 +198,13 @@ func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:
 			return MinMaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
+			var end_time := Time.get_ticks_msec()
+			
+			var time_taken := end_time - start_time
+			time_left -= time_taken
+			
 			var result := _get_result(start_state,a)
-			var evaluation = _minmax(depth-1,_is_my_turn_in_state(result),result,alpha,beta).evaluation
+			var evaluation = _minmax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
 			if evaluation < worst_evaluation:
 				worst_evaluation = evaluation
@@ -208,7 +214,7 @@ func _minmax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:
 			
 			beta = min(beta,evaluation)
 			
-			if beta <= alpha:
+			if beta <= alpha or time_left <= 0:
 				return MinMaxOutput.new(evaluation,best_moves.pick_random())
 		
 		return MinMaxOutput.new(worst_evaluation,best_moves.pick_random())

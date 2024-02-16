@@ -17,6 +17,8 @@ Categorize UML Diagrams appropriately
 
 Consider how to demonstrate it for Project
 
+Mention that timeout is now in milliseconds, given how long it takes
+
 As future extension, mention how I could've experimented with non-linear utility functions (as all were just multiples of board game situations)
 
 Mention the "DRAW" Utility as another Evaluation parameter

@@ -122,6 +122,8 @@ func simulate_move(move : Move) -> void:
 	
 	move_simulated.emit()
 	
+	await game_board.animation_complete
+	
 	next_move()
 
 func next_move() -> void:

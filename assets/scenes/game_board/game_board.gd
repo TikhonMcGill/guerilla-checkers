@@ -12,6 +12,8 @@ signal tile_pressed(tile : Tile)
 
 signal corner_pressed(corner : Corner)
 
+signal animation_complete
+
 @export_color_no_alpha var tile_color_1 = Color.LIGHT_GRAY
 @export_color_no_alpha var tile_color_2 = Color.BLACK
 @export_color_no_alpha var corner_color = Color.DIM_GRAY
@@ -254,7 +256,10 @@ func _on_game_state_guerilla_piece_placed(corner : int):
 	var new_piece := _create_guerilla_piece(corner,false)
 	var tween := get_tree().create_tween()
 	
-	tween.tween_property(new_piece,"modulate:a",1.0,0.25)
+	tween.tween_property(new_piece,"modulate:a",1.0,0.5)
+	
+	await tween.finished
+	animation_complete.emit()
 
 func _on_game_state_coin_checker_moved(cell_from : int, cell_to : int):
 	var coin_checker := get_checker_at_cell(cell_from)
@@ -262,6 +267,9 @@ func _on_game_state_coin_checker_moved(cell_from : int, cell_to : int):
 	
 	var tween = create_tween()
 	tween.tween_property(coin_checker,"position",get_cell_tile(cell_to).position,0.25)
+	
+	await tween.finished
+	animation_complete.emit()
 
 func _on_game_state_guerilla_piece_captured(corner : int):
 	var captured_piece := get_piece_in_corner(corner)

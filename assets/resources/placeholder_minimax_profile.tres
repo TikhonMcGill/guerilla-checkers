@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1_f42hn")
 profile_name = "Placeholder Minimax Profile"
-cutoff_depth = 5
+cutoff_depth = 10
 move_sorting = 0
-timeout = 0.0
+timeout = 1000.0
 victory_utility = 0.0
 defeat_utility = 0.0
 draw_utility = 0.0
