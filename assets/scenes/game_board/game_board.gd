@@ -138,9 +138,9 @@ func _initialize_labels():
 ##Method to write in the label which player's turn it is
 func show_current_player(player : GameState.PLAYER):
 	if player == GameState.PLAYER.COIN:
-		current_player_label.text = "Current Player: Counterinsurgent (COIN)"
+		current_player_label.text = "Current Player: %s (COIN)" % GameManager.coin_player_name
 	elif player == GameState.PLAYER.GUERILLA:
-		current_player_label.text = "Current Player: Guerilla"
+		current_player_label.text = "Current Player: %s (Guerilla)" % GameManager.guerilla_player_name
 	else:
 		current_player_label.text = "Game Over"
 
