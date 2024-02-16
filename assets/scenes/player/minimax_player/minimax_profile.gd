@@ -20,7 +20,7 @@ enum MOVE_SORT{
 @export var profile_name : String = "" ##Name of the Minimax Profile
 @export var cutoff_depth : int = 0 ##How deep the search tree is cutoff (cutoff of 0 = look no moves ahead, i.e. take the best move in the present)
 @export var move_sorting : MOVE_SORT = MOVE_SORT.NONE ##The Type of Move Sorting Algorithm to use (how moves are ordered before being analyzed by Minimax)
-@export var timeout : float = 0 ##The Timeout in seconds - after timeout is over, even if Minimax has not finished, the current best move will be selected
+@export var timeout : float = 0 ##The Timeout in milliseconds - after timeout is over, even if Minimax has not finished, the current best move will be selected
 
 #Evaluation Function Values
 @export var victory_utility : float = 1.0 ##How much utility will be added to a Game State if, from the perspective of the Guerilla, they win (i.e. no more COIN Pieces remain)

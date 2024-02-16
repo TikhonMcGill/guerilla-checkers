@@ -1,0 +1,173 @@
+[gd_scene load_steps=4 format=3 uid="uid://cixujv6hixtus"]
+
+[ext_resource type="Script" path="res://assets/scenes/minimax_profile_editor/minimax_profile_editor.gd" id="1_ixsua"]
+[ext_resource type="Script" path="res://assets/scenes/minimax_profile_editor/minimax_editor.gd" id="1_onhyv"]
+[ext_resource type="Script" path="res://assets/scenes/minimax_profile_editor/MinimaxList.gd" id="2_cfhvm"]
+
+[node name="MinimaxProfileEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ixsua")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="MinimaxList" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+script = ExtResource("2_cfhvm")
+
+[node name="CreateNewProfileButton" type="Button" parent="PanelContainer/MarginContainer/MinimaxList"]
+layout_mode = 2
+size_flags_vertical = 10
+text = "Create new Minimax Profile"
+
+[node name="MinimaxEditor" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 5
+script = ExtResource("1_onhyv")
+
+[node name="ProfileNameEdit" type="LineEdit" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+placeholder_text = "Enter the name of the Minimax Profile"
+
+[node name="MoveSortingPrompt" type="Label" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+text = "Select how moves are sorted by Minimax:"
+
+[node name="MoveSortingOptionButton" type="OptionButton" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+item_count = 4
+popup/item_0/text = "No Sorting Algorithm"
+popup/item_0/id = 0
+popup/item_1/text = "End-Take-Other"
+popup/item_1/id = 1
+popup/item_2/text = "Sort by Utility"
+popup/item_2/id = 2
+popup/item_3/text = "Randomly Shuffle Moves"
+popup/item_3/id = 3
+
+[node name="CutoffDepthPrompt" type="Label" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+text = "Select how many moves ahead Minimax looks"
+
+[node name="CutoffSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+max_value = 10.0
+suffix = "Moves"
+
+[node name="TimeoutPrompt" type="Label" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+text = "Adjust the maximum time Minimax will think (timeout)"
+
+[node name="TimeoutSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+max_value = 10000.0
+step = 10.0
+value = 5000.0
+suffix = "Milliseconds"
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+
+[node name="EvaluationWarning" type="Label" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+text = "Warning - all Evaluations are carried out from the perspective of the Guerilla. If the COIN is using these functions, they will negate the result."
+
+[node name="EvaluationsContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VictoryUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+value = 100.0
+allow_greater = true
+allow_lesser = true
+prefix = "Victory Utility:"
+
+[node name="DefeatUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+value = -100.0
+allow_greater = true
+allow_lesser = true
+prefix = "Defeat Utility:"
+
+[node name="DrawUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+prefix = "Draw Utility:"
+
+[node name="PiecesLeftUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+prefix = "Pieces Left Utility:"
+
+[node name="PiecesOnBoardUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+prefix = "Pieces on Board Utility:"
+
+[node name="CheckersOnBoardUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+prefix = "Checkers on Board Utility:"
+
+[node name="GuerillaThreatenedCheckersUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+prefix = "Guerilla-Threatened Checkers Utility:"
+
+[node name="EdgeThreatenedCheckersUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+prefix = "Edge-Threatened Checkers Utility:"
+
+[node name="ThreatenedGuerillaPiecesUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+prefix = "Threatened Guerilla Pieces Utility:"
+
+[node name="ConfirmButton" type="Button" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+text = "Confirm Minimax Profile"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/MinimaxList/CreateNewProfileButton" to="." method="_on_create_new_profile_button_pressed"]
+[connection signal="profile_completed" from="PanelContainer/MarginContainer/MinimaxEditor" to="." method="_on_minimax_editor_profile_completed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/MinimaxEditor/ConfirmButton" to="PanelContainer/MarginContainer/MinimaxEditor" method="_on_confirm_button_pressed"]

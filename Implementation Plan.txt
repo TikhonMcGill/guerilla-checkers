@@ -1,5 +1,14 @@
 1. Connect MinMax Profiles to MinMax Players through Main Menu
 
+For Minimax Profile, need UI that edits Profiles:
+	1. Implement being able to edit and delete Minimax Profiles:
+		1. Create a Minimax Container, with name, "Edit" and "Delete" Buttons
+		2. Populate a ScrollContainer with these Containers
+		3. Connect Editing to the Edit - when signal emitted, delete original, save new
+		4. Delete the MinimaxProfiles by deleting file and then removing the container
+	2. Connect the Minimax Profile Editor to the Main Menu
+	3. Implement being able to select the Profile of a Minimax Player
+
 Customizable Minimax Profiles (February 9th to February 16th, 2024):
 	1. Implement the Customizable Evaluation Function, per the parameters outlined in NFR-5
 	2. Implement a customizable cutoff, from 1 to 10
@@ -188,13 +197,13 @@ Lower-Priority Requirements:
 		FR-7.1: Users shall be able to, if one of the sides’ players is Human, activate a “Tutorial” setting
 		FR-7.2: When active, Users shall be explained the outcomes of possible moves they could take
 
-Consider experimenting with timeout - make it tunable
 Make sure to explain how to leave the game - press ESCAPE
-Consider making a "Random Computer Player"
-Consider refactoring Minimax Parameters not to number of Threatened COIN Checkers, but to number of THREATENING CORNERS
-(which counts for BOTH Guerilla Pieces AND Empty corners of the board)
 Consider making Colors customizable for board and pieces (and if I do so, mention in dissertation how that's a good accessibility step)
 Could optionally label cells and corners in main menu
 Consider emphasizing first Guerilla-placed piece (e.g. different color)
 Consider simplifying the end game string if the player is already named COIN/Counterinsurgent
 or Guerilla - e.g. "The Guerilla(Guerilla) was Victorious" could become "The Guerilla was Victorious"
+
+Minimax Profile Editor:
+	Add explanations for each Evaluation Function
+	Add explanations for Sorting Algorithms

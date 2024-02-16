@@ -1,0 +1,67 @@
+extends VBoxContainer
+
+signal profile_completed(profile : MinimaxProfile)
+
+@onready var profile_name_edit: LineEdit = $ProfileNameEdit
+
+@onready var move_sorting_option_button: OptionButton = $MoveSortingOptionButton
+@onready var cutoff_spin_box: SpinBox = $CutoffSpinBox
+@onready var timeout_spin_box: SpinBox = $TimeoutSpinBox
+
+@onready var victory_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/VictoryUtilitySpinBox
+@onready var defeat_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/DefeatUtilitySpinBox
+@onready var draw_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/DrawUtilitySpinBox
+
+@onready var pieces_left_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/PiecesLeftUtilitySpinBox
+@onready var pieces_on_board_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/PiecesOnBoardUtilitySpinBox
+@onready var checkers_on_board_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/CheckersOnBoardUtilitySpinBox
+
+@onready var guerilla_threatened_checkers_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/GuerillaThreatenedCheckersUtilitySpinBox
+@onready var edge_threatened_checkers_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/EdgeThreatenedCheckersUtilitySpinBox
+@onready var threatened_guerilla_pieces_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/ThreatenedGuerillaPiecesUtilitySpinBox
+
+func clear() -> void:
+	profile_name_edit.clear()
+	move_sorting_option_button.selected = -1
+	cutoff_spin_box.value = 1
+	timeout_spin_box.value = 5000
+	
+	victory_utility_spin_box.value = 100
+	defeat_utility_spin_box.value = -100
+	draw_utility_spin_box.value = 0
+	
+	pieces_left_utility_spin_box.value = 0
+	pieces_on_board_utility_spin_box.value = 1
+	checkers_on_board_utility_spin_box.value = -11
+	
+	guerilla_threatened_checkers_utility_spin_box.value = 0
+	edge_threatened_checkers_utility_spin_box.value = 0
+	threatened_guerilla_pieces_utility_spin_box.value = 0
+
+func _on_confirm_button_pressed():
+	if profile_name_edit.text.validate_filename() == "":
+		return
+	
+	if move_sorting_option_button.selected == -1:
+		return
+	
+	var new_profile := MinimaxProfile.new()
+	
+	new_profile.profile_name = profile_name_edit.text
+	new_profile.cutoff_depth = int(cutoff_spin_box.value)
+	new_profile.move_sorting = move_sorting_option_button.selected
+	new_profile.timeout = timeout_spin_box.value
+	
+	new_profile.victory_utility = victory_utility_spin_box.value
+	new_profile.defeat_utility = defeat_utility_spin_box.value
+	new_profile.draw_utility = draw_utility_spin_box.value
+
+	new_profile.pieces_left_utility = pieces_left_utility_spin_box.value
+	new_profile.pieces_on_board_utility = pieces_on_board_utility_spin_box.value
+	new_profile.checkers_utility = checkers_on_board_utility_spin_box.value
+	
+	new_profile.guerilla_threatened_checkers_utility = guerilla_threatened_checkers_utility_spin_box.value
+	new_profile.edge_threatened_checkers_utility = edge_threatened_checkers_utility_spin_box.value
+	new_profile.threatened_guerilla_pieces_utility = threatened_guerilla_pieces_utility_spin_box.value
+	
+	profile_completed.emit(new_profile)
