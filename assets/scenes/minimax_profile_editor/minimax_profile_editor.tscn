@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://assets/scenes/minimax_profile_editor/minimax_profile_editor.gd" id="1_ixsua"]
 [ext_resource type="Script" path="res://assets/scenes/minimax_profile_editor/minimax_editor.gd" id="1_onhyv"]
-[ext_resource type="Script" path="res://assets/scenes/minimax_profile_editor/MinimaxList.gd" id="2_cfhvm"]
+[ext_resource type="Script" path="res://assets/scenes/minimax_profile_editor/minimax_list.gd" id="2_bx7is"]
 
 [node name="MinimaxProfileEditor" type="Control"]
 layout_mode = 3
@@ -30,11 +30,23 @@ theme_override_constants/margin_bottom = 50
 
 [node name="MinimaxList" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
-script = ExtResource("2_cfhvm")
+script = ExtResource("2_bx7is")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/MinimaxList"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MinimaxEntryList" type="VBoxContainer" parent="PanelContainer/MarginContainer/MinimaxList/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/MinimaxList"]
+layout_mode = 2
 
 [node name="CreateNewProfileButton" type="Button" parent="PanelContainer/MarginContainer/MinimaxList"]
 layout_mode = 2
-size_flags_vertical = 10
+size_flags_vertical = 8
 text = "Create new Minimax Profile"
 
 [node name="MinimaxEditor" type="VBoxContainer" parent="PanelContainer/MarginContainer"]

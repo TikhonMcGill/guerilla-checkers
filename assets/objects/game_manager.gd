@@ -19,6 +19,10 @@ func save_minimax_profile(profile : MinimaxProfile) -> void:
 	var filename := profile.profile_name.validate_filename()
 	ResourceSaver.save(profile,"user://minimax_profiles/"+filename+".tres")
 
+func delete_minimax_profile(profile : MinimaxProfile) -> void:
+	minimax_profiles.erase(profile)
+	DirAccess.remove_absolute("user://minimax_profiles/"+profile.profile_name.validate_filename()+".tres")
+
 func load_minimax_profile(path : String) -> MinimaxProfile:
 	return ResourceLoader.load("user://minimax_profiles/"+path)
 
