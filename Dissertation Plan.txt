@@ -1,6 +1,8 @@
 Consider also measuring how long it took for a Tournament to run, as a measure of efficiency etc.
 (In total, and an average time per game)
 
+Upload into the repo (at the end) the different Minimax Profiles I experimented with
+
 Discuss the Random Computer Player (for testing, mostly)
 
 Do flowchart, UML, text planning also suitable

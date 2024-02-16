@@ -10,11 +10,21 @@ var coin_player_name : String = "The Counterinsurgent"
 
 var minimax_profiles : Array[MinimaxProfile]
 
+func _load_minimax_profiles() -> void:
+	var files := DirAccess.get_files_at("user://minimax_profiles")
+	for f in files:
+		minimax_profiles.append(load_minimax_profile(f))
+
 func save_minimax_profile(profile : MinimaxProfile) -> void:
 	var filename := profile.profile_name.validate_filename()
 	ResourceSaver.save(profile,"user://minimax_profiles/"+filename+".tres")
 
+func load_minimax_profile(path : String) -> MinimaxProfile:
+	return ResourceLoader.load("user://minimax_profiles/"+path)
+
 func _ready() -> void:
 	if DirAccess.dir_exists_absolute("user://minimax_profiles") == false:
 		DirAccess.make_dir_absolute("user://minimax_profiles")
-
+	
+	_load_minimax_profiles()
+	
