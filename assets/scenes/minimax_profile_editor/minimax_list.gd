@@ -4,6 +4,8 @@ const MINIMAX_ENTRY_SCENE := preload("res://assets/scenes/minimax_profile_editor
 
 @onready var minimax_entry_list: VBoxContainer = $ScrollContainer/MinimaxEntryList
 
+signal profile_edited(profile : MinimaxProfile)
+
 func _clear():
 	for c in minimax_entry_list.get_children():
 		c.queue_free()
@@ -18,6 +20,7 @@ func _create_entry_for_profile(profile : MinimaxProfile) -> void:
 	minimax_entry_list.add_child(new_entry)
 	
 	new_entry.set_profile(profile)
+	new_entry.profile_edited.connect(_do_edited_profile)
 	new_entry.profile_deleted.connect(_delete_entry_for_profile)
 
 func _delete_entry_for_profile(profile : MinimaxProfile) -> void:
@@ -26,3 +29,6 @@ func _delete_entry_for_profile(profile : MinimaxProfile) -> void:
 			GameManager.delete_minimax_profile(profile)
 			entry.queue_free()
 			return
+
+func _do_edited_profile(profile : MinimaxProfile) -> void:
+	profile_edited.emit(profile)

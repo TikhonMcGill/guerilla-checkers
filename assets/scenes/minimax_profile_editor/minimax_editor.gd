@@ -38,6 +38,23 @@ func clear() -> void:
 	edge_threatened_checkers_utility_spin_box.value = 0
 	threatened_guerilla_pieces_utility_spin_box.value = 0
 
+func load_profile(profile : MinimaxProfile):
+	profile_name_edit.text = profile.profile_name
+	move_sorting_option_button.selected = profile.move_sorting
+	cutoff_spin_box.value = profile.cutoff_depth
+	timeout_spin_box.value = profile.timeout
+	
+	victory_utility_spin_box.value = profile.victory_utility
+	defeat_utility_spin_box.value = profile.defeat_utility
+	pieces_left_utility_spin_box.value = profile.pieces_left_utility
+	
+	pieces_on_board_utility_spin_box.value = profile.pieces_on_board_utility
+	checkers_on_board_utility_spin_box.value = profile.checkers_utility
+	
+	guerilla_threatened_checkers_utility_spin_box.value = profile.guerilla_threatened_checkers_utility
+	edge_threatened_checkers_utility_spin_box.value = profile.edge_threatened_checkers_utility
+	threatened_guerilla_pieces_utility_spin_box.value = profile.threatened_guerilla_pieces_utility
+
 func _on_confirm_button_pressed():
 	if profile_name_edit.text.validate_filename() == "":
 		return
@@ -65,3 +82,6 @@ func _on_confirm_button_pressed():
 	new_profile.threatened_guerilla_pieces_utility = threatened_guerilla_pieces_utility_spin_box.value
 	
 	profile_completed.emit(new_profile)
+
+func _on_cancel_button_pressed() -> void:
+	profile_completed.emit(null)
