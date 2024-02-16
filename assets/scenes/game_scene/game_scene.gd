@@ -6,7 +6,7 @@ const MAIN_MENU_PATH := "res://assets/scenes/main_menu/main_menu.tscn"
 const HUMAN_PLAYER_SCENE := preload("res://assets/scenes/player/human_player/human_player.tscn")
 const RANDOM_PLAYER_SCENE := preload("res://assets/scenes/player/random_player/random_player.tscn")
 const UTILITY_PLAYER_SCENE := preload("res://assets/scenes/player/utility_computer_player/utility_computer_player.tscn")
-const MINMAX_PLAYER_SCENE := preload("res://assets/scenes/player/minmax_player/minmax_player.tscn")
+const MINIMAX_PLAYER_SCENE := preload("res://assets/scenes/player/minimax_player/minimax_player.tscn")
 
 signal move_simulated
 
@@ -51,10 +51,10 @@ func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameMan
 		var new_utility_guerilla := UTILITY_PLAYER_SCENE.instantiate()
 		add_child(new_utility_guerilla)
 		guerilla_player = new_utility_guerilla
-	elif guerilla_type == GameManager.PLAYER_TYPE.MINMAX:
-		var new_minmax_guerilla := MINMAX_PLAYER_SCENE.instantiate()
-		add_child(new_minmax_guerilla)
-		guerilla_player = new_minmax_guerilla
+	elif guerilla_type == GameManager.PLAYER_TYPE.MINIMAX:
+		var new_minimax_guerilla := MINIMAX_PLAYER_SCENE.instantiate()
+		add_child(new_minimax_guerilla)
+		guerilla_player = new_minimax_guerilla
 	
 	if coin_type == GameManager.PLAYER_TYPE.HUMAN:
 		var new_human_coin := HUMAN_PLAYER_SCENE.instantiate()
@@ -68,10 +68,10 @@ func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameMan
 		var new_utility_coin := UTILITY_PLAYER_SCENE.instantiate()
 		add_child(new_utility_coin)
 		coin_player = new_utility_coin
-	elif coin_type == GameManager.PLAYER_TYPE.MINMAX:
-		var new_minmax_coin := MINMAX_PLAYER_SCENE.instantiate()
-		add_child(new_minmax_coin)
-		coin_player = new_minmax_coin
+	elif coin_type == GameManager.PLAYER_TYPE.MINIMAX:
+		var new_minimax_coin := MINIMAX_PLAYER_SCENE.instantiate()
+		add_child(new_minimax_coin)
+		coin_player = new_minimax_coin
 	
 	guerilla_player.game_state = game_state
 	coin_player.game_state = game_state

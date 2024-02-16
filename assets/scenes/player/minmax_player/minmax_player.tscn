@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dsta6xfj110ue"]
-
-[ext_resource type="Script" path="res://assets/scenes/player/minmax_player/minmax_player.gd" id="1_fvas6"]
-
-[node name="MinMaxPlayer" type="Node"]
-script = ExtResource("1_fvas6")

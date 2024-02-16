@@ -4,7 +4,7 @@ class_name GameStateAnalyzer
 
 ##A Class which tracks situations on the board
 ##
-##This is used for the Utility Computer Player and Minmax Player
+##This is used for the Utility Computer Player and Minimax Player
 
 ##Return whether the Guerilla is victorious in this Game State
 func is_guerilla_victorious(game_state : GameState) -> bool:

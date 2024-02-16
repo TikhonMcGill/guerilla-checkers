@@ -1,6 +1,4 @@
-1. Implement Timeout
-2. Connect MinMax Profiles to MinMax Players through Main Menu
-3. Rename MinMax to Minimax
+1. Connect MinMax Profiles to MinMax Players through Main Menu
 
 Customizable Minimax Profiles (February 9th to February 16th, 2024):
 	1. Implement the Customizable Evaluation Function, per the parameters outlined in NFR-5
