@@ -52,9 +52,11 @@ func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameMan
 		add_child(new_utility_guerilla)
 		guerilla_player = new_utility_guerilla
 	elif guerilla_type == GameManager.PLAYER_TYPE.MINIMAX:
-		var new_minimax_guerilla := MINIMAX_PLAYER_SCENE.instantiate()
+		var new_minimax_guerilla : MinimaxPlayer = MINIMAX_PLAYER_SCENE.instantiate()
 		add_child(new_minimax_guerilla)
+		new_minimax_guerilla.profile = GameManager.guerilla_minimax_profile
 		guerilla_player = new_minimax_guerilla
+		
 	
 	if coin_type == GameManager.PLAYER_TYPE.HUMAN:
 		var new_human_coin := HUMAN_PLAYER_SCENE.instantiate()
@@ -69,8 +71,9 @@ func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameMan
 		add_child(new_utility_coin)
 		coin_player = new_utility_coin
 	elif coin_type == GameManager.PLAYER_TYPE.MINIMAX:
-		var new_minimax_coin := MINIMAX_PLAYER_SCENE.instantiate()
+		var new_minimax_coin : MinimaxPlayer = MINIMAX_PLAYER_SCENE.instantiate()
 		add_child(new_minimax_coin)
+		new_minimax_coin.profile = GameManager.coin_minimax_profile
 		coin_player = new_minimax_coin
 	
 	guerilla_player.game_state = game_state

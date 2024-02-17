@@ -61,6 +61,20 @@ popup/item_2/id = 2
 popup/item_3/text = "Player Type: Minimax Player"
 popup/item_3/id = 3
 
+[node name="GuerillaMinimaxProfileContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="PromptLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/GuerillaMinimaxProfileContainer"]
+layout_mode = 2
+text = "Select the Minimax Profile of the Guerilla Player"
+
+[node name="GuerillaMinimaxProfileSelect" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/GuerillaMinimaxProfileContainer"]
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
 [node name="CounterinsurgentPlayerLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Customize Counterinsurgent (COIN) Player"
@@ -81,6 +95,17 @@ popup/item_2/text = "Player Type: Utility Computer Player (UCP)"
 popup/item_2/id = 2
 popup/item_3/text = "Player Type: Minimax Player"
 popup/item_3/id = 3
+
+[node name="COINMinimaxProfileContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="PromptLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/COINMinimaxProfileContainer"]
+layout_mode = 2
+text = "Select the Minimax Profile of the COIN Player"
+
+[node name="CoinMinimaxProfileSelect" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/COINMinimaxProfileContainer"]
+layout_mode = 2
 
 [node name="PlayButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
@@ -110,5 +135,7 @@ size_flags_vertical = 10
 text = "See Rules of Guerilla Checkers"
 uri = "https://www.di.fc.ul.pt/~jpn/gv/guerrilla.htm"
 
+[connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/GuerillaPlayerSelect" to="." method="_on_guerilla_player_select_item_selected"]
+[connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/CounterinsurgentPlayerSelect" to="." method="_on_counterinsurgent_player_select_item_selected"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/MinimaxProfileEdit" to="." method="_on_minimax_profile_edit_pressed"]

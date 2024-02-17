@@ -9,9 +9,33 @@ const MINIMAX_PROFILE_EDIT_PATH := "res://assets/scenes/minimax_profile_editor/m
 @onready var guerilla_name_edit = $PanelContainer/MarginContainer/VBoxContainer/GuerillaNameEdit
 @onready var counterinsurgent_name_edit = $PanelContainer/MarginContainer/VBoxContainer/CounterinsurgentNameEdit
 
+@onready var guerilla_minimax_profile_select: OptionButton = $PanelContainer/MarginContainer/VBoxContainer/GuerillaMinimaxProfileContainer/GuerillaMinimaxProfileSelect
+@onready var guerilla_minimax_profile_container: VBoxContainer = $PanelContainer/MarginContainer/VBoxContainer/GuerillaMinimaxProfileContainer
+
+@onready var coin_minimax_profile_select: OptionButton = $PanelContainer/MarginContainer/VBoxContainer/COINMinimaxProfileContainer/CoinMinimaxProfileSelect
+@onready var coin_minimax_profile_container: VBoxContainer = $PanelContainer/MarginContainer/VBoxContainer/COINMinimaxProfileContainer
+
 func _on_play_button_pressed():
 	_set_settings()
+	
+	if guerilla_minimax_profile_container.visible == true:
+		if guerilla_minimax_profile_select.selected == -1:
+			return
+		
+		GameManager.guerilla_minimax_profile = GameManager.minimax_profiles[guerilla_minimax_profile_select.selected]
+	
+	if coin_minimax_profile_container.visible == true:
+		if coin_minimax_profile_select.selected == -1:
+			return
+		
+		GameManager.coin_minimax_profile = GameManager.minimax_profiles[coin_minimax_profile_select.selected]
+	
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
+
+func _populate_minimax_select(select : OptionButton) -> void:
+	select.clear()
+	for profile : MinimaxProfile in GameManager.minimax_profiles:
+		select.add_item(profile.profile_name)
 
 func _set_settings():
 	if guerilla_player_select.selected == 0:
@@ -42,3 +66,17 @@ func _set_settings():
 
 func _on_minimax_profile_edit_pressed() -> void:
 	get_tree().change_scene_to_file(MINIMAX_PROFILE_EDIT_PATH)
+
+func _on_guerilla_player_select_item_selected(index: int) -> void:
+	if guerilla_player_select.get_item_id(index) == 3:
+		guerilla_minimax_profile_container.visible = true
+		_populate_minimax_select(guerilla_minimax_profile_select)
+	else:
+		guerilla_minimax_profile_container.visible = false
+
+func _on_counterinsurgent_player_select_item_selected(index: int) -> void:
+	if counterinsurgent_player_select.get_item_id(index) == 3:
+		coin_minimax_profile_container.visible = true
+		_populate_minimax_select(coin_minimax_profile_select)
+	else:
+		coin_minimax_profile_container.visible = false

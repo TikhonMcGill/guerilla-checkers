@@ -10,6 +10,9 @@ var coin_player_name : String = "The Counterinsurgent"
 
 var minimax_profiles : Array[MinimaxProfile]
 
+var guerilla_minimax_profile : MinimaxProfile = null
+var coin_minimax_profile : MinimaxProfile = null
+
 func _load_minimax_profiles() -> void:
 	var files := DirAccess.get_files_at("user://minimax_profiles")
 	for f in files:
