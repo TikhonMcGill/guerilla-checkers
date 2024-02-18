@@ -65,7 +65,7 @@ Could remove Parameter of Guerilla Pieces Left (reason being it's guaranteed to 
 
 Experimentally Find Timeout Such that Base Minmax Player (the unchanged parameters) wins against the Utility Computer Player 100 times in a tournament as both COIN and Guerilla (i.e. 200-game tournament)
 
-Tournament Swapping could be optional
+Could swap sides in Tournament with each game, rather than just playing all games as same sides
 
 Put in picture of configuration of board, and the hard coding of things
 

@@ -1,8 +1,30 @@
+Implementation of Tournament System:
+	1. Create Option in Menu for Tournament Mode:
+		1. Toggleable tick button
+		2. When activated, show TournamentSettingsContainer:
+			1. Select number of games using spinbox
+	2. Add a "Tournament Games Left" value to the GameManager, set in the container if visible
+	(-1 by default)
+	3. Implement Logic for the Game in Tournament Mode:
+		1. "is_tournament()" helper function for GameManager
+		2. If not tournament, show replay and back to menu buttons
+		3. If is Tournament, decrement no. games and restart
+		4. Implement final tally at end of Tournament - no. draws, no. wins for Guerilla, no. wins for COIN
+	4. Slow down animations
+	5. Make all other AI Players take moves INSTANTLY, ignoring timers
+	6. In Main Menu, create helper function to check if both Players are AIs
+	7. If this Helper Function returns true, show a "Do Rapid Game?" TickButton
+	8. Implement Rapid Play - hide board, don't await animations, show end result
+	9. Add print statements for tournaments, see if it works
+	10. Add the "Live Tally" for Tournaments showing numbers
+	11. When escaping, add the latest result before quitting
+	
 Tournament System (February 16th to February 23rd, 2024):
 	1. Create option in Menu for a Tournament mode
 	2. Implement logic for the game not returning to the main menu when a game in the tournament is 
 	played, decrementing the number of games left until it is zero
-	3. Add the option for “Rapidly” doing a Tournament, wherein, if the two players are ComputerControlled, the games are rapidly played without any graphical representation
+	3. Add the option for “Rapidly” doing a Tournament, wherein, if the two players are Computer-Controlled, 
+	the games are rapidly played without any graphical representation
 	4. Add a final result for how many games each player won
 
 Optimization (February 23rd to March 1st, 2024):
