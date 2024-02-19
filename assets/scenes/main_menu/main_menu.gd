@@ -3,17 +3,24 @@ extends Control
 const GAME_SCENE_PATH := "res://assets/scenes/game_scene/game_scene.tscn"
 const MINIMAX_PROFILE_EDIT_PATH := "res://assets/scenes/minimax_profile_editor/minimax_profile_editor.tscn"
 
-@onready var guerilla_player_select = $PanelContainer/MarginContainer/VBoxContainer/GuerillaPlayerSelect
-@onready var counterinsurgent_player_select = $PanelContainer/MarginContainer/VBoxContainer/CounterinsurgentPlayerSelect
+@onready var guerilla_player_select: OptionButton = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/GuerillaPlayerSelect
+@onready var counterinsurgent_player_select: OptionButton = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/CounterinsurgentPlayerSelect
 
-@onready var guerilla_name_edit = $PanelContainer/MarginContainer/VBoxContainer/GuerillaNameEdit
-@onready var counterinsurgent_name_edit = $PanelContainer/MarginContainer/VBoxContainer/CounterinsurgentNameEdit
+@onready var guerilla_name_edit: LineEdit = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/GuerillaNameEdit
+@onready var counterinsurgent_name_edit: LineEdit = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/CounterinsurgentNameEdit
 
-@onready var guerilla_minimax_profile_select: OptionButton = $PanelContainer/MarginContainer/VBoxContainer/GuerillaMinimaxProfileContainer/GuerillaMinimaxProfileSelect
-@onready var guerilla_minimax_profile_container: VBoxContainer = $PanelContainer/MarginContainer/VBoxContainer/GuerillaMinimaxProfileContainer
+@onready var guerilla_minimax_profile_select: OptionButton = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/GuerillaMinimaxProfileContainer/GuerillaMinimaxProfileSelect
+@onready var guerilla_minimax_profile_container: VBoxContainer = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/GuerillaMinimaxProfileContainer
 
-@onready var coin_minimax_profile_select: OptionButton = $PanelContainer/MarginContainer/VBoxContainer/COINMinimaxProfileContainer/CoinMinimaxProfileSelect
-@onready var coin_minimax_profile_container: VBoxContainer = $PanelContainer/MarginContainer/VBoxContainer/COINMinimaxProfileContainer
+@onready var coin_minimax_profile_select: OptionButton = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/COINMinimaxProfileContainer/CoinMinimaxProfileSelect
+@onready var coin_minimax_profile_container: VBoxContainer = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/COINMinimaxProfileContainer
+
+@onready var tournament_check_box: CheckBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentCheckBox
+@onready var games_spin_box: SpinBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer/GamesSpinBox
+@onready var tournament_container: HBoxContainer = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer
+
+func _process(delta: float) -> void:
+	tournament_container.visible = tournament_check_box.button_pressed
 
 func _on_play_button_pressed():
 	_set_settings()
@@ -63,6 +70,11 @@ func _set_settings():
 	
 	GameManager.guerilla_player_name = guerilla_name_edit.text
 	GameManager.coin_player_name = counterinsurgent_name_edit.text
+	
+	if tournament_container.visible == true:
+		GameManager.tournament_games_left = games_spin_box.value
+	else:
+		GameManager.tournament_games_left = -1
 
 func _on_minimax_profile_edit_pressed() -> void:
 	get_tree().change_scene_to_file(MINIMAX_PROFILE_EDIT_PATH)

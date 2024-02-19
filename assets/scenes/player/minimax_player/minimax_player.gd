@@ -15,6 +15,8 @@ var profile : MinimaxProfile = preload("res://assets/resources/placeholder_minim
 
 var analyzer : GameStateAnalyzer = GameStateAnalyzer.new()
 
+@onready var move_timer: Timer = $MoveTimer
+
 class MinimaxOutput:
 	var evaluation : float
 	var move : Move
@@ -25,11 +27,11 @@ class MinimaxOutput:
 
 ##Pick the best move for Minimax
 func do_move() -> void:
-	var start_time := Time.get_ticks_msec()
+	move_timer.start()
 	
 	var output := _Minimax(profile.cutoff_depth,true,game_state,-INF,INF,profile.timeout)
 	
-	var end_time := Time.get_ticks_msec()
+	await move_timer.timeout
 	
 	move_taken.emit(output.move)
 

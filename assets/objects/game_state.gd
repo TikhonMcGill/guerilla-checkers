@@ -302,6 +302,7 @@ func get_moveable_cells(from_cell : int):
 	
 	#If the cell is not occupied, there's no checker to check movement of, so return empty
 	if is_cell_occupied(from_cell) == false:
+		print("From cell not occupied!")
 		return []
 	
 	#If it's the COIN Player's turn and they haven't taken a piece, the Checker can move to any unoccupied
@@ -335,6 +336,7 @@ func get_moveable_cells(from_cell : int):
 	
 	#In any other Game State, it's not the COIN's Turn (or they have won/lost), 
 	#so they can't move any checkers, so return empty array
+	print("Not Coin's turn!")
 	return []
 
 ##Get the Current player (i.e. the one whose turn it is)
@@ -435,7 +437,10 @@ func move_coin_checker(from_cell : int,to_cell : int) -> void:
 	assert(from_cell >= 0 and from_cell <= 31,"Cell to move from must be between 0 and 31")
 	assert(to_cell >= 0 and to_cell <= 31,"Cell to move to must be between 0 and 31")
 	assert(to_cell in get_adjacent_cells(from_cell),"Cell to move to must be adjacent to cell to move from")
-	assert(to_cell in get_moveable_cells(from_cell),"Cell to move to must be valid")
+	
+	var moveable_cells = get_moveable_cells(from_cell)
+	
+	assert(to_cell in moveable_cells,"Cell to move to must be valid")
 	
 	#Update the Position of the Checker, and emit the corresponding signal
 	coin_checker_positions.erase(from_cell)

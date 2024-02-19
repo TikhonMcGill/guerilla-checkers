@@ -26,29 +26,35 @@ theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Guerilla Checkers"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="GuerillaPlayerLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="GuerillaPlayerLabel" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 text = "Customize Guerilla Player"
 
-[node name="GuerillaNameEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="GuerillaNameEdit" type="LineEdit" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 placeholder_text = "Enter the name of the Guerilla Player"
 
-[node name="GuerillaPlayerSelect" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="GuerillaPlayerSelect" type="OptionButton" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 item_count = 4
 selected = 0
@@ -61,29 +67,29 @@ popup/item_2/id = 2
 popup/item_3/text = "Player Type: Minimax Player"
 popup/item_3/id = 3
 
-[node name="GuerillaMinimaxProfileContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="GuerillaMinimaxProfileContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="PromptLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/GuerillaMinimaxProfileContainer"]
+[node name="PromptLabel" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/GuerillaMinimaxProfileContainer"]
 layout_mode = 2
 text = "Select the Minimax Profile of the Guerilla Player"
 
-[node name="GuerillaMinimaxProfileSelect" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/GuerillaMinimaxProfileContainer"]
+[node name="GuerillaMinimaxProfileSelect" type="OptionButton" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/GuerillaMinimaxProfileContainer"]
 layout_mode = 2
 
-[node name="HSeparator3" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="CounterinsurgentPlayerLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CounterinsurgentPlayerLabel" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 text = "Customize Counterinsurgent (COIN) Player"
 
-[node name="CounterinsurgentNameEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CounterinsurgentNameEdit" type="LineEdit" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 placeholder_text = "Enter the name of the Counterinsurgent(COIN) Player"
 
-[node name="CounterinsurgentPlayerSelect" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CounterinsurgentPlayerSelect" type="OptionButton" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 item_count = 4
 selected = 0
@@ -96,32 +102,56 @@ popup/item_2/id = 2
 popup/item_3/text = "Player Type: Minimax Player"
 popup/item_3/id = 3
 
-[node name="COINMinimaxProfileContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="COINMinimaxProfileContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="PromptLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/COINMinimaxProfileContainer"]
+[node name="PromptLabel" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/COINMinimaxProfileContainer"]
 layout_mode = 2
 text = "Select the Minimax Profile of the COIN Player"
 
-[node name="CoinMinimaxProfileSelect" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/COINMinimaxProfileContainer"]
+[node name="CoinMinimaxProfileSelect" type="OptionButton" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/COINMinimaxProfileContainer"]
 layout_mode = 2
 
-[node name="PlayButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="TournamentCheckBox" type="CheckBox" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Activate Tournament Mode?"
+
+[node name="TournamentContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Set number of games to be played: "
+
+[node name="GamesSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 2.0
+value = 2.0
+allow_greater = true
+suffix = "Games"
+
+[node name="HSeparator4" type="HSeparator" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 text = "Play"
 
-[node name="HSeparator2" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="MinimaxProfileEdit" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="MinimaxProfileEdit" type="Button" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 text = "Customize Minimax Profiles"
 
-[node name="CreditsLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CreditsLabel" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
 size_flags_stretch_ratio = 20.0
@@ -129,13 +159,13 @@ theme_override_font_sizes/font_size = 18
 text = "Implemented by Tikhon McGill, based on rules designed by Brian Train in 2010"
 vertical_alignment = 1
 
-[node name="RulesButton" type="LinkButton" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="RulesButton" type="LinkButton" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
 text = "See Rules of Guerilla Checkers"
 uri = "https://www.di.fc.ul.pt/~jpn/gv/guerrilla.htm"
 
-[connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/GuerillaPlayerSelect" to="." method="_on_guerilla_player_select_item_selected"]
-[connection signal="item_selected" from="PanelContainer/MarginContainer/VBoxContainer/CounterinsurgentPlayerSelect" to="." method="_on_counterinsurgent_player_select_item_selected"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/MinimaxProfileEdit" to="." method="_on_minimax_profile_edit_pressed"]
+[connection signal="item_selected" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/GuerillaPlayerSelect" to="." method="_on_guerilla_player_select_item_selected"]
+[connection signal="item_selected" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/CounterinsurgentPlayerSelect" to="." method="_on_counterinsurgent_player_select_item_selected"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/MinimaxProfileEdit" to="." method="_on_minimax_profile_edit_pressed"]

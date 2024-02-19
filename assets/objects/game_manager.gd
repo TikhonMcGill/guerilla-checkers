@@ -13,6 +13,8 @@ var minimax_profiles : Array[MinimaxProfile]
 var guerilla_minimax_profile : MinimaxProfile = null
 var coin_minimax_profile : MinimaxProfile = null
 
+var tournament_games_left : int = -1
+
 func _load_minimax_profiles() -> void:
 	var files := DirAccess.get_files_at("user://minimax_profiles")
 	for f in files:
@@ -34,4 +36,6 @@ func _ready() -> void:
 		DirAccess.make_dir_absolute("user://minimax_profiles")
 	
 	_load_minimax_profiles()
-	
+
+func is_tournament() -> bool:
+	return tournament_games_left != -1

@@ -72,7 +72,7 @@ func represent_game_state(_game_state : GameState) -> void:
 	
 	pieces_left_label.text = "Guerilla Pieces Left: %d" % _game_state.guerilla_pieces_left
 	show_current_player(_game_state.get_current_player())
-	
+
 ##Place all Cells of the Board in an 8-by-8 grid
 func _initialize_cells():
 	var col1 = true
@@ -266,7 +266,7 @@ func _on_game_state_coin_checker_moved(cell_from : int, cell_to : int):
 	coin_checker.my_cell = cell_to
 	
 	var tween = create_tween()
-	tween.tween_property(coin_checker,"position",get_cell_tile(cell_to).position,0.25)
+	tween.tween_property(coin_checker,"position",get_cell_tile(cell_to).position,0.5)
 	
 	await tween.finished
 	animation_complete.emit()
@@ -278,6 +278,9 @@ func _on_game_state_guerilla_piece_captured(corner : int):
 	
 	tween.tween_property(captured_piece,"modulate:a",0,0.5)
 	tween.tween_callback(captured_piece.queue_free)
+	
+	await tween.finished
+	animation_complete.emit()
 
 func _on_game_state_coin_checker_captured(cell : int):
 	var captured_checker := get_checker_at_cell(cell)
@@ -286,6 +289,12 @@ func _on_game_state_coin_checker_captured(cell : int):
 	
 	tween.tween_property(captured_checker,"modulate:a",0,0.5)
 	tween.tween_callback(captured_checker.queue_free)
+	
+	await tween.finished
+	animation_complete.emit()
 
 func get_tile_cell(tile : Tile) -> int:
 	return cells.find(tile)
+
+func get_board_rect() -> Rect2:
+	return Rect2(position,Vector2(8 * tile_size,8 * tile_size))

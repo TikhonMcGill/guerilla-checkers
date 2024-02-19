@@ -21,6 +21,10 @@ config/icon="res://icon.svg"
 
 GameManager="*res://assets/objects/game_manager.gd"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [input]
 
 escape={
