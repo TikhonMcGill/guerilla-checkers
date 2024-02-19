@@ -18,12 +18,21 @@ var coin_player : Player
 
 var current_game : int = 1
 
+@onready var move_timer: Timer = $MoveTimer
+
 @onready var quit_confirmation_dialog : ConfirmationDialog = $QuitConfirmationDialog
 
 @onready var game_over_container = $GameOverContainer
 @onready var winner_discussion_label = $GameOverContainer/MarginContainer/VBoxContainer/WinnerDiscussionLabel
 
+@onready var end_game_container: HBoxContainer = $GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer
+@onready var tournament_game_container: HBoxContainer = $GameOverContainer/MarginContainer/VBoxContainer/TournamentGameContainer
+
 @onready var current_game_label: Label = $GameBoard/CurrentGameLabel
+
+var guerilla_victories : int = 0
+var coin_victories : int = 0
+var draws : int = 0
 
 func _ready():
 	game_state = GameState.new()
@@ -44,16 +53,24 @@ func _ready():
 	
 	_create_players(GameManager.guerilla_player_type,GameManager.coin_player_type)
 	
+	current_game_label.visible = GameManager.is_tournament()
+	
 	guerilla_player.do_move()
 
 func restart_game():
 	game_state = GameState.new()
+	
 	game_state.game_over.connect(_on_game_state_game_over)
+	
 	game_state.guerilla_piece_placed.connect(game_board._on_game_state_guerilla_piece_placed)
 	game_state.coin_checker_moved.connect(game_board._on_game_state_coin_checker_moved)
 	game_state.guerilla_piece_captured.connect(game_board._on_game_state_guerilla_piece_captured)
 	game_state.coin_checker_captured.connect(game_board._on_game_state_coin_checker_captured)
+	
 	game_board.represent_game_state(game_state)
+	
+	guerilla_player.game_state = game_state
+	coin_player.game_state = game_state
 	
 	if guerilla_player is HumanPlayer:
 		guerilla_player.update_interface()
@@ -61,6 +78,7 @@ func restart_game():
 		coin_player.update_interface()
 	
 	guerilla_player.do_move()
+	current_game_label.visible = GameManager.is_tournament()
 
 func _create_players(guerilla_type : GameManager.PLAYER_TYPE,coin_type : GameManager.PLAYER_TYPE):
 	if guerilla_type == GameManager.PLAYER_TYPE.HUMAN:
@@ -129,34 +147,45 @@ func _process(delta):
 	game_board.show_current_player(game_state.get_current_player())
 	
 	if GameManager.is_tournament() == true and GameManager.tournament_games_left > 0:
-		current_game_label.visible = true
 		current_game_label.text = "Game %d" % current_game
 
 func _on_game_state_game_over(winner : GameState.PLAYER):
+	current_game_label.visible = false
+	
 	var discussion_string = ""
 	
 	if winner == GameState.PLAYER.GUERILLA:
 		discussion_string = "%s was victorious, succeeding in their struggle against %s!" % [GameManager.guerilla_player_name,GameManager.coin_player_name]
+		guerilla_victories += 1
 	elif winner == GameState.PLAYER.COIN:
 		discussion_string = "%s was victorious, quashing %s!" % [GameManager.coin_player_name,GameManager.guerilla_player_name]
+		coin_victories += 1
 	elif winner == GameState.PLAYER.NOBODY:
 		discussion_string = "Neither the %s nor %s was victorious - this Struggle ended in a Stalemate." % [GameManager.guerilla_player_name,GameManager.coin_player_name]
+		draws += 1
 	
-	if GameManager.is_tournament() == false:
-		show_game_over_container(discussion_string)
-	else: 
-		current_game += 1
-		GameManager.tournament_games_left -= 1
-		if GameManager.tournament_games_left == 0:
-			show_game_over_container(discussion_string)
-		else:
-			restart_game()
+	show_game_over_container(discussion_string)
 
 func show_game_over_container(discussion_string : String) -> void:
 	game_over_container.position = Vector2i((game_board.tile_size * 8) + game_board.tile_size,game_board.position.y)
 	game_over_container.size.y = game_board.tile_size * 8
-	winner_discussion_label.text = discussion_string
+	
 	game_over_container.visible = true
+	
+	if GameManager.is_tournament() == true:
+		GameManager.tournament_games_left -= 1
+		if GameManager.tournament_games_left == 0:
+			discussion_string += "\n\nThe Tournament has come to an end, and here's the final Tally after %d games:\nVictories by %s: %d\nVictories by %s: %d\nDraws: %d" % [current_game,GameManager.guerilla_player_name,guerilla_victories,GameManager.coin_player_name,coin_victories,draws]
+	
+	if GameManager.is_tournament() == true and GameManager.tournament_games_left > 0:
+		end_game_container.visible = false
+		tournament_game_container.visible = true
+	else:
+		tournament_game_container.visible = false
+		end_game_container.visible = true
+	
+	winner_discussion_label.text = discussion_string
+	
 
 func get_current_player() -> Player:
 	if game_state.get_current_player() == GameState.PLAYER.GUERILLA:
@@ -166,13 +195,12 @@ func get_current_player() -> Player:
 	return null
 
 func simulate_move(move : Move) -> void:
-	var first_player = game_state.get_current_player()
+	move_timer.start()
 	
 	game_state.take_move(move)
 	game_board.default_color_board()
 	
-	if first_player != game_state.get_current_player():
-		await game_board.animation_complete
+	await game_board.animation_complete
 	
 	move_simulated.emit()
 	
@@ -189,3 +217,8 @@ func _on_replay_button_pressed():
 
 func _on_back_to_menu_button_pressed():
 	get_tree().change_scene_to_file(MAIN_MENU_PATH)
+
+func _on_next_game_button_pressed() -> void:
+	current_game += 1
+	game_over_container.visible = false
+	restart_game()

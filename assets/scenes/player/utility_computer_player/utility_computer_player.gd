@@ -20,15 +20,8 @@ class_name UtilityComputerPlayer
 
 var analyzer : GameStateAnalyzer = GameStateAnalyzer.new()
 
-@onready var timer: Timer = $Timer
-
 func do_move():
-	timer.start()
-	
 	var best_move = choose_best_move()
-	
-	await timer.timeout
-	
 	move_taken.emit(choose_best_move())
 
 func choose_best_move() -> Move:

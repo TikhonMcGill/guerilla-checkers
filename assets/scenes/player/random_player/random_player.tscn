@@ -4,6 +4,3 @@
 
 [node name="RandomPlayer" type="Node"]
 script = ExtResource("1_wrcoy")
-
-[node name="WaitTimer" type="Timer" parent="."]
-one_shot = true

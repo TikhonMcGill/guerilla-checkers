@@ -4,6 +4,3 @@
 
 [node name="UtilityComputerPlayer" type="Node"]
 script = ExtResource("1_thxkb")
-
-[node name="Timer" type="Timer" parent="."]
-one_shot = true

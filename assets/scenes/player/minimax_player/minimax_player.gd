@@ -31,7 +31,7 @@ func do_move() -> void:
 	
 	var output := _Minimax(profile.cutoff_depth,true,game_state,-INF,INF,profile.timeout)
 	
-	await move_timer.timeout
+	#await move_timer.timeout
 	
 	move_taken.emit(output.move)
 

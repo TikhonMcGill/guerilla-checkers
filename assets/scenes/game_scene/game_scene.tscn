@@ -47,19 +47,31 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GameOverContainer/MarginContainer/VBoxContainer"]
+[node name="EndGameContainer" type="HBoxContainer" parent="GameOverContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ReplayButton" type="Button" parent="GameOverContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="ReplayButton" type="Button" parent="GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "Replay"
 
-[node name="BackToMenuButton" type="Button" parent="GameOverContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="BackToMenuButton" type="Button" parent="GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "Back to Main Menu"
 
+[node name="TournamentGameContainer" type="HBoxContainer" parent="GameOverContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="NextGameButton" type="Button" parent="GameOverContainer/MarginContainer/VBoxContainer/TournamentGameContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Next Tournament Game"
+
+[node name="MoveTimer" type="Timer" parent="."]
+wait_time = 0.5
+
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]
-[connection signal="pressed" from="GameOverContainer/MarginContainer/VBoxContainer/HBoxContainer/ReplayButton" to="." method="_on_replay_button_pressed"]
-[connection signal="pressed" from="GameOverContainer/MarginContainer/VBoxContainer/HBoxContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
+[connection signal="pressed" from="GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer/ReplayButton" to="." method="_on_replay_button_pressed"]
+[connection signal="pressed" from="GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
+[connection signal="pressed" from="GameOverContainer/MarginContainer/VBoxContainer/TournamentGameContainer/NextGameButton" to="." method="_on_next_game_button_pressed"]

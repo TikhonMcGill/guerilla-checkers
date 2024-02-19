@@ -1,17 +1,11 @@
 Implementation of Tournament System:
-	1. Implement Logic for the Game in Tournament Mode:
-		1. If not tournament, show replay and back to menu buttons
-		2. If is Tournament, decrement no. games and restart
-		3. Implement final tally at end of Tournament - no. draws, no. wins for Guerilla, no. wins for COIN
-	2. Slow down animations
-	3. Make all other AI Players take moves INSTANTLY, ignoring timers
-	4. In Main Menu, create helper function to check if both Players are AIs
-	5. If this Helper Function returns true, set the "Rapid Game" Boolean to true in
+	1. In Main Menu, create helper function to check if both Players are AIs
+	2. If this Helper Function returns true, set the "Rapid Game" Boolean to true in
 	GameManager, otherwise false
-	6. Implement Rapid Play - hide board, don't await animations, show end result
-	7. Add print statements for tournaments, see if it works
-	8. Add the "Live Tally" for Tournaments showing numbers
-	9. When escaping, add the latest result before quitting
+	3. Implement Rapid Play - hide board, don't await animations, show end result
+	4. Add print statements for tournaments, see if it works
+	5. Add the "Live Tally" for Tournaments showing numbers
+	6. When escaping, add the latest result before quitting
 
 Tournament System (February 16th to February 23rd, 2024):
 	1. Create option in Menu for a Tournament mode
