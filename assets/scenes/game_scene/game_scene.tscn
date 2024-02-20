@@ -27,43 +27,52 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 24
 text = "Current Game: 1"
 
-[node name="GameOverContainer" type="PanelContainer" parent="."]
+[node name="GameOverWindow" type="Window" parent="."]
 visible = false
 
-[node name="MarginContainer" type="MarginContainer" parent="GameOverContainer"]
+[node name="GameOverContainer" type="PanelContainer" parent="GameOverWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="GameOverWindow/GameOverContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GameOverContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverWindow/GameOverContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="WinnerDiscussionLabel" type="Label" parent="GameOverContainer/MarginContainer/VBoxContainer"]
+[node name="WinnerDiscussionLabel" type="Label" parent="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="EndGameContainer" type="HBoxContainer" parent="GameOverContainer/MarginContainer/VBoxContainer"]
+[node name="EndGameContainer" type="HBoxContainer" parent="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 
-[node name="ReplayButton" type="Button" parent="GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer"]
+[node name="ReplayButton" type="Button" parent="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "Replay"
 
-[node name="BackToMenuButton" type="Button" parent="GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer"]
+[node name="BackToMenuButton" type="Button" parent="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "Back to Main Menu"
 
-[node name="TournamentGameContainer" type="HBoxContainer" parent="GameOverContainer/MarginContainer/VBoxContainer"]
+[node name="TournamentGameContainer" type="HBoxContainer" parent="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 
-[node name="NextGameButton" type="Button" parent="GameOverContainer/MarginContainer/VBoxContainer/TournamentGameContainer"]
+[node name="NextGameButton" type="Button" parent="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/TournamentGameContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "Next Tournament Game"
@@ -72,6 +81,7 @@ text = "Next Tournament Game"
 wait_time = 0.5
 
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]
-[connection signal="pressed" from="GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer/ReplayButton" to="." method="_on_replay_button_pressed"]
-[connection signal="pressed" from="GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
-[connection signal="pressed" from="GameOverContainer/MarginContainer/VBoxContainer/TournamentGameContainer/NextGameButton" to="." method="_on_next_game_button_pressed"]
+[connection signal="close_requested" from="GameOverWindow" to="." method="_on_game_over_window_close_requested"]
+[connection signal="pressed" from="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer/ReplayButton" to="." method="_on_replay_button_pressed"]
+[connection signal="pressed" from="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
+[connection signal="pressed" from="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/TournamentGameContainer/NextGameButton" to="." method="_on_next_game_button_pressed"]

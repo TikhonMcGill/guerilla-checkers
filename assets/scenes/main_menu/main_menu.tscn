@@ -117,16 +117,23 @@ layout_mode = 2
 layout_mode = 2
 text = "Activate Tournament Mode?"
 
-[node name="TournamentContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="TournamentContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer"]
+[node name="RapidPlayCheckBox" type="CheckBox" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer"]
+layout_mode = 2
+text = "Rapid Play?"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Set number of games to be played: "
 
-[node name="GamesSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer"]
+[node name="GamesSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 2.0

@@ -75,10 +75,6 @@ Add page numbers
 
 Could also have, for MinMax move sorting, by Ascending order of Utility as well
 
-Mention that, when two AIs are playing a Tournament, they play a "Rapid Game" by
-default, since Tournaments are intended primarily for testing the AI based on final
-results, not on their individual moves, so animations are irrelevant.
-
 _____________________________________________
 
 1 – Abstract

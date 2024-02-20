@@ -22,13 +22,14 @@ var current_game : int = 1
 
 @onready var quit_confirmation_dialog : ConfirmationDialog = $QuitConfirmationDialog
 
-@onready var game_over_container = $GameOverContainer
-@onready var winner_discussion_label = $GameOverContainer/MarginContainer/VBoxContainer/WinnerDiscussionLabel
+@onready var winner_discussion_label: Label = $GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/WinnerDiscussionLabel
 
-@onready var end_game_container: HBoxContainer = $GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer
-@onready var tournament_game_container: HBoxContainer = $GameOverContainer/MarginContainer/VBoxContainer/TournamentGameContainer
+@onready var end_game_container: HBoxContainer = $GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer
+@onready var tournament_game_container: HBoxContainer = $GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/TournamentGameContainer
 
 @onready var current_game_label: Label = $GameBoard/CurrentGameLabel
+
+@onready var game_over_window: Window = $GameOverWindow
 
 var guerilla_victories : int = 0
 var coin_victories : int = 0
@@ -164,14 +165,9 @@ func _on_game_state_game_over(winner : GameState.PLAYER):
 		discussion_string = "Neither the %s nor %s was victorious - this Struggle ended in a Stalemate." % [GameManager.guerilla_player_name,GameManager.coin_player_name]
 		draws += 1
 	
-	show_game_over_container(discussion_string)
+	show_game_over_window(discussion_string)
 
-func show_game_over_container(discussion_string : String) -> void:
-	game_over_container.position = Vector2i((game_board.tile_size * 8) + game_board.tile_size,game_board.position.y)
-	game_over_container.size.y = game_board.tile_size * 8
-	
-	game_over_container.visible = true
-	
+func show_game_over_window(discussion_string : String) -> void:
 	if GameManager.is_tournament() == true:
 		GameManager.tournament_games_left -= 1
 		if GameManager.tournament_games_left == 0:
@@ -185,7 +181,7 @@ func show_game_over_container(discussion_string : String) -> void:
 		end_game_container.visible = true
 	
 	winner_discussion_label.text = discussion_string
-	
+	game_over_window.popup_centered_ratio()
 
 func get_current_player() -> Player:
 	if game_state.get_current_player() == GameState.PLAYER.GUERILLA:
@@ -216,9 +212,21 @@ func _on_replay_button_pressed():
 	get_tree().reload_current_scene()
 
 func _on_back_to_menu_button_pressed():
+	_back_to_menu()
+
+func _back_to_menu() -> void:
 	get_tree().change_scene_to_file(MAIN_MENU_PATH)
 
-func _on_next_game_button_pressed() -> void:
+func _next_tournament_game() -> void:
 	current_game += 1
-	game_over_container.visible = false
+	game_over_window.hide()
 	restart_game()
+
+func _on_next_game_button_pressed() -> void:
+	_next_tournament_game()
+
+func _on_game_over_window_close_requested() -> void:
+	if GameManager.is_tournament() == false or GameManager.tournament_games_left == 0:
+		_back_to_menu()
+	else:
+		_next_tournament_game()

@@ -16,11 +16,13 @@ const MINIMAX_PROFILE_EDIT_PATH := "res://assets/scenes/minimax_profile_editor/m
 @onready var coin_minimax_profile_container: VBoxContainer = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/COINMinimaxProfileContainer
 
 @onready var tournament_check_box: CheckBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentCheckBox
-@onready var games_spin_box: SpinBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer/GamesSpinBox
-@onready var tournament_container: HBoxContainer = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer
+@onready var tournament_container: VBoxContainer = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer
+@onready var games_spin_box: SpinBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer/HBoxContainer/GamesSpinBox
+@onready var rapid_play_check_box: CheckBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer/RapidPlayCheckBox
 
 func _process(delta: float) -> void:
 	tournament_container.visible = tournament_check_box.button_pressed
+	rapid_play_check_box.visible = tournament_container.visible == true and _both_players_ais() == true
 
 func _on_play_button_pressed():
 	_set_settings()
@@ -73,6 +75,7 @@ func _set_settings():
 	
 	if tournament_container.visible == true:
 		GameManager.tournament_games_left = games_spin_box.value
+		GameManager.rapid_tournament = rapid_play_check_box.button_pressed
 	else:
 		GameManager.tournament_games_left = -1
 
@@ -85,6 +88,12 @@ func _on_guerilla_player_select_item_selected(index: int) -> void:
 		_populate_minimax_select(guerilla_minimax_profile_select)
 	else:
 		guerilla_minimax_profile_container.visible = false
+
+func _both_players_ais() -> bool:
+	var guerilla_player_id : int = guerilla_player_select.get_item_id(guerilla_player_select.selected)
+	var coin_player_id : int = counterinsurgent_player_select.get_item_id(counterinsurgent_player_select.selected)
+	
+	return guerilla_player_id != 0 and coin_player_id != 0
 
 func _on_counterinsurgent_player_select_item_selected(index: int) -> void:
 	if counterinsurgent_player_select.get_item_id(index) == 3:
