@@ -29,7 +29,7 @@ class MinimaxOutput:
 func do_move() -> void:
 	move_timer.start()
 	
-	var output := _Minimax(profile.cutoff_depth,true,game_state,-INF,INF,profile.timeout)
+	var output := _minimax(profile.cutoff_depth,true,game_state,-INF,INF,profile.timeout)
 	
 	#await move_timer.timeout
 	
@@ -67,6 +67,7 @@ func _get_actions(state : GameState) -> Array[Move]:
 				take_moves.append(a)
 			else:
 				other_moves.append(a)
+			result.free()
 		
 		var moves = end_moves + take_moves + other_moves
 		assert(len(moves) == len(actions))
@@ -77,7 +78,8 @@ func _get_actions(state : GameState) -> Array[Move]:
 		var utilities_to_actions : Dictionary = {}
 		
 		for a in actions:
-			var utility := _get_state_utility(_get_result(state,a))
+			var result := _get_result(state,a)
+			var utility := _get_state_utility(result)
 			
 			#If there is an action with equal utility already, append it to that utility's array
 			if utilities_to_actions.has(utility) == true:
@@ -87,6 +89,8 @@ func _get_actions(state : GameState) -> Array[Move]:
 				var new_move_array : Array[Move] = []
 				new_move_array.append(a)
 				utilities_to_actions[utility] = new_move_array
+			
+			result.free()
 		
 		var ordered_utilities := utilities_to_actions.keys()
 		ordered_utilities.sort()
@@ -152,7 +156,7 @@ func _is_my_turn_in_state(state : GameState) -> bool:
 	return state.get_current_player() == my_type
 
 ##A Function running the Minimax algorithm, with cutoff - getting the Utility of a state and the best move
-func _Minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:float,time_left:int) -> MinimaxOutput:
+func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:float,time_left:int) -> MinimaxOutput:
 	if _is_terminal_state(start_state) == true or depth == 0:
 		return MinimaxOutput.new(_get_state_utility(start_state),null)
 	
@@ -166,7 +170,9 @@ func _Minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 		var actions := _get_actions(start_state)
 		
 		if len(actions) == 1:
-			var result := _get_state_utility(_get_result(start_state,actions[0]))
+			var new_state := _get_result(start_state, actions[0])
+			var result := _get_state_utility(new_state)
+			new_state.free()
 			return MinimaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
@@ -176,7 +182,8 @@ func _Minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			time_left -= time_taken
 			
 			var result := _get_result(start_state,a)
-			var evaluation = _Minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			var evaluation = _minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			result.free()
 			
 			if evaluation > best_evaluation:
 				best_evaluation = evaluation
@@ -195,8 +202,10 @@ func _Minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 		
 		var actions := _get_actions(start_state)
 		
-		if len(actions) == 0:
-			var result := _get_state_utility(_get_result(start_state,actions[0]))
+		if len(actions) == 1:
+			var new_state := _get_result(start_state, actions[0])
+			var result := _get_state_utility(new_state)
+			new_state.free()
 			return MinimaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
@@ -206,7 +215,8 @@ func _Minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			time_left -= time_taken
 			
 			var result := _get_result(start_state,a)
-			var evaluation = _Minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			var evaluation = _minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			result.free()
 			
 			if evaluation < worst_evaluation:
 				worst_evaluation = evaluation

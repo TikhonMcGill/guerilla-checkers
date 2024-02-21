@@ -6,6 +6,61 @@
 [node name="GameScene" type="Node"]
 script = ExtResource("1_i1tu6")
 
+[node name="RapidGamePanel" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="RapidGamePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RapidGamePanel/MarginContainer"]
+layout_mode = 2
+
+[node name="CurrentRapidGameLabel" type="Label" parent="RapidGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 3
+text = "Current Game: 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentGuerillaWinsLabel" type="Label" parent="RapidGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 3
+text = "Victories by Guerilla (%s): 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentCOINWinsLabel" type="Label" parent="RapidGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 3
+text = "Victories by The Counterinsurgent (%s): 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentDrawsLabel" type="Label" parent="RapidGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 3
+text = "Draws: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RapidPlayBackToMenuButton" type="Button" parent="RapidGamePanel/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Back to Main Menu"
+
 [node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="."]
 title = "Return to Main Menu?"
 ok_button_text = "Yes"
@@ -61,11 +116,13 @@ layout_mode = 2
 [node name="ReplayButton" type="Button" parent="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Replay"
 
 [node name="BackToMenuButton" type="Button" parent="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Back to Main Menu"
 
 [node name="TournamentGameContainer" type="HBoxContainer" parent="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer"]
@@ -80,6 +137,7 @@ text = "Next Tournament Game"
 [node name="MoveTimer" type="Timer" parent="."]
 wait_time = 0.5
 
+[connection signal="pressed" from="RapidGamePanel/MarginContainer/VBoxContainer/RapidPlayBackToMenuButton" to="." method="_back_to_menu"]
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]
 [connection signal="close_requested" from="GameOverWindow" to="." method="_on_game_over_window_close_requested"]
 [connection signal="pressed" from="GameOverWindow/GameOverContainer/MarginContainer/VBoxContainer/EndGameContainer/ReplayButton" to="." method="_on_replay_button_pressed"]

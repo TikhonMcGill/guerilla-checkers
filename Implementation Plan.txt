@@ -1,15 +1,10 @@
-Implementation of Tournament System:
-	1. Implement Rapid Play - hide board, don't await animations, show end result
-	2. Add print statements for tournaments, see if it works
-	3. Add the "Live Tally" for Tournaments showing numbers
-	4. When escaping, add the latest result before quitting
+1. Fix memory leak
 
-Tournament System (February 16th to February 23rd, 2024):
-	1. Create option in Menu for a Tournament mode
-	2. Implement logic for the game not returning to the main menu when a game in the tournament is 
-	played, decrementing the number of games left until it is zero
-	3. Add a final result for how many games each player won
-	4. Maybe make Rapid Play toggleable - it's piss-easier than anticipated
+Testing:
+	1. Test playing as human without tournaments
+	2. Test playing as human with tournament
+	3. Test non-rapid tournament between 2 AIs
+	4. Test Rapid Tournament between 2 AIs (10 games)
 
 Optimization (February 23rd to March 1st, 2024):
 	1. Instead of calculating different situations in the board game, make them be saved (e.g. instead of 
