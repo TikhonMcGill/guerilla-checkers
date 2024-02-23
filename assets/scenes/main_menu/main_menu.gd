@@ -54,6 +54,8 @@ func _set_settings():
 	elif guerilla_player_select.selected == 2:
 		GameManager.guerilla_player_type = GameManager.PLAYER_TYPE.UTILITY
 	elif guerilla_player_select.selected == 3:
+		if len(GameManager.minimax_profiles) == 0:
+			return
 		GameManager.guerilla_player_type = GameManager.PLAYER_TYPE.MINIMAX
 	
 	if counterinsurgent_player_select.selected == 0:
@@ -63,6 +65,8 @@ func _set_settings():
 	elif counterinsurgent_player_select.selected == 2:
 		GameManager.coin_player_type = GameManager.PLAYER_TYPE.UTILITY
 	elif counterinsurgent_player_select.selected == 3:
+		if len(GameManager.minimax_profiles) == 0:
+			return
 		GameManager.coin_player_type = GameManager.PLAYER_TYPE.MINIMAX
 	
 	if guerilla_name_edit.text == "":

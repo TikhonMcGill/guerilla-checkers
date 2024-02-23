@@ -47,8 +47,6 @@ func choose_best_move() -> Move:
 		#If the utility is equal to the Best utility, add it to the best moves
 		elif utility == best_move_utility:
 			best_moves.append(move)
-		
-		simulated_state.free()
 	
 	return best_moves.pick_random()
 

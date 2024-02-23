@@ -67,7 +67,6 @@ func _get_actions(state : GameState) -> Array[Move]:
 				take_moves.append(a)
 			else:
 				other_moves.append(a)
-			result.free()
 		
 		var moves = end_moves + take_moves + other_moves
 		assert(len(moves) == len(actions))
@@ -89,8 +88,6 @@ func _get_actions(state : GameState) -> Array[Move]:
 				var new_move_array : Array[Move] = []
 				new_move_array.append(a)
 				utilities_to_actions[utility] = new_move_array
-			
-			result.free()
 		
 		var ordered_utilities := utilities_to_actions.keys()
 		ordered_utilities.sort()
@@ -172,7 +169,6 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 		if len(actions) == 1:
 			var new_state := _get_result(start_state, actions[0])
 			var result := _get_state_utility(new_state)
-			new_state.free()
 			return MinimaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
@@ -183,7 +179,6 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			
 			var result := _get_result(start_state,a)
 			var evaluation = _minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
-			result.free()
 			
 			if evaluation > best_evaluation:
 				best_evaluation = evaluation
@@ -205,7 +200,6 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 		if len(actions) == 1:
 			var new_state := _get_result(start_state, actions[0])
 			var result := _get_state_utility(new_state)
-			new_state.free()
 			return MinimaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
@@ -216,7 +210,6 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			
 			var result := _get_result(start_state,a)
 			var evaluation = _minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
-			result.free()
 			
 			if evaluation < worst_evaluation:
 				worst_evaluation = evaluation

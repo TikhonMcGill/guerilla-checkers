@@ -75,6 +75,11 @@ Add page numbers
 
 Could also have, for MinMax move sorting, by Ascending order of Utility as well
 
+Discuss how there was a bug found - when there is no Minimax Profiles in existence, the User
+cannot play Minimax. This, however, provided an extra avenue - experimenting with Different
+Minimax Profiles meant the possibility of creating "Default" Minimax Profiles built into the game,
+so that the User may play with them.
+
 _____________________________________________
 
 1 – Abstract

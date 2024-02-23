@@ -1,4 +1,4 @@
-extends Object
+extends Resource
 
 class_name GameState
 
@@ -209,22 +209,22 @@ const CORNER_CELLS : Array[int] = [
 #endregion
 
 ##The current game state - initially, the First Turn
-var game_state : STATE = STATE.FIRST_TURN : set = _set_state
+@export var game_state : STATE = STATE.FIRST_TURN : set = _set_state
 
 ##The number of pieces the Guerilla has left to place - initially, 66
-var guerilla_pieces_left : int = 66
+@export var guerilla_pieces_left : int = 66
 
 ##The corner into which the Guerilla has placed their first piece - saved so that the Game State knows next to which corner next piece must be placed
-var first_placed_piece_corner : int = -1
+@export var first_placed_piece_corner : int = -1
 
 ##The COIN Checker that took a Guerilla Piece - this one will have to take all other available pieces
-var taking_coin_checker : int = -1
+@export var taking_coin_checker : int = -1
 
 ##The positions of the COIN Checkers - initially they are in positions corresponding to the diagram on https://www.di.fc.ul.pt/~jpn/gv/guerrilla.htm
-var coin_checker_positions : Array[int] = [9, 13, 14, 17, 18, 22]
+@export var coin_checker_positions : Array[int] = [9, 13, 14, 17, 18, 22]
 
 ##The corners in which the Guerilla Pieces are present - initially, none are on the board
-var guerilla_piece_positions : Array[int] = []
+@export var guerilla_piece_positions : Array[int] = []
 
 ##Get the diagonally-adjacent Cells to this cell
 func get_adjacent_cells(cell : int):
@@ -534,17 +534,3 @@ func _set_state(state : STATE) -> void:
 ##Method to check if two corners are adjacent
 func are_corners_adjacent(corner1: int, corner2: int) -> bool:
 	return get_adjacent_corners(corner1).has(corner2)
-
-##Method to duplicate the Game State
-func duplicate() -> GameState:
-	var new_state := GameState.new()
-	
-	new_state.coin_checker_positions = coin_checker_positions.duplicate()
-	new_state.guerilla_piece_positions = guerilla_piece_positions.duplicate()
-	new_state.guerilla_pieces_left = guerilla_pieces_left
-	new_state.game_state = game_state
-	
-	new_state.first_placed_piece_corner = first_placed_piece_corner
-	new_state.taking_coin_checker = taking_coin_checker
-	
-	return new_state
