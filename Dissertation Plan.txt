@@ -80,6 +80,10 @@ cannot play Minimax. This, however, provided an extra avenue - experimenting wit
 Minimax Profiles meant the possibility of creating "Default" Minimax Profiles built into the game,
 so that the User may play with them.
 
+Mention the presence of a Memory Leak (for the Game State) with no obvious way to fix it, 
+despite switching to Godot's Resource Type which purports to be automatically freed when there
+are no references to a resource.
+
 _____________________________________________
 
 1 – Abstract

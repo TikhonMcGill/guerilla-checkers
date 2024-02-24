@@ -85,8 +85,6 @@ func _ready():
 	guerilla_player.do_move()
 
 func restart_game():
-	var old_game_state = game_state
-	
 	game_state = GameState.new()
 	game_state.game_over.connect(_on_game_state_game_over)
 	
@@ -105,8 +103,6 @@ func restart_game():
 			guerilla_player.update_interface()
 		if coin_player is HumanPlayer:
 			coin_player.update_interface()
-	
-	old_game_state.call_deferred("free")
 	
 	guerilla_player.do_move()
 	current_game_label.visible = GameManager.is_tournament()
@@ -206,7 +202,7 @@ func _on_game_state_game_over(winner : GameState.PLAYER):
 		elif winner == GameState.PLAYER.COIN:
 			discussion_string = "%s was victorious, quashing %s!" % [GameManager.coin_player_name,GameManager.guerilla_player_name]
 		elif winner == GameState.PLAYER.NOBODY:
-			discussion_string = "Neither the %s nor %s was victorious - this Struggle ended in a Stalemate." % [GameManager.guerilla_player_name,GameManager.coin_player_name]
+			discussion_string = "Neither %s nor %s was victorious - this Struggle ended in a Stalemate." % [GameManager.guerilla_player_name,GameManager.coin_player_name]
 		
 		show_game_over_window(discussion_string)
 	else:

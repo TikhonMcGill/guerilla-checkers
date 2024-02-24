@@ -1,14 +1,10 @@
-1. Fix Memory Leak, and talk about it in Dissertation
-2. Fix "The Tikhon" String naming bug somewhere
-3. Test playing as human without tournaments
-4. Test playing as human with tournament
-5. Test non-rapid tournament between 2 AIs
-6. Test Rapid Tournament between 2 AIs (10 games)
-7. Make Windows Build
-8. Make Linux Build (and send to Hans-Wolfgang, together with relevant Project Log entries)
-9. Make Android Build, see if it works, send to HaWo so he can send it to Brian Train 
-10. Create Base Minimax Profile (look at Plan, but I think it's D3, No Sorting, Naive Function)
-11. When we meet face-to-face, discuss with HaWo my dilemma 
+1. Test non-rapid tournament between 2 AIs
+2. Test Rapid Tournament between 2 AIs (10 games)
+3. Make Windows Build
+4. Make Linux Build (and send to Hans-Wolfgang, together with relevant Project Log entries)
+5. Make Android Build, see if it works, send to HaWo so he can send it to Brian Train 
+6. Create Base Minimax Profile (look at Plan, but I think it's D3, No Sorting, Naive Function)
+7. When we meet face-to-face, discuss with HaWo my dilemma 
 (Draw or COIN Victory if Guerilla paints self into corner)
 
 Optimization (February 23rd to March 1st, 2024):
