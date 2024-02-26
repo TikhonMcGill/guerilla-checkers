@@ -1,9 +1,4 @@
-1. Make Windows Build
-2. Make Linux Build (and send to Hans-Wolfgang, together with relevant Project Log entries)
-3. Make Android Build, see if it works, send to HaWo so he can send it to Brian Train 
-4. Create Base Minimax Profile (look at Plan, but I think it's D3, No Sorting, Naive Function)
-5. When we meet face-to-face, discuss with HaWo my dilemma 
-(Draw or COIN Victory if Guerilla paints self into corner)
+1. Make Android Build, see if it works, send to HaWo so he can send it to Brian Train 
 
 Optimization (February 23rd to March 1st, 2024):
 	1. Instead of calculating different situations in the board game, make them be saved (e.g. instead of 
@@ -13,8 +8,6 @@ Optimization (February 23rd to March 1st, 2024):
 	them up if that configuration appears again. The transposition table will be saved in RAM between 
 	games, to allow for tournaments with hundreds of games to be sped up by not having to recalculate 
 	many of the same Game States
-	3. Research other state of the art Minimax Optimization Techniques, and, if feasible, implement them, 
-	making a note of them for the report
 
 Testing (March 1st to March 8th, 2024):
 	1. Use the application, trying out all features, and noting down any bugs or errors, and fixing them

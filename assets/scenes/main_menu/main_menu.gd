@@ -20,6 +20,8 @@ const MINIMAX_PROFILE_EDIT_PATH := "res://assets/scenes/minimax_profile_editor/m
 @onready var games_spin_box: SpinBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer/HBoxContainer/GamesSpinBox
 @onready var rapid_play_check_box: CheckBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer/RapidPlayCheckBox
 
+@onready var random_seed: SpinBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/RandomSeed
+
 func _process(delta: float) -> void:
 	tournament_container.visible = tournament_check_box.button_pressed
 	rapid_play_check_box.visible = tournament_container.visible == true and _both_players_ais() == true
@@ -47,6 +49,8 @@ func _populate_minimax_select(select : OptionButton) -> void:
 		select.add_item(profile.profile_name)
 
 func _set_settings():
+	seed(random_seed.value)
+	
 	if guerilla_player_select.selected == 0:
 		GameManager.guerilla_player_type = GameManager.PLAYER_TYPE.HUMAN
 	elif guerilla_player_select.selected == 1:

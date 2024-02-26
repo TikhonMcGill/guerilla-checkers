@@ -481,7 +481,7 @@ func move_coin_checker(from_cell : int,to_cell : int) -> void:
 			#chose to do so, it will have to take all possible pieces
 			game_state = STATE.COIN_TOOK_PIECE
 
-##Method to get all possible moves, dependent on the Game, as an Array of special "Move" objects
+##Method to get all possible moves, dependent on the Game, as an Array of special "Move" Resources
 func get_possible_moves() -> Array[Move]:
 	var current_player = get_current_player()
 	

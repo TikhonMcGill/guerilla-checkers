@@ -178,7 +178,8 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			time_left -= time_taken
 			
 			var result := _get_result(start_state,a)
-			var evaluation = _minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			
+			var evaluation : float = _minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
 			if evaluation > best_evaluation:
 				best_evaluation = evaluation
@@ -209,7 +210,8 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			time_left -= time_taken
 			
 			var result := _get_result(start_state,a)
-			var evaluation = _minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			
+			var evaluation : int = _minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
 			if evaluation < worst_evaluation:
 				worst_evaluation = evaluation

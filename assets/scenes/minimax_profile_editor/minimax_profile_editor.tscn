@@ -98,6 +98,7 @@ layout_mode = 2
 max_value = 10000.0
 step = 10.0
 value = 5000.0
+allow_greater = true
 suffix = "Milliseconds"
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/MinimaxEditor"]
@@ -127,7 +128,6 @@ prefix = "Victory Utility:"
 [node name="DefeatUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
 layout_mode = 2
 step = 0.1
-value = -100.0
 allow_greater = true
 allow_lesser = true
 prefix = "Defeat Utility:"
