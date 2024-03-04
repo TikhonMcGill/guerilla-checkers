@@ -28,6 +28,8 @@ Mention the "DRAW" Utility as another Evaluation parameter
 Discuss in the dissertation that Depth 5 was used - the risk of Depth 10 being too slow came true, so Depth 5
 was used instead for all experiments with Class 2.
 
+Clarify that, for Minimax, "By Utility" sorting means in DESCENDING order of Utility
+
 Reword the Rules-Based Computer Player:
 	1. Make it the Utility-Based Comptuter Player (UBCP)
 	2. Make it gain +1 Utility for taking a Guerilla Piece (as COIN), not for EVERY POSSIBLE TAKEABLE PIECE - reason being that the aim of the UCP is to create

@@ -12,6 +12,7 @@ var can_move = true
 
 func do_move() -> void:
 	can_move = true
+	update_interface()
 
 func update_interface():
 	prepare_graphics()
