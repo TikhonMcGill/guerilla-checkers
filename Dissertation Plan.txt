@@ -93,6 +93,9 @@ Change "By Utility" to "By Descending Utility" for better understanding maybe?
 
 (Mention that experiments in Excel Spreadsheet were not "Re-Run")
 
+Mention that informal experiment was done with Turn-based, rather than move-based Lookahead, and it yielded
+no noticeable performance improvement (but made Minimax considerably slower, even with Depth 3 Lookahead)
+
 _____________________________________________
 
 1 – Abstract
