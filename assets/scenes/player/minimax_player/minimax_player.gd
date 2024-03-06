@@ -152,6 +152,19 @@ func _get_state_utility(state : GameState) -> float:
 func _is_my_turn_in_state(state : GameState) -> bool:
 	return state.get_current_player() == my_type
 
+##A Method to get the cutoff (either 0 or 1) based on if the Minimax Player is using Turn-based Lookahead or not
+func _get_cutoff(state : GameState) -> int:
+	#If not looking ahead by turns, cut off 1 with each move by default
+	if profile.turn_lookahed == false:
+		return 1
+	
+	#If it's still my turn, return 0 - we don't cut off
+	if _is_my_turn_in_state(state) == true:
+		return 0
+	
+	#Otherwise, cut off by 1 - no longer Minimax's turn
+	return 1
+
 ##A Function running the Minimax algorithm, with cutoff - getting the Utility of a state and the best move
 func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:float,time_left:int) -> MinimaxOutput:
 	if _is_terminal_state(start_state) == true or depth == 0:
@@ -178,8 +191,9 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			time_left -= time_taken
 			
 			var result := _get_result(start_state,a)
+			var cutoff := _get_cutoff(result)
 			
-			var evaluation : float = _minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
 			if evaluation > best_evaluation:
 				best_evaluation = evaluation
@@ -210,8 +224,9 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			time_left -= time_taken
 			
 			var result := _get_result(start_state,a)
+			var cutoff := _get_cutoff(result)
 			
-			var evaluation : int = _minimax(depth-1,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			var evaluation : int = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
 			if evaluation < worst_evaluation:
 				worst_evaluation = evaluation

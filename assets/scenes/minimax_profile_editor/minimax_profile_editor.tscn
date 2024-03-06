@@ -101,6 +101,10 @@ value = 5000.0
 allow_greater = true
 suffix = "Milliseconds"
 
+[node name="TurnLookaheadCheckbox" type="CheckBox" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+text = "Do lookahead based on Turns?"
+
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/MinimaxEditor"]
 layout_mode = 2
 

@@ -38,17 +38,30 @@ var current_game : int = 1
 @onready var current_draws_label: Label = $RapidGamePanel/MarginContainer/VBoxContainer/CurrentDrawsLabel
 @onready var rapid_play_back_to_menu_button: Button = $RapidGamePanel/MarginContainer/VBoxContainer/RapidPlayBackToMenuButton
 @onready var rapid_game_time_taken_label: Label = $RapidGamePanel/MarginContainer/VBoxContainer/RapidGameTimeTakenLabel
+@onready var rapid_game_turns_per_game_label: Label = $RapidGamePanel/MarginContainer/VBoxContainer/RapidGameTurnsPerGameLabel
 
 var guerilla_victories : int = 0
 var coin_victories : int = 0
 var draws : int = 0
 
+var coin_capture_victories : int = 0
+var coin_runout_victories : int = 0
+
 var rapid_tournament_start_time : int
+
+var turns_in_game : float = 0
+var total_turns : float = 0
+
+var total_guerilla_win_turns : float = 0
+var total_coin_win_turns : float = 0
+var total_draw_turns : float = 0
+
+var current_player : GameState.PLAYER = GameState.PLAYER.GUERILLA
 
 func _update_rapid_game_labels() -> void:
 	current_rapid_game_label.text = "Current Game: %d" % current_game
 	current_guerilla_wins_label.text = "Victories by Guerilla (%s): %d" % [GameManager.guerilla_player_name,guerilla_victories]
-	current_coin_wins_label.text = "Victories by The Counterinsurgent (%s): %d" % [GameManager.coin_player_name,coin_victories]
+	current_coin_wins_label.text = "Victories by The Counterinsurgent (%s): %d\n(%d by Taking all Guerilla Pieces, %d by Guerilla runing out of Pieces)" % [GameManager.coin_player_name,coin_victories,coin_capture_victories,coin_runout_victories]
 	current_draws_label.text = "Draws: %d" % draws
 	
 	rapid_play_back_to_menu_button.visible = GameManager.tournament_games_left == 0
@@ -57,6 +70,18 @@ func _update_rapid_game_labels() -> void:
 		var time_taken = Time.get_ticks_msec() - rapid_tournament_start_time
 		rapid_game_time_taken_label.text = "The Rapid Tournament took %d Milliseconds" % time_taken
 		rapid_game_time_taken_label.visible = true
+		
+		var turns_text := "Mean no. Turns per Game: %.2f" % get_average_turns()
+		
+		if guerilla_victories > 0:
+			turns_text += "\nMean no. Turns per Guerilla Victory: %.2f" % get_average_guerilla_win_turns()
+		if coin_victories > 0:
+			turns_text += "\nMean no. Turns per COIN Victory: %.2f" % get_average_coin_win_turns()
+		if draws > 0:
+			turns_text += "\nMean no. Turns per Draw: %.2f" % get_average_draw_turns()
+		
+		rapid_game_turns_per_game_label.text = turns_text
+		rapid_game_turns_per_game_label.visible = true
 
 func _ready():
 	game_state = GameState.new()
@@ -184,13 +209,23 @@ func _process(delta):
 func _increment_winner(winner : GameState.PLAYER) -> void:
 	if winner == GameState.PLAYER.GUERILLA:
 		guerilla_victories += 1
+		total_guerilla_win_turns += turns_in_game
 	elif winner == GameState.PLAYER.COIN:
 		coin_victories += 1
+		total_coin_win_turns += turns_in_game
 	elif winner == GameState.PLAYER.NOBODY:
 		draws += 1
+		total_draw_turns += turns_in_game
+	turns_in_game = 0
 
 func _on_game_state_game_over(winner : GameState.PLAYER):
 	_increment_winner(winner)
+	#Increment no. Types of COIN Victories, dependent on the situation
+	if winner == GameState.PLAYER.COIN:
+		if game_state.guerilla_pieces_left == 0:
+			coin_runout_victories += 1
+		else:
+			coin_capture_victories += 1
 	
 	if GameManager.rapid_tournament == false:
 		current_game_label.visible = false
@@ -212,6 +247,27 @@ func _on_game_state_game_over(winner : GameState.PLAYER):
 		if GameManager.tournament_games_left > 0:
 			_next_tournament_game()
 
+func get_average_guerilla_win_turns() -> float:
+	if guerilla_victories == 0:
+		return -1.0
+	
+	return total_guerilla_win_turns / guerilla_victories
+
+func get_average_coin_win_turns() -> float:
+	if coin_victories == 0:
+		return -1.0
+	
+	return total_coin_win_turns / coin_victories
+
+func get_average_draw_turns() -> float:
+	if draws == 0:
+		return -1.0
+	
+	return total_draw_turns / draws
+
+func get_average_turns() -> float:
+	return total_turns / current_game
+
 func show_game_over_window(discussion_string : String) -> void:
 	if GameManager.is_tournament() == true:
 		if GameManager.rapid_tournament == true:
@@ -219,8 +275,9 @@ func show_game_over_window(discussion_string : String) -> void:
 		
 		GameManager.tournament_games_left -= 1
 		if GameManager.tournament_games_left == 0:
-			discussion_string += "\n\nThe Tournament has come to an end, and here's the final Tally after %d games:\nVictories by %s: %d\nVictories by %s: %d\nDraws: %d" % [current_game,GameManager.guerilla_player_name,guerilla_victories,GameManager.coin_player_name,coin_victories,draws]
-	
+			discussion_string += "\n\nThe Tournament has come to an end, and here's the final Tally after %d games:\nVictories by %s: %d \nVictories by %s: %d(%d by Capturing all pieces, %d by letting %s run out of pieces)\nDraws: %d" % [current_game,GameManager.guerilla_player_name,guerilla_victories,GameManager.coin_player_name,coin_victories,coin_capture_victories,coin_runout_victories,GameManager.guerilla_player_name,draws]
+			discussion_string += "\nOn average, it took %.2f Turns for %s to win, %.2f Turns for %s to win, and %.2f Turns for a Draw.\nThe mean number of turns per game is %.2f." % [get_average_guerilla_win_turns(),GameManager.guerilla_player_name,get_average_coin_win_turns(),GameManager.coin_player_name,get_average_draw_turns(),get_average_turns()]
+			
 	if GameManager.is_tournament() == true and GameManager.tournament_games_left > 0:
 		end_game_container.visible = false
 		tournament_game_container.visible = true
@@ -243,6 +300,11 @@ func simulate_move(move : Move) -> void:
 	
 	game_state.take_move(move)
 	game_board.default_color_board()
+	
+	if game_state.get_current_player() != current_player:
+		turns_in_game += 1
+		total_turns += 1
+		current_player = game_state.get_current_player()
 	
 	if GameManager.rapid_tournament == false:
 		await game_board.animation_complete

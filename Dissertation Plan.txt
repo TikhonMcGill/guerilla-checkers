@@ -96,6 +96,9 @@ Change "By Utility" to "By Descending Utility" for better understanding maybe?
 Mention that informal experiment was done with Turn-based, rather than move-based Lookahead, and it yielded
 no noticeable performance improvement (but made Minimax considerably slower, even with Depth 3 Lookahead)
 
+Mention that base Minimax Profile has 5000ms Timeout, which is constant
+Mention my Hardware Specifications when discussing running the experiment
+
 _____________________________________________
 
 1 – Abstract

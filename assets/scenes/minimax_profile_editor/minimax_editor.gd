@@ -7,6 +7,7 @@ signal profile_completed(profile : MinimaxProfile)
 @onready var move_sorting_option_button: OptionButton = $MoveSortingOptionButton
 @onready var cutoff_spin_box: SpinBox = $CutoffSpinBox
 @onready var timeout_spin_box: SpinBox = $TimeoutSpinBox
+@onready var turn_lookahead_checkbox: CheckBox = $TurnLookaheadCheckbox
 
 @onready var victory_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/VictoryUtilitySpinBox
 @onready var defeat_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/DefeatUtilitySpinBox
@@ -25,6 +26,7 @@ func clear() -> void:
 	move_sorting_option_button.selected = -1
 	cutoff_spin_box.value = 1
 	timeout_spin_box.value = 5000
+	turn_lookahead_checkbox.button_pressed = false
 	
 	victory_utility_spin_box.value = 100
 	defeat_utility_spin_box.value = -100
@@ -43,6 +45,7 @@ func load_profile(profile : MinimaxProfile):
 	move_sorting_option_button.selected = profile.move_sorting
 	cutoff_spin_box.value = profile.cutoff_depth
 	timeout_spin_box.value = profile.timeout
+	turn_lookahead_checkbox.button_pressed = profile.turn_lookahed
 	
 	victory_utility_spin_box.value = profile.victory_utility
 	defeat_utility_spin_box.value = profile.defeat_utility
@@ -68,6 +71,7 @@ func _on_confirm_button_pressed():
 	new_profile.cutoff_depth = int(cutoff_spin_box.value)
 	new_profile.move_sorting = move_sorting_option_button.selected
 	new_profile.timeout = timeout_spin_box.value
+	new_profile.turn_lookahed = turn_lookahead_checkbox.button_pressed
 	
 	new_profile.victory_utility = victory_utility_spin_box.value
 	new_profile.defeat_utility = defeat_utility_spin_box.value
