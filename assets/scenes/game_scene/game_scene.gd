@@ -37,10 +37,13 @@ var current_game : int = 1
 @onready var current_coin_wins_label: Label = $RapidGamePanel/MarginContainer/VBoxContainer/CurrentCOINWinsLabel
 @onready var current_draws_label: Label = $RapidGamePanel/MarginContainer/VBoxContainer/CurrentDrawsLabel
 @onready var rapid_play_back_to_menu_button: Button = $RapidGamePanel/MarginContainer/VBoxContainer/RapidPlayBackToMenuButton
+@onready var rapid_game_time_taken_label: Label = $RapidGamePanel/MarginContainer/VBoxContainer/RapidGameTimeTakenLabel
 
 var guerilla_victories : int = 0
 var coin_victories : int = 0
 var draws : int = 0
+
+var rapid_tournament_start_time : int
 
 func _update_rapid_game_labels() -> void:
 	current_rapid_game_label.text = "Current Game: %d" % current_game
@@ -49,6 +52,11 @@ func _update_rapid_game_labels() -> void:
 	current_draws_label.text = "Draws: %d" % draws
 	
 	rapid_play_back_to_menu_button.visible = GameManager.tournament_games_left == 0
+	
+	if GameManager.tournament_games_left == 0:
+		var time_taken = Time.get_ticks_msec() - rapid_tournament_start_time
+		rapid_game_time_taken_label.text = "The Rapid Tournament took %d Milliseconds" % time_taken
+		rapid_game_time_taken_label.visible = true
 
 func _ready():
 	game_state = GameState.new()
@@ -65,6 +73,7 @@ func _ready():
 		game_state.guerilla_piece_captured.connect(game_board._on_game_state_guerilla_piece_captured)
 		game_state.coin_checker_captured.connect(game_board._on_game_state_coin_checker_captured)
 	else:
+		rapid_tournament_start_time = Time.get_ticks_msec()
 		rapid_game_panel.visible = true
 		_update_rapid_game_labels()
 		game_board.visible = false
