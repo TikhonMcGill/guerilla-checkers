@@ -30,6 +30,8 @@ was used instead for all experiments with Class 2.
 
 Clarify that, for Minimax, "By Utility" sorting means in DESCENDING order of Utility
 
+Mention that Seed = 1 for Testing
+
 Reword the Rules-Based Computer Player:
 	1. Make it the Utility-Based Comptuter Player (UBCP)
 	2. Make it gain +1 Utility for taking a Guerilla Piece (as COIN), not for EVERY POSSIBLE TAKEABLE PIECE - reason being that the aim of the UCP is to create
@@ -98,6 +100,12 @@ no noticeable performance improvement (but made Minimax considerably slower, eve
 
 Mention that base Minimax Profile has 5000ms Timeout, which is constant
 Mention my Hardware Specifications when discussing running the experiment
+
+Mention that a preliminary experiment was done for depth cutoff and sorting, but it was decided to redo it due to
+lacking any useful metrics besides no. wins and draws. Furthermore, abysmal performance was found, particularly as the Guerilla,
+so a new avenue of experimentation was decided upon - Turn lookahead. 
+
+Mention that, for no. turns, this does NOT include the starting turn (i.e. count begins from 0, as it were)
 
 _____________________________________________
 

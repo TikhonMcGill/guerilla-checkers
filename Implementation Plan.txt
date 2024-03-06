@@ -1,3 +1,12 @@
+1. Make Stuff Save
+2. Add a "Swap" Button to swap player types
+3. Refactor the Rapid Tournament Data to be in one label
+4. Create a "Save Results" Button, which saves a .txt file
+5. Update the UCP with the following:
+	1. For Guerilla, if no. coin pieces == 1, and can take that checker, +100 Utility (can win)
+	2. For COIN, if no. guerilla pieces == 1, and can take that piece, +100 Utility (can win)
+
+(When Finished)
 1. Make Android Build, see if it works, send to HaWo so he can send it to Brian Train 
 
 Optimization (February 23rd to March 1st, 2024):

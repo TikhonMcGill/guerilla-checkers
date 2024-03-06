@@ -16,6 +16,8 @@ var coin_minimax_profile : MinimaxProfile = null
 var tournament_games_left : int = -1
 var rapid_tournament : bool = false
 
+var saved_selections : SavedSelections
+
 func _load_minimax_profiles() -> void:
 	var files := DirAccess.get_files_at("user://minimax_profiles")
 	for f in files:

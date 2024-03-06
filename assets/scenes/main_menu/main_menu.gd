@@ -22,6 +22,9 @@ const MINIMAX_PROFILE_EDIT_PATH := "res://assets/scenes/minimax_profile_editor/m
 
 @onready var random_seed: SpinBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/RandomSeed
 
+func _ready() -> void:
+	var selections : SavedSelections = GameManager.saved_selections
+
 func _process(delta: float) -> void:
 	tournament_container.visible = tournament_check_box.button_pressed
 	rapid_play_check_box.visible = tournament_container.visible == true and _both_players_ais() == true
@@ -90,12 +93,24 @@ func _set_settings():
 func _on_minimax_profile_edit_pressed() -> void:
 	get_tree().change_scene_to_file(MINIMAX_PROFILE_EDIT_PATH)
 
-func _on_guerilla_player_select_item_selected(index: int) -> void:
+func _select_guerilla_player(index : int):
+	guerilla_player_select.selected = index
 	if guerilla_player_select.get_item_id(index) == 3:
 		guerilla_minimax_profile_container.visible = true
 		_populate_minimax_select(guerilla_minimax_profile_select)
 	else:
 		guerilla_minimax_profile_container.visible = false
+
+func _select_coin_player(index : int):
+	counterinsurgent_player_select.selected = index
+	if counterinsurgent_player_select.get_item_id(index) == 3:
+		coin_minimax_profile_container.visible = true
+		_populate_minimax_select(coin_minimax_profile_select)
+	else:
+		coin_minimax_profile_container.visible = false
+
+func _on_guerilla_player_select_item_selected(index: int) -> void:
+	_select_guerilla_player(index)
 
 func _both_players_ais() -> bool:
 	var guerilla_player_id : int = guerilla_player_select.get_item_id(guerilla_player_select.selected)
@@ -104,8 +119,4 @@ func _both_players_ais() -> bool:
 	return guerilla_player_id != 0 and coin_player_id != 0
 
 func _on_counterinsurgent_player_select_item_selected(index: int) -> void:
-	if counterinsurgent_player_select.get_item_id(index) == 3:
-		coin_minimax_profile_container.visible = true
-		_populate_minimax_select(coin_minimax_profile_select)
-	else:
-		coin_minimax_profile_container.visible = false
+	_select_coin_player(index)
