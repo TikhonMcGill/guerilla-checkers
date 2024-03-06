@@ -61,7 +61,7 @@ var current_player : GameState.PLAYER = GameState.PLAYER.GUERILLA
 func _update_rapid_game_labels() -> void:
 	current_rapid_game_label.text = "Current Game: %d" % current_game
 	current_guerilla_wins_label.text = "Victories by Guerilla (%s): %d" % [GameManager.guerilla_player_name,guerilla_victories]
-	current_coin_wins_label.text = "Victories by The Counterinsurgent (%s): %d\n(%d by Taking all Guerilla Pieces, %d by Guerilla runing out of Pieces)" % [GameManager.coin_player_name,coin_victories,coin_capture_victories,coin_runout_victories]
+	current_coin_wins_label.text = "Victories by The Counterinsurgent (%s): %d\n(%d by Taking all Guerilla Pieces, %d by Guerilla running out of Pieces)" % [GameManager.coin_player_name,coin_victories,coin_capture_victories,coin_runout_victories]
 	current_draws_label.text = "Draws: %d" % draws
 	
 	rapid_play_back_to_menu_button.visible = GameManager.tournament_games_left == 0
