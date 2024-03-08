@@ -1,55 +1,6 @@
-1. Create a Starting Tournament Settings (STS) Scene
-2. Connect it to the Main Menu (Multi-AI Tournament) and back (Cancel)
-3. Add a title to the STS - “Multi-AI Tournament Settings”
-4. Add a lineedit for tournament name
-5. Add a spinbox for no. Games per side per player
-6. Create a TournamentAgenda Class, extending resource
-7. Add a no_games int
-8. Add a tournament_name string
-9. Add a contestants Packed String Array to it
-10. Add the following constants to it:
-	RANDOM : String = “RND”
-	UTILITY : String = “UCP”
-	MINIMAX: String = “MMX”
-11. Create a “prepare_lineup” method, which returns an array of pairs of strings, and makes sure it doesn't repeat the other way round
-12. In the STS, create functionality for a list of AI Player choices, and confirming and taking player to MAITS
-13. Create the MultiAITournamentScene (MAITS)
-14. Attach a script to it
-15. Add a “load_player” Helper Function, which takes a string, decodes it based on constant rules, and returns a Player
-16. Implement Tournament System, all playing for no. games for all AIs:
-	1. Contestant vs opponent, then sides swapped
-	2. Write down all values:
-		1. Wins as Guerilla
-		2. Capture Defeats as Guerilla
-		3. Runout Defeats as Guerilla
-		4. Total Wins as Coin
-		5. Capture Wins as Coin
-		6. Runout wins as Coin
-		7. Draws as Guerilla
-		8. Draws as COIN 
-		9. Mean no. Moves as Guerilla
-		10. Mean no. Moves as COIN
-		11. Mean no. Moves for Guerilla Win as Guerilla
-		12. Mean no. Moves for COIN Win as Guerilla
-		13. Mean no. Moves for Guerilla Win as COIN
-		14. Mean no. Moves for COIN Win as COIN
-		15. Mean no. Moves for Draw as Guerilla
-		16. Mean no. Moves for Draw as COIN
-		17. Time for tournament as Guerilla (ms)
-		18. Time for tournament as COIN (ms)
-	3. Implement feedback so it's not just frozen
-	4. Create Folder for tournament name in user://
-	5. For every pair, create comma-separated string
-	6. Save as multiline .csv with labels at top, in new folder
-	7. Create ordered players tally as txt file, in new folder:
-		1. Top Overall (Guerilla Wins + COIN Wins)
-		2. Top Guerillas
-		3. Top COINs
-
-1. Make Stuff Save
-2. Add a "Swap" Button to swap player types
-3. Refactor the Rapid Tournament Data to be in one label
-4. Create a "Save Results" Button, which saves a .txt file
+1. Add a "Swap" Button to swap player types
+2. Refactor the Rapid Tournament Data to be in one label
+3. Create a "Save Results" Button, which saves a .txt file (name1_lower_guerilla_vs_name2_lower_coin.txt)
 
 (When Finished)
 1. Make Android Build, see if it works, send to HaWo so he can send it to Brian Train 
@@ -130,29 +81,6 @@ The Rules-Based Computer Player(RBCP) plays as follows:
 	3. -5 to move a checker to the edge of the board
 	4. -10 to move a checker to the corner of the board
 
-FR-3: The System shall have a Minimax Guerilla Checkers Player
-	FR-3.1: There shall be a Guerilla and Counterinsurgent Minimax Player, using an Evaluation Function to 
-	quantify states’ utility
-	FR-3.2: If there are several best actions, pick one randomly
-	FR-3.3: If there is only one possible action, take it without doing a search
-	FR-3.4: The Minimax player shall have adjustable parameters, (choice of sorting algorithm – NFR-17, 
-	evaluation function – NFR-5, and Cutoff – 1 to 10)
-
-FR-4: The System shall have a Main Menu
-	FR-4.1: The User shall be able to set the players of Guerilla Checkers:
-	1. The User shall be able to name the Guerilla and Counterinsurgent
-	2. The User shall be able to select the player type of each side:
-	a. Human Player – played by a Human
-	b. Rules-Based Computer Player – played as described in the Design
-	c. Minimax Player – played by a Minimax Player, with a Minimax Profile the user can set 
-	(see FR-5)
-
-FR-5: The User shall be able to create their own Minimax Profiles for Minimax Players
-	FR-5.1: The User shall be able to create, name, save, edit and delete Minimax Profiles
-	FR-5.2: The User shall be able to customize all 8 Evaluation Parameters (see NFR-5.1)
-	FR-5.3: The User shall be able to determine the cutoff of the Minimax Search Tree (1 to 10)
-	FR-5.4: The User shall be able to select the Sorting function of the Minimax Algorithm
-
 FR-6: The User shall be able to run a “Tournament”
 	FR-6.1: The User shall be able to, in the Main Menu, specify the number of games to be played in a 
 	Tournament
@@ -195,17 +123,9 @@ NFR-5: There shall be an adjustable Evaluation Function that Minimax Algorithm w
 	NFR-5.2: If any of the above parameters are zero, as an optimization, the Evaluation Function will not check 
 	for situations related to those parameters
 
-NFR-10: The Development of the System shall follow an Object-Oriented Pattern
-
-NFR-11: The User’s Settings in the Main Menu shall be saved when the Application is closed
-
-NFR-12: The System shall be developed for a Windows 10 Desktop
-
 NFR-14: Steps will be taken to improve the System’s Accessibility
 	NFR-15.1: A Color palette for graphics will be selected that is suitable for colorblind people
 	NFR-15.2: Parameters of the Minimax Implementation will be explained to those wishing to create a Minimax Profile
-
-NFR-15: All Third Parties will be Credited
 
 NFR-16: Future Move Calculation Shall be Optimized using Transposition Tables
 	NFR-16.1: When future moves of a Game State are looked at, they are added to a Transposition Table

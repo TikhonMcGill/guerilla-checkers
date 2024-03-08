@@ -38,7 +38,28 @@ func _ready() -> void:
 	if DirAccess.dir_exists_absolute("user://minimax_profiles") == false:
 		DirAccess.make_dir_absolute("user://minimax_profiles")
 	
+	if DirAccess.dir_exists_absolute("user://tournament_results") == false:
+		DirAccess.make_dir_absolute("user://tournament_results")
+	
+	_load_settings()
 	_load_minimax_profiles()
 
 func is_tournament() -> bool:
 	return tournament_games_left != -1
+
+func _load_settings() -> void:
+	if FileAccess.file_exists("user://settings.tres") == false:
+		print("Doesn't exist!")
+		saved_selections = SavedSelections.new()
+		save_settings()
+	else:
+		saved_selections = ResourceLoader.load("user://settings.tres")
+
+func save_settings() -> void:
+	ResourceSaver.save(saved_selections,"user://settings.tres")
+
+func get_minimax_name_index(nomen : String) -> int:
+	for p in range(len(minimax_profiles)):
+		if minimax_profiles[p].profile_name == nomen:
+			return p
+	return -1
