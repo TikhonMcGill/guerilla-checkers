@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://58eimgxc5tn2"]
 
-[ext_resource type="Script" path="res://assets/scenes/game_board/corner/corner.gd" id="1_24edk"]
+[ext_resource type="Script" path="res://assets/scenes/game_scene/game_board/corner/corner.gd" id="1_24edk"]
 
 [node name="Corner" type="Button"]
 self_modulate = Color(1, 1, 1, 0)

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://cueeockibnepn"]
+
+[ext_resource type="Texture2D" uid="uid://cnowo5he2x7d3" path="res://assets/scenes/game_scene/game_board/coin_checker/coin_checker.png" id="1_qfg5i"]
+[ext_resource type="Script" path="res://assets/scenes/game_scene/game_board/coin_checker/coin_checker.gd" id="2_hy3g5"]
+
+[node name="CoinChecker" type="TextureRect"]
+z_index = 3
+offset_right = 32.0
+offset_bottom = 32.0
+mouse_filter = 2
+texture = ExtResource("1_qfg5i")
+script = ExtResource("2_hy3g5")

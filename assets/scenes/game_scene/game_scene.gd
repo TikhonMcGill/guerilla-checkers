@@ -1,6 +1,6 @@
 extends Node
 
-const MAIN_MENU_PATH := "res://assets/scenes/main_menu/main_menu.tscn"
+const MAIN_MENU_PATH := "res://assets/scenes/menus/main_menu/main_menu.tscn"
 
 #Scenes for Different Player Types
 const HUMAN_PLAYER_SCENE := preload("res://assets/scenes/player/human_player/human_player.tscn")

@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://cixujv6hixtus"]
 
-[ext_resource type="Script" path="res://assets/scenes/minimax_profile_editor/minimax_profile_editor.gd" id="1_ixsua"]
-[ext_resource type="Script" path="res://assets/scenes/minimax_profile_editor/minimax_editor.gd" id="1_onhyv"]
-[ext_resource type="Script" path="res://assets/scenes/minimax_profile_editor/minimax_list.gd" id="2_bx7is"]
+[ext_resource type="Script" path="res://assets/scenes/menus/minimax_profile_editor/minimax_profile_editor.gd" id="1_ixsua"]
+[ext_resource type="Script" path="res://assets/scenes/menus/minimax_profile_editor/minimax_editor.gd" id="1_onhyv"]
+[ext_resource type="Script" path="res://assets/scenes/menus/minimax_profile_editor/minimax_list.gd" id="2_bx7is"]
 
 [node name="MinimaxProfileEditor" type="Control"]
 layout_mode = 3

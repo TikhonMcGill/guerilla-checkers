@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-const MINIMAX_ENTRY_SCENE := preload("res://assets/scenes/minimax_profile_editor/minimax_entry.tscn")
+const MINIMAX_ENTRY_SCENE := preload("res://assets/scenes/menus/minimax_profile_editor/minimax_entry.tscn")
 
 @onready var minimax_entry_list: VBoxContainer = $ScrollContainer/MinimaxEntryList
 

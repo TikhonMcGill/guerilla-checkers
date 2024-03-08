@@ -2,11 +2,11 @@ extends Node2D
 
 class_name GameBoard
 
-const TILE_SCENE := preload("res://assets/scenes/game_board/tile/tile.tscn")
-const CORNER_SCENE := preload("res://assets/scenes/game_board/corner/corner.tscn")
+const TILE_SCENE := preload("res://assets/scenes/game_scene/game_board/tile/tile.tscn")
+const CORNER_SCENE := preload("res://assets/scenes/game_scene/game_board/corner/corner.tscn")
 
-const COIN_CHECKER_SCENE := preload("res://assets/scenes/game_board/coin_checker/coin_checker.tscn")
-const GUERILLA_PIECE_SCENE := preload("res://assets/scenes/game_board/guerilla_piece/guerilla_piece.tscn")
+const COIN_CHECKER_SCENE := preload("res://assets/scenes/game_scene/game_board/coin_checker/coin_checker.tscn")
+const GUERILLA_PIECE_SCENE := preload("res://assets/scenes/game_scene/game_board/guerilla_piece/guerilla_piece.tscn")
 
 signal tile_pressed(tile : Tile)
 

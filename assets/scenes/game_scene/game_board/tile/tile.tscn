@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bibmdxpg714md"]
 
-[ext_resource type="Script" path="res://assets/scenes/game_board/tile/tile.gd" id="1_wqv4k"]
+[ext_resource type="Script" path="res://assets/scenes/game_scene/game_board/tile/tile.gd" id="1_wqv4k"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fbx2t"]
 

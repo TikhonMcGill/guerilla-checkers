@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dxcfxn24whgwe"]
 
-[ext_resource type="Script" path="res://assets/scenes/minimax_profile_editor/minimax_entry.gd" id="1_bf482"]
+[ext_resource type="Script" path="res://assets/scenes/menus/minimax_profile_editor/minimax_entry.gd" id="1_bf482"]
 
 [node name="MinimaxEntry" type="HBoxContainer"]
 anchors_preset = 15

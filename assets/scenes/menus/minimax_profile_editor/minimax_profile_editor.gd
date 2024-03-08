@@ -1,6 +1,6 @@
 extends Control
 
-const MAIN_MENU_SCENE_PATH := "res://assets/scenes/main_menu/main_menu.tscn"
+const MAIN_MENU_SCENE_PATH := "res://assets/scenes/menus/main_menu/main_menu.tscn"
 
 @onready var minimax_list: VBoxContainer = $PanelContainer/MarginContainer/MinimaxList
 @onready var minimax_editor: VBoxContainer = $PanelContainer/MarginContainer/MinimaxEditor

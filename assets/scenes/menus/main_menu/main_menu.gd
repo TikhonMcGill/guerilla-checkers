@@ -1,7 +1,7 @@
 extends Control
 
 const GAME_SCENE_PATH := "res://assets/scenes/game_scene/game_scene.tscn"
-const MINIMAX_PROFILE_EDIT_PATH := "res://assets/scenes/minimax_profile_editor/minimax_profile_editor.tscn"
+const MINIMAX_PROFILE_EDIT_PATH := "res://assets/scenes/menus/minimax_profile_editor/minimax_profile_editor.tscn"
 
 @onready var guerilla_player_select: OptionButton = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/GuerillaPlayerSelect
 @onready var counterinsurgent_player_select: OptionButton = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/CounterinsurgentPlayerSelect
