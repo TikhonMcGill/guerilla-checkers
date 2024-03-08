@@ -12,12 +12,11 @@
 	UTILITY : String = “UCP”
 	MINIMAX: String = “MMX”
 11. Create a “prepare_lineup” method, which returns an array of pairs of strings, and makes sure it doesn't repeat the other way round
-12. Forbid the User from creating a Minimax Profile with an already-existing name
-13. In the STS, create functionality for a list of AI Player choices, and confirming and taking player to MAITS
-14. Create the MultiAITournamentScene (MAITS)
-15. Attach a script to it
-16. Add a “load_player” Helper Function, which takes a string, decodes it based on constant rules, and returns a Player
-17. Implement Tournament System, all playing for no. games for all AIs:
+12. In the STS, create functionality for a list of AI Player choices, and confirming and taking player to MAITS
+13. Create the MultiAITournamentScene (MAITS)
+14. Attach a script to it
+15. Add a “load_player” Helper Function, which takes a string, decodes it based on constant rules, and returns a Player
+16. Implement Tournament System, all playing for no. games for all AIs:
 	1. Contestant vs opponent, then sides swapped
 	2. Write down all values:
 		1. Wins as Guerilla
