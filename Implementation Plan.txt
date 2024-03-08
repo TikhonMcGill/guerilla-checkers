@@ -1,6 +1,4 @@
-1. Add a "Swap" Button to swap player types
-2. Refactor the Rapid Tournament Data to be in one label
-3. Create a "Save Results" Button, which saves a .txt file (name1_lower_guerilla_vs_name2_lower_coin.txt)
+1. Create a "Save Results" Button, which saves a .txt file (name1_lower_guerilla_vs_name2_lower_coin.txt)
 
 (When Finished)
 1. Make Android Build, see if it works, send to HaWo so he can send it to Brian Train 

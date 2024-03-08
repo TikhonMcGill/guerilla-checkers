@@ -32,7 +32,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	tournament_container.visible = tournament_check_box.button_pressed
 	rapid_play_check_box.visible = tournament_container.visible == true and _both_players_ais() == true
-
+	guerilla_minimax_profile_container.visible = guerilla_player_select.selected == 3
+	coin_minimax_profile_container.visible = counterinsurgent_player_select.selected == 3
+	
 func _on_play_button_pressed():
 	_set_settings()
 	
@@ -203,3 +205,19 @@ func _save_coin_select() -> void:
 	elif counterinsurgent_player_select.selected == 3:
 		GameManager.saved_selections.coin_player_type = SavedSelections.MINIMAX_PLAYER + GameManager.minimax_profiles[coin_minimax_profile_select.selected].profile_name
 
+func _on_swap_players_button_pressed():
+	var guerilla_selection := guerilla_player_select.selected
+	var guerilla_minimax_selection := guerilla_minimax_profile_select.selected
+	var coin_selection := counterinsurgent_player_select.selected
+	var coin_minimax_selection := coin_minimax_profile_select.selected
+	
+	guerilla_player_select.selected = coin_selection
+	guerilla_minimax_profile_select.selected = coin_minimax_selection
+	counterinsurgent_player_select.selected = guerilla_selection
+	coin_minimax_profile_select.selected = guerilla_minimax_selection
+	
+	var guerilla_name := guerilla_name_edit.text
+	var coin_name := counterinsurgent_name_edit.text
+	
+	guerilla_name_edit.text = coin_name.replacen("COIN","Guerilla")
+	counterinsurgent_name_edit.text = guerilla_name.replacen("Guerilla","COIN")

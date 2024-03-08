@@ -119,6 +119,12 @@ text = "Select the Minimax Profile of the COIN Player"
 [node name="CoinMinimaxProfileSelect" type="OptionButton" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/COINMinimaxProfileContainer"]
 layout_mode = 2
 
+[node name="SwapPlayersButton" type="Button" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Swap Players"
+alignment = 0
+
 [node name="TournamentCheckBox" type="CheckBox" parent="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 text = "Activate Tournament Mode?"
@@ -180,5 +186,6 @@ uri = "https://www.di.fc.ul.pt/~jpn/gv/guerrilla.htm"
 
 [connection signal="item_selected" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/GuerillaPlayerSelect" to="." method="_on_guerilla_player_select_item_selected"]
 [connection signal="item_selected" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/CounterinsurgentPlayerSelect" to="." method="_on_counterinsurgent_player_select_item_selected"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/SwapPlayersButton" to="." method="_on_swap_players_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/MinimaxProfileEdit" to="." method="_on_minimax_profile_edit_pressed"]
