@@ -39,6 +39,7 @@ var current_game : int = 1
 @onready var rapid_play_back_to_menu_button: Button = $RapidGamePanel/MarginContainer/VBoxContainer/RapidPlayBackToMenuButton
 @onready var rapid_game_time_taken_label: Label = $RapidGamePanel/MarginContainer/VBoxContainer/RapidGameTimeTakenLabel
 @onready var rapid_game_turns_per_game_label: Label = $RapidGamePanel/MarginContainer/VBoxContainer/RapidGameTurnsPerGameLabel
+@onready var save_rapid_play_results_button = $RapidGamePanel/MarginContainer/VBoxContainer/SaveRapidPlayResultsButton
 
 var guerilla_victories : int = 0
 var coin_victories : int = 0
@@ -58,31 +59,36 @@ var total_draw_turns : float = 0
 
 var current_player : GameState.PLAYER = GameState.PLAYER.GUERILLA
 
+var rapid_time_taken : int = 0
+
 func _update_rapid_game_labels() -> void:
 	current_rapid_game_label.text = "Current Game: %d" % current_game
 	current_guerilla_wins_label.text = "Victories by Guerilla (%s): %d" % [GameManager.guerilla_player_name,guerilla_victories]
 	current_coin_wins_label.text = "Victories by The Counterinsurgent (%s): %d\n(%d by Taking all Guerilla Pieces, %d by Guerilla running out of Pieces)" % [GameManager.coin_player_name,coin_victories,coin_capture_victories,coin_runout_victories]
 	current_draws_label.text = "Draws: %d" % draws
 	
-	rapid_play_back_to_menu_button.visible = GameManager.tournament_games_left == 0
-	
 	if GameManager.tournament_games_left == 0:
-		var time_taken = Time.get_ticks_msec() - rapid_tournament_start_time
-		rapid_game_time_taken_label.text = "The Rapid Tournament took %d Milliseconds" % time_taken
+		rapid_time_taken = Time.get_ticks_msec() - rapid_tournament_start_time
+		rapid_game_time_taken_label.text = "The Rapid Tournament took %d Milliseconds" % rapid_time_taken
 		rapid_game_time_taken_label.visible = true
 		
 		var turns_text := "Mean no. Turns per Game: %.2f" % get_average_turns()
 		
 		if guerilla_victories > 0:
-			turns_text += "\nMean no. Turns per Guerilla Victory: %.2f" % get_average_guerilla_win_turns()
+			turns_text += "\nMean Turn of Guerilla Victory: %.2f" % get_average_guerilla_win_turns()
 		if coin_victories > 0:
-			turns_text += "\nMean no. Turns per COIN Victory: %.2f" % get_average_coin_win_turns()
+			turns_text += "\nMean Turn of COIN Victory: %.2f" % get_average_coin_win_turns()
 		if draws > 0:
-			turns_text += "\nMean no. Turns per Draw: %.2f" % get_average_draw_turns()
+			turns_text += "\nMean Turn of Draw: %.2f" % get_average_draw_turns()
 		
 		rapid_game_turns_per_game_label.text = turns_text
 		rapid_game_turns_per_game_label.visible = true
-
+	
+	rapid_play_back_to_menu_button.visible = GameManager.tournament_games_left == 0
+	save_rapid_play_results_button.visible = GameManager.tournament_games_left == 0
+	
+	
+	
 func _ready():
 	game_state = GameState.new()
 	game_board = $GameBoard
@@ -343,3 +349,33 @@ func _on_game_over_window_close_requested() -> void:
 		_back_to_menu()
 	else:
 		_next_tournament_game()
+
+func _on_save_rapid_play_results_button_pressed():
+	var printed_string : String = ""
+	printed_string += "Guerilla: %s\nCOIN: %s" % [GameManager.guerilla_player_name,GameManager.coin_player_name]
+	printed_string += "\nTotal no. Games: %d" % current_game
+	printed_string += "\nTotal Time taken for Tournament: %dms" % rapid_time_taken
+	printed_string += "\nMean no. Turns per Game: %.2f" % get_average_turns()
+	
+	printed_string += "\nGuerilla Victories: %d" % guerilla_victories
+	printed_string += "\nTotal COIN Victories: %d" % coin_victories
+	printed_string += "\nCOIN Victories by Capturing: %d" % coin_capture_victories
+	printed_string += "\nCOIN Victories by Guerilla Running out of Pieces: %d" % coin_runout_victories
+	printed_string += "\nDraws: %d" % draws
+	
+	if guerilla_victories > 0:
+		printed_string += "\nMean Turn of Guerilla Victory: %.2f" % get_average_guerilla_win_turns()
+	if coin_victories > 0:
+		printed_string += "\nMean Turn of COIN Victory: %.2f" % get_average_coin_win_turns()
+	if draws > 0:
+		printed_string += "\nMean Turn of Draw: %.2f" % get_average_draw_turns()
+	
+	var guerilla_part := GameManager.guerilla_player_name.validate_filename().replace("_","").to_lower().replace(" ","_")
+	var coin_part := GameManager.coin_player_name.validate_filename().replace("_","").to_lower().replace(" ","_")
+	
+	var file_name := guerilla_part+"_vs_"+coin_part+".txt"
+	var new_file := FileAccess.open("user://tournament_results/"+file_name,FileAccess.WRITE)
+	new_file.store_string(printed_string)
+	new_file.close()
+	
+	save_rapid_play_results_button.disabled = true

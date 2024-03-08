@@ -30,6 +30,9 @@ func choose_best_move() -> Move:
 	
 	var possible_moves := game_state.get_possible_moves()
 	
+	if len(possible_moves) == 0:
+		return
+	
 	for move : Move in possible_moves:
 		var simulated_state := analyzer.simulate_move(game_state,move)
 		

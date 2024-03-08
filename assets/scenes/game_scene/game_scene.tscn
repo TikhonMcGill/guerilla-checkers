@@ -77,6 +77,11 @@ vertical_alignment = 1
 [node name="HSeparator2" type="HSeparator" parent="RapidGamePanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
+[node name="SaveRapidPlayResultsButton" type="Button" parent="RapidGamePanel/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Save results to file"
+
 [node name="RapidPlayBackToMenuButton" type="Button" parent="RapidGamePanel/MarginContainer/VBoxContainer"]
 visible = false
 layout_mode = 2
@@ -159,6 +164,7 @@ text = "Next Tournament Game"
 [node name="MoveTimer" type="Timer" parent="."]
 wait_time = 0.5
 
+[connection signal="pressed" from="RapidGamePanel/MarginContainer/VBoxContainer/SaveRapidPlayResultsButton" to="." method="_on_save_rapid_play_results_button_pressed"]
 [connection signal="pressed" from="RapidGamePanel/MarginContainer/VBoxContainer/RapidPlayBackToMenuButton" to="." method="_back_to_menu"]
 [connection signal="confirmed" from="QuitConfirmationDialog" to="." method="_on_quit_confirmation_dialog_confirmed"]
 [connection signal="close_requested" from="GameOverWindow" to="." method="_on_game_over_window_close_requested"]
