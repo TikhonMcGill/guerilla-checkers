@@ -1,3 +1,10 @@
+Discuss how Neural Networks would be an interesting way of computing evaluation functions, for the future.
+
+Find the papers where the Minimax and other Algorithms were coined, and cite THEM - that should give me more marks
+
+Also, discuss how another improvement would've been creating separate evaluation functions for Guerillas and COINS, since while the game is zero-sum, it is still asymmetric,
+and disadvantage is not one-to-one.
+
 Consider also measuring how long it took for a Tournament to run, as a measure of efficiency etc.
 (In total, and an average time per game)
 
