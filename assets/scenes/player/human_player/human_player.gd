@@ -4,11 +4,12 @@ class_name HumanPlayer
 
 var game_board : GameBoard
 
-var selected_corner : Corner = null
-
 var selected_tile : Tile = null
 
 var can_move = true
+
+var _first_corner_clicked = -1
+var _second_corner_clicked = -1
 
 func do_move() -> void:
 	can_move = true
@@ -36,6 +37,9 @@ func prepare_graphics():
 			setup_coin_graphics()
 
 func setup_guerilla_graphics():
+	_first_corner_clicked = -1
+	_second_corner_clicked = -1
+	
 	var placeable_corners = game_state.get_placeable_corners()
 	
 	for g in range(len(game_board.corners.get_children())):
@@ -70,14 +74,19 @@ func setup_ui(_board : GameBoard):
 		game_board.tile_pressed.connect(_click_on_tile)
 
 func _click_on_corner(corner : Corner):
-	if is_my_turn() == true and can_move == true and corner != null and corner:
+	if is_my_turn() == true and can_move == true and corner:
 		var index = game_board.get_corner_index(corner)
 		if game_state.get_placeable_corners().has(index) == false:
 			return
 		
-		var move = GuerillaPiecePlacementMove.new(index)
-		move_taken.emit(move)
-		can_move = false
+		if _first_corner_clicked == -1:
+			_first_corner_clicked = index
+			return
+		elif _second_corner_clicked == -1:
+			_second_corner_clicked = index
+			var move = GuerillaPiecePlacementMove.new(_first_corner_clicked,_second_corner_clicked)
+			move_taken.emit(move)
+			can_move = false
 
 func _click_on_tile(tile : Tile):
 	if is_my_turn() == false or tile == selected_tile or game_board.cells.has(tile) == false or can_move == false:
@@ -101,11 +110,3 @@ func _click_on_tile(tile : Tile):
 		var move = COINCheckerMovementMove.new(selected_index,clicked_index)
 		move_taken.emit(move)
 		can_move = false
-
-func _select_corner(corner : Corner):
-	if corner.color == game_board.placeable_corner_color:
-		selected_corner = corner
-
-func _deselect_corner():
-	if selected_corner != null:
-		selected_corner = null

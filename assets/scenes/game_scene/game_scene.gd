@@ -99,7 +99,7 @@ func _ready():
 		game_board.represent_game_state(game_state)
 		var board_rect := game_board.get_board_rect()
 		current_game_label.position = Vector2(board_rect.end.x,board_rect.position.y)
-		game_state.guerilla_piece_placed.connect(game_board._on_game_state_guerilla_piece_placed)
+		game_state.guerilla_pieces_placed.connect(game_board._on_game_state_guerilla_pieces_placed)
 		game_state.coin_checker_moved.connect(game_board._on_game_state_coin_checker_moved)
 		game_state.guerilla_piece_captured.connect(game_board._on_game_state_guerilla_piece_captured)
 		game_state.coin_checker_captured.connect(game_board._on_game_state_coin_checker_captured)
@@ -302,8 +302,6 @@ func get_current_player() -> Player:
 	return null
 
 func simulate_move(move : Move) -> void:
-	move_timer.start()
-	
 	game_state.take_move(move)
 	game_board.default_color_board()
 	

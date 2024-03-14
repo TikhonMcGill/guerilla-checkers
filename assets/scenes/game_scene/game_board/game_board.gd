@@ -252,13 +252,17 @@ func get_cell_tile(cell : int) -> Tile:
 func get_graphical_corner(corner : int) -> Corner:
 	return corners.get_child(corner)
 
-func _on_game_state_guerilla_piece_placed(corner : int):
-	var new_piece := _create_guerilla_piece(corner,false)
-	new_piece.modulate = corner_color.inverted().lightened(0.2)
+func _on_game_state_guerilla_pieces_placed(corner_1 : int,corner_2 : int):
+	var first_piece := _create_guerilla_piece(corner_1,false)
+	first_piece.modulate = corner_color.inverted().lightened(0.2)
+	var second_piece := _create_guerilla_piece(corner_2,false)
+	second_piece.modulate = corner_color.inverted().lightened(0.2)
 	var tween := get_tree().create_tween()
 	
-	tween.tween_property(new_piece,"modulate:a",1.0,0.1)
-	tween.tween_property(new_piece,"modulate",guerilla_piece_color,0.4)
+	tween.tween_property(first_piece,"modulate:a",1.0,0.1)
+	tween.tween_property(first_piece,"modulate",guerilla_piece_color,0.4)
+	tween.tween_property(second_piece,"modulate:a",1.0,0.1)
+	tween.tween_property(second_piece,"modulate",guerilla_piece_color,0.4)
 	
 	await tween.finished
 	animation_complete.emit()
