@@ -15,8 +15,6 @@ var profile : MinimaxProfile = preload("res://assets/resources/placeholder_minim
 
 var analyzer : GameStateAnalyzer = GameStateAnalyzer.new()
 
-var maintain_guerilla_turn := true
-
 @onready var move_timer: Timer = $MoveTimer
 
 class MinimaxOutput:
