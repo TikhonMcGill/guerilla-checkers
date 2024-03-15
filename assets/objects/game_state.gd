@@ -9,7 +9,7 @@ class_name GameState
 ##Player that is playing using Checkers.
 
 ##Emitted when the Guerilla Places their pieces - used for animation
-signal guerilla_pieces_placed(corner_1 : int,corner_2 : int)
+signal guerilla_piece_placed(corner : int)
 
 ##Emitted when the COIN Player moves a piece - used for animation
 signal coin_checker_moved(cell_from : int,cell_to : int)
@@ -289,6 +289,7 @@ func get_possible_corner_pairs() -> Array:
 				draw = false
 				pairs.append([corner,n])
 		if draw == true:
+			print("Found draw!")
 			pairs.append([corner,-1]) #If no free adjacent corners after first placement, then this is a draw corner
 	
 	return pairs
@@ -393,6 +394,8 @@ func is_coin_victorious() -> bool:
 ##A Method to place a Guerilla Piece, updating the Game State accordingly
 func place_guerilla_piece(corner : int) -> void:
 	assert((corner >= 0 or corner == -1) and corner <= 48,"Corner to place into must be between 0 and 48")
+	
+	guerilla_piece_placed.emit(corner)
 	
 	#If the corner to be placed in is -1, that's the Draw Corner, so we're drawed
 	if corner == -1:
@@ -499,7 +502,6 @@ func take_move(move : Move) -> void:
 	if move is GuerillaPiecePlacementMove:
 		place_guerilla_piece(move.first_corner)
 		place_guerilla_piece(move.second_corner)
-		guerilla_pieces_placed.emit(move.first_corner,move.second_corner)
 	elif move is COINCheckerMovementMove:
 		move_coin_checker(move.cell_from,move.cell_to)
 

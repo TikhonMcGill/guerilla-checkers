@@ -8,8 +8,11 @@ var selected_tile : Tile = null
 
 var can_move = true
 
-var _first_corner_clicked = -1
-var _second_corner_clicked = -1
+var _first_corner_clicked = -1 ##The index of the first corner clicked, if the player is a Guerilla
+var _second_corner_clicked = -1 ##The index of the second corner clicked, if the player is a Guerilla
+
+var _first_clicked_corner : Corner = null ##The object representing the first corner clicked, if the player is a Guerilla
+var _second_clicked_corner : Corner = null ##The object representing the second corner clicked, if the player is a Guerilla
 
 func do_move() -> void:
 	can_move = true
@@ -40,8 +43,24 @@ func setup_guerilla_graphics():
 	_first_corner_clicked = -1
 	_second_corner_clicked = -1
 	
-	var placeable_corners = game_state.get_placeable_corners()
+	if _first_clicked_corner:
+		_first_clicked_corner.set_color(game_board.corner_color)
+		_first_clicked_corner = null
+	if _second_clicked_corner:
+		_second_clicked_corner.set_color(game_board.corner_color)
+		_second_clicked_corner = null
 	
+	
+	var placeable_corners = []
+	
+	for g in game_state.get_possible_corner_pairs():
+		var corner = g[0]
+		if placeable_corners.has(corner) == false:
+			placeable_corners.append(corner)
+	
+	_paint_placeable_corners(placeable_corners)
+
+func _paint_placeable_corners(placeable_corners : Array) -> void:
 	for g in range(len(game_board.corners.get_children())):
 		var corner : Corner = game_board.corners.get_child(g)
 		if g in placeable_corners:
@@ -76,17 +95,35 @@ func setup_ui(_board : GameBoard):
 func _click_on_corner(corner : Corner):
 	if is_my_turn() == true and can_move == true and corner:
 		var index = game_board.get_corner_index(corner)
-		if game_state.get_placeable_corners().has(index) == false:
-			return
 		
 		if _first_corner_clicked == -1:
 			_first_corner_clicked = index
+			_first_clicked_corner = corner
+			_handle_second_placeable_corner()
 			return
 		elif _second_corner_clicked == -1:
 			_second_corner_clicked = index
+			_second_clicked_corner = corner
+			_second_clicked_corner.set_color(game_board.placeable_corner_color.inverted())
 			var move = GuerillaPiecePlacementMove.new(_first_corner_clicked,_second_corner_clicked)
 			move_taken.emit(move)
 			can_move = false
+
+func _handle_second_placeable_corner() -> void:
+	var second_placeables = []
+	for c in game_state.get_adjacent_corners(_first_corner_clicked):
+		if game_state.is_corner_occupied(c) == false:
+			second_placeables.append(c)
+	
+	#If there are no second corners to place, it's a draw
+	if len(second_placeables) == 0:
+		var move = GuerillaPiecePlacementMove.new(_first_corner_clicked,-1)
+		move_taken.emit(move)
+		can_move = false
+		return
+	
+	_paint_placeable_corners(second_placeables)
+	_first_clicked_corner.set_color(game_board.placeable_corner_color.inverted())
 
 func _click_on_tile(tile : Tile):
 	if is_my_turn() == false or tile == selected_tile or game_board.cells.has(tile) == false or can_move == false:
