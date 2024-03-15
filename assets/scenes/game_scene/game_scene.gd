@@ -312,6 +312,7 @@ func simulate_move(move : Move) -> void:
 	
 	if GameManager.rapid_tournament == false:
 		await game_board.animation_complete
+		await get_tree().process_frame
 	else:
 		await get_tree().process_frame
 	

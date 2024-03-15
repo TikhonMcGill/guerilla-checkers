@@ -14,6 +14,20 @@ var _second_corner_clicked = -1 ##The index of the second corner clicked, if the
 var _first_clicked_corner : Corner = null ##The object representing the first corner clicked, if the player is a Guerilla
 var _second_clicked_corner : Corner = null ##The object representing the second corner clicked, if the player is a Guerilla
 
+func get_valid_corners() -> Array[int]:
+	var corners : Array[int] = []
+	
+	if _first_corner_clicked == -1:
+		for m in game_state.get_possible_moves():
+			if m is GuerillaPiecePlacementMove:
+				corners.append(m.first_corner)
+	else:
+		for m in game_state.get_possible_moves():
+			if m is GuerillaPiecePlacementMove and m.first_corner == _first_corner_clicked:
+				corners.append(m.second_corner)
+	
+	return corners
+
 func do_move() -> void:
 	can_move = true
 	update_interface()
@@ -95,6 +109,9 @@ func setup_ui(_board : GameBoard):
 func _click_on_corner(corner : Corner):
 	if is_my_turn() == true and can_move == true and corner:
 		var index = game_board.get_corner_index(corner)
+		
+		if (index in get_valid_corners()) == false:
+			return
 		
 		if _first_corner_clicked == -1:
 			_first_corner_clicked = index

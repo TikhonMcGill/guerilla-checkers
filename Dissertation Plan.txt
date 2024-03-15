@@ -1,6 +1,12 @@
 Consider also measuring how long it took for a Tournament to run, as a measure of efficiency etc.
 (In total, and an average time per game)
 
+Mention that the two-piece placement was a workaround, since the original implementation was built
+for 1 piece = 1 move, and this led to several things, including:
+	1. Due to 2 pieces being placed in a move, they are animated at once, instead of in order
+	2. Extra variables have to be used for the human player to ensure they're placing their pieces in
+	valid corners
+
 Upload into the repo (at the end) the different Minimax Profiles I experimented with
 
 Discuss the Random Computer Player (for testing, mostly)

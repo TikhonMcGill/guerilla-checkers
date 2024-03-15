@@ -289,7 +289,6 @@ func get_possible_corner_pairs() -> Array:
 				draw = false
 				pairs.append([corner,n])
 		if draw == true:
-			print("Found draw!")
 			pairs.append([corner,-1]) #If no free adjacent corners after first placement, then this is a draw corner
 	
 	return pairs
