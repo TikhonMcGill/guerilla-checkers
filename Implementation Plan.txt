@@ -1,7 +1,3 @@
-Double-Placement Implementation:
-	1. Fix Game State (Draws make work)
-	2. Fix for Minimax
-
 (When Finished)
 1. Make Android Build, see if it works, send to HaWo so he can send it to Brian Train 
 
