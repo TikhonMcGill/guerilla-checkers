@@ -57,6 +57,8 @@ var total_guerilla_win_turns : float = 0
 var total_coin_win_turns : float = 0
 var total_draw_turns : float = 0
 
+var total_coin_checkers_left : float = 0
+
 var current_player : GameState.PLAYER = GameState.PLAYER.GUERILLA
 
 var rapid_time_taken : int = 0
@@ -67,7 +69,7 @@ func _update_rapid_game_labels() -> void:
 	current_coin_wins_label.text = "Victories by The Counterinsurgent (%s): %d\n(%d by Taking all Guerilla Pieces, %d by Guerilla running out of Pieces)" % [GameManager.coin_player_name,coin_victories,coin_capture_victories,coin_runout_victories]
 	current_draws_label.text = "Draws: %d" % draws
 	
-	if GameManager.tournament_games_left == 0:
+	if GameManager.tournament_games_left < 1:
 		rapid_time_taken = Time.get_ticks_msec() - rapid_tournament_start_time
 		rapid_game_time_taken_label.text = "The Rapid Tournament took %d Milliseconds" % rapid_time_taken
 		rapid_game_time_taken_label.visible = true
@@ -78,6 +80,7 @@ func _update_rapid_game_labels() -> void:
 			turns_text += "\nMean Turn of Guerilla Victory: %.2f" % get_average_guerilla_win_turns()
 		if coin_victories > 0:
 			turns_text += "\nMean Turn of COIN Victory: %.2f" % get_average_coin_win_turns()
+			turns_text += "\nThere were %.2f COIN Checkers left in a COIN Victory on average" % get_average_coin_checkers()
 		if draws > 0:
 			turns_text += "\nMean Turn of Draw: %.2f" % get_average_draw_turns()
 		
@@ -86,8 +89,6 @@ func _update_rapid_game_labels() -> void:
 	
 	rapid_play_back_to_menu_button.visible = GameManager.tournament_games_left == 0
 	save_rapid_play_results_button.visible = GameManager.tournament_games_left == 0
-	
-	
 	
 func _ready():
 	game_state = GameState.new()
@@ -123,7 +124,7 @@ func restart_game():
 	coin_player.game_state = game_state
 	
 	if GameManager.rapid_tournament == false:
-		game_state.guerilla_piece_placed.connect(game_board._on_game_state_guerilla_piece_placed)
+		game_state.guerilla_piece_placed.connect(game_board.animate_corner_placement)
 		game_state.coin_checker_moved.connect(game_board._on_game_state_coin_checker_moved)
 		game_state.guerilla_piece_captured.connect(game_board._on_game_state_guerilla_piece_captured)
 		game_state.coin_checker_captured.connect(game_board._on_game_state_coin_checker_captured)
@@ -228,6 +229,7 @@ func _on_game_state_game_over(winner : GameState.PLAYER):
 	_increment_winner(winner)
 	#Increment no. Types of COIN Victories, dependent on the situation
 	if winner == GameState.PLAYER.COIN:
+		total_coin_checkers_left += len(game_state.coin_checker_positions)
 		if game_state.guerilla_pieces_left == 0:
 			coin_runout_victories += 1
 		else:
@@ -264,6 +266,12 @@ func get_average_coin_win_turns() -> float:
 		return -1.0
 	
 	return total_coin_win_turns / coin_victories
+
+func get_average_coin_checkers() -> float:
+	if coin_victories == 0:
+		return -1.0
+	
+	return total_coin_checkers_left / coin_victories
 
 func get_average_draw_turns() -> float:
 	if draws == 0:
@@ -353,13 +361,14 @@ func _on_save_rapid_play_results_button_pressed():
 	var printed_string : String = ""
 	printed_string += "Guerilla: %s\nCOIN: %s" % [GameManager.guerilla_player_name,GameManager.coin_player_name]
 	printed_string += "\nTotal no. Games: %d" % current_game
-	printed_string += "\nTotal Time taken for Tournament: %dms" % rapid_time_taken
+	printed_string += "\nTotal Time taken for Tournament: %dms (%.2fms per game)" % [rapid_time_taken, float(rapid_time_taken)/current_game]
 	printed_string += "\nMean no. Turns per Game: %.2f" % get_average_turns()
 	
 	printed_string += "\nGuerilla Victories: %d" % guerilla_victories
 	printed_string += "\nTotal COIN Victories: %d" % coin_victories
 	printed_string += "\nCOIN Victories by Capturing: %d" % coin_capture_victories
 	printed_string += "\nCOIN Victories by Guerilla Running out of Pieces: %d" % coin_runout_victories
+	printed_string += "\nMean no. COIN Checkers left per COIN Victory: %.2f" % get_average_coin_checkers()
 	printed_string += "\nDraws: %d" % draws
 	
 	if guerilla_victories > 0:

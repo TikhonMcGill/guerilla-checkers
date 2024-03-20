@@ -1,6 +1,9 @@
 Consider also measuring how long it took for a Tournament to run, as a measure of efficiency etc.
 (In total, and an average time per game)
 
+Discuss next stage of tuning - two placements counting as one move for the Guerilla, and its
+ramifications
+
 Mention that the two-piece placement was a workaround, since the original implementation was built
 for 1 piece = 1 move, and this led to several things, including:
 	1. Due to 2 pieces being placed in a move, they are animated at once, instead of in order
