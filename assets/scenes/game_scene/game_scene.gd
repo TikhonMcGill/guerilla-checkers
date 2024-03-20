@@ -57,7 +57,8 @@ var total_guerilla_win_turns : float = 0
 var total_coin_win_turns : float = 0
 var total_draw_turns : float = 0
 
-var total_coin_checkers_left : float = 0
+var total_win_coin_checkers_left : float = 0
+var total_draw_coin_checkers_left : float = 0
 
 var current_player : GameState.PLAYER = GameState.PLAYER.GUERILLA
 
@@ -80,15 +81,16 @@ func _update_rapid_game_labels() -> void:
 			turns_text += "\nMean Turn of Guerilla Victory: %.2f" % get_average_guerilla_win_turns()
 		if coin_victories > 0:
 			turns_text += "\nMean Turn of COIN Victory: %.2f" % get_average_coin_win_turns()
-			turns_text += "\nThere were %.2f COIN Checkers left in a COIN Victory on average" % get_average_coin_checkers()
+			turns_text += "\nThere were %.2f COIN Checkers left in a COIN Victory on average" % get_win_average_coin_checkers()
 		if draws > 0:
 			turns_text += "\nMean Turn of Draw: %.2f" % get_average_draw_turns()
+			turns_text += "\nThere were %.2f COIN Checkers left in a Draw on average" % get_draw_average_coin_checkers()
 		
 		rapid_game_turns_per_game_label.text = turns_text
 		rapid_game_turns_per_game_label.visible = true
 	
-	rapid_play_back_to_menu_button.visible = GameManager.tournament_games_left == 0
-	save_rapid_play_results_button.visible = GameManager.tournament_games_left == 0
+	rapid_play_back_to_menu_button.visible = GameManager.tournament_games_left < 1
+	save_rapid_play_results_button.visible = GameManager.tournament_games_left < 1
 	
 func _ready():
 	game_state = GameState.new()
@@ -206,7 +208,7 @@ func _unhandled_key_input(event):
 func _on_quit_confirmation_dialog_confirmed():
 	get_tree().change_scene_to_file(MAIN_MENU_PATH)
 
-func _process(delta):
+func _process(_delta):
 	game_board.update_guerilla_piece_left_label(game_state.guerilla_pieces_left)
 	game_board.show_current_player(game_state.get_current_player())
 	
@@ -229,11 +231,14 @@ func _on_game_state_game_over(winner : GameState.PLAYER):
 	_increment_winner(winner)
 	#Increment no. Types of COIN Victories, dependent on the situation
 	if winner == GameState.PLAYER.COIN:
-		total_coin_checkers_left += len(game_state.coin_checker_positions)
+		total_win_coin_checkers_left += len(game_state.coin_checker_positions)
 		if game_state.guerilla_pieces_left == 0:
 			coin_runout_victories += 1
 		else:
 			coin_capture_victories += 1
+	
+	if winner == GameState.PLAYER.NOBODY:
+		total_draw_coin_checkers_left += len(game_state.coin_checker_positions)
 	
 	if GameManager.rapid_tournament == false:
 		current_game_label.visible = false
@@ -267,11 +272,17 @@ func get_average_coin_win_turns() -> float:
 	
 	return total_coin_win_turns / coin_victories
 
-func get_average_coin_checkers() -> float:
+func get_win_average_coin_checkers() -> float:
 	if coin_victories == 0:
 		return -1.0
 	
-	return total_coin_checkers_left / coin_victories
+	return total_win_coin_checkers_left / coin_victories
+
+func get_draw_average_coin_checkers() -> float:
+	if draws == 0:
+		return -1.0
+	
+	return total_draw_coin_checkers_left / coin_victories
 
 func get_average_draw_turns() -> float:
 	if draws == 0:
@@ -310,6 +321,9 @@ func get_current_player() -> Player:
 	return null
 
 func simulate_move(move : Move) -> void:
+	if move == null:
+		return
+	
 	game_state.take_move(move)
 	game_board.default_color_board()
 	
@@ -368,15 +382,16 @@ func _on_save_rapid_play_results_button_pressed():
 	printed_string += "\nTotal COIN Victories: %d" % coin_victories
 	printed_string += "\nCOIN Victories by Capturing: %d" % coin_capture_victories
 	printed_string += "\nCOIN Victories by Guerilla Running out of Pieces: %d" % coin_runout_victories
-	printed_string += "\nMean no. COIN Checkers left per COIN Victory: %.2f" % get_average_coin_checkers()
 	printed_string += "\nDraws: %d" % draws
 	
 	if guerilla_victories > 0:
 		printed_string += "\nMean Turn of Guerilla Victory: %.2f" % get_average_guerilla_win_turns()
 	if coin_victories > 0:
 		printed_string += "\nMean Turn of COIN Victory: %.2f" % get_average_coin_win_turns()
+		printed_string += "\nMean no. COIN Checkers left per COIN Victory: %.2f" % get_win_average_coin_checkers()
 	if draws > 0:
 		printed_string += "\nMean Turn of Draw: %.2f" % get_average_draw_turns()
+		printed_string += "\nMean no. COIN Checkers left per Draw: %.2f" % get_draw_average_coin_checkers()
 	
 	var guerilla_part := GameManager.guerilla_player_name.validate_filename().replace("_","").to_lower().replace(" ","_")
 	var coin_part := GameManager.coin_player_name.validate_filename().replace("_","").to_lower().replace(" ","_")

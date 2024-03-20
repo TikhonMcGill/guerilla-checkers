@@ -281,7 +281,6 @@ func get_possible_corner_pairs() -> Array:
 	else:
 		return []
 	
-	var second_corners : Array[int] = []
 	for corner in first_corners:
 		var draw = true
 		for n in get_adjacent_corners(corner):
