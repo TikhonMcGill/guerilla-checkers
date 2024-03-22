@@ -23,7 +23,8 @@ signal profile_completed(profile : MinimaxProfile)
 @onready var edge_threatened_checkers_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/EdgeThreatenedCheckersUtilitySpinBox
 @onready var threatened_guerilla_pieces_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/ThreatenedGuerillaPiecesUtilitySpinBox
 
-@onready var guerilla_pieces_between_checker_corners_utility_spinbox = $EvaluationsContainer/VBoxContainer/GuerillaPiecesBetweenCheckerCornersUtilitySpinbox
+@onready var guerilla_pieces_between_checker_corners_utility_spinbox : SpinBox = $EvaluationsContainer/VBoxContainer/GuerillaPiecesBetweenCheckerCornersUtilitySpinbox
+@onready var coin_checkers_taken_utility_spin_box = $EvaluationsContainer/VBoxContainer/COINCheckersTakenUtilitySpinBox
 
 @onready var same_name_label: Label = $SameNameLabel
 
@@ -46,7 +47,10 @@ func clear() -> void:
 	guerilla_threatened_checkers_utility_spin_box.value = 0
 	edge_threatened_checkers_utility_spin_box.value = 0
 	threatened_guerilla_pieces_utility_spin_box.value = 0
-
+	
+	guerilla_pieces_between_checker_corners_utility_spinbox.value = 0
+	coin_checkers_taken_utility_spin_box.value = 0
+	
 func load_profile(profile : MinimaxProfile):
 	profile_name_edit.text = profile.profile_name
 	move_sorting_option_button.selected = profile.move_sorting
@@ -67,6 +71,7 @@ func load_profile(profile : MinimaxProfile):
 	threatened_guerilla_pieces_utility_spin_box.value = profile.threatened_guerilla_pieces_utility
 	
 	guerilla_pieces_between_checker_corners_utility_spinbox.value = profile.guerilla_pieces_between_coin_checkers_utility
+	coin_checkers_taken_utility_spin_box.value = profile.coin_checkers_taken_utility
 
 func _on_confirm_button_pressed():
 	if profile_name_edit.text.validate_filename() == "":
@@ -104,6 +109,7 @@ func _on_confirm_button_pressed():
 	new_profile.threatened_guerilla_pieces_utility = threatened_guerilla_pieces_utility_spin_box.value
 	
 	new_profile.guerilla_pieces_between_coin_checkers_utility = guerilla_pieces_between_checker_corners_utility_spinbox.value
+	new_profile.coin_checkers_taken_utility = coin_checkers_taken_utility_spin_box.value
 	
 	profile_completed.emit(new_profile)
 

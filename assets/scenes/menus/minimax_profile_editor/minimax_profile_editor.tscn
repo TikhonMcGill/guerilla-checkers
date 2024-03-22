@@ -208,6 +208,13 @@ allow_greater = true
 allow_lesser = true
 prefix = "Guerilla Pieces Between COIN Checkers Utility:"
 
+[node name="COINCheckersTakenUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+prefix = "COIN Checkers Taken Utility:"
+
 [node name="ConfirmButton" type="Button" parent="PanelContainer/MarginContainer/MinimaxEditor"]
 layout_mode = 2
 text = "Confirm Minimax Profile"

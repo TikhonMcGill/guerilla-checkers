@@ -116,6 +116,10 @@ func count_guerilla_pieces_between_coin_checkers(game_state : GameState) -> int:
 	
 	return count
 
+##Method to count the number of COIN Checkers taken
+func count_coin_checkers_taken(game_state : GameState) -> int:
+	return 6 - len(game_state.coin_checker_positions)
+
 ##Method to simulate a move in the current game state, returning a game state AFTER the move has been
 ##taken
 func simulate_move(game_state : GameState,move : Move) -> GameState:
