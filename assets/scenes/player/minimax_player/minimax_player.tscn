@@ -4,3 +4,8 @@
 
 [node name="MinimaxPlayer" type="Node"]
 script = ExtResource("1_hqk6b")
+
+[node name="TimeoutTimer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="TimeoutTimer" to="." method="_on_timer_timeout"]

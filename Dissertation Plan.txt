@@ -8,6 +8,8 @@ Project Log 22/3/2024:
 	Pieces Between COIN Checkers - this is multiplied by the number of
 	Guerilla Pieces that are between two COIN Checkers (i.e. "Safe" Guerilla
 	Pieces)
+	4. Implement new Minimax Parameter - count of COIN Checkers taken - this
+	is to potentially Incentivize the Guerilla to take as many COIN Piece
 	
 Discuss Intervals of Utility (by default 1, so all moves of utility within 1 or -1 are considered equal),
 and mention how this could be something for future analysis. They would be another interesting 

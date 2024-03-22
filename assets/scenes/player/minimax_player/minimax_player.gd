@@ -29,7 +29,7 @@ class MinimaxOutput:
 func do_move() -> void:
 	timeout_timer.wait_time = profile.timeout / 1000
 	timeout_timer.start()
-	var output := _minimax(profile.cutoff_depth,true,game_state,-INF,INF,profile.timeout)
+	var output := _minimax(profile.cutoff_depth,true,game_state,-INF,INF)
 	move_taken.emit(output.move)
 	timeout_timer.stop()
 
@@ -170,7 +170,7 @@ func _get_cutoff(state : GameState) -> int:
 	return 1
 
 ##A Function running the Minimax algorithm, with cutoff - getting the Utility of a state and the best move
-func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:float,time_left:int) -> MinimaxOutput:
+func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:float) -> MinimaxOutput:
 	if _is_terminal_state(start_state) == true or depth == 0:
 		return MinimaxOutput.new(_get_state_utility(start_state),null)
 	
@@ -189,17 +189,10 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			return MinimaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
-			var end_time := Time.get_ticks_msec()
-			
-			var time_taken := end_time - start_time
-			time_left -= time_taken
-			print(time_taken)
-			print(time_left)
-			
 			var result := _get_result(start_state,a)
 			var cutoff := _get_cutoff(result)
 			
-			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta).evaluation
 			
 			if evaluation > (best_evaluation + profile.utility_interval):
 				best_evaluation = evaluation
@@ -210,8 +203,6 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			alpha = max(alpha,evaluation)
 			
 			if beta <= alpha or timeout_timer.time_left <= 0:
-				if time_left <= 0:
-					print("TIMEOUT!")
 				return MinimaxOutput.new(evaluation,best_moves.pick_random())
 		
 		return MinimaxOutput.new(best_evaluation,best_moves.pick_random())
@@ -226,15 +217,10 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			return MinimaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
-			var end_time := Time.get_ticks_msec()
-			
-			var time_taken := end_time - start_time
-			time_left -= time_taken
-			
 			var result := _get_result(start_state,a)
 			var cutoff := _get_cutoff(result)
 			
-			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta).evaluation
 			
 			if evaluation < worst_evaluation - profile.utility_interval:
 				worst_evaluation = evaluation
