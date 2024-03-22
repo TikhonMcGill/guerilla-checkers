@@ -4,16 +4,27 @@ Project Log 22/3/2024:
 	Actions with an evaluation between (Highest Utility - Interval) and (Highest Utility + Interval)
 	are considered equal - the default is 1 for all profiles, and it will not be experimented with,
 	but would be interesting for future projects.
-
+	3. Implemented a new Minimax Evaluation Parameter - Utility for
+	Pieces Between COIN Checkers - this is multiplied by the number of
+	Guerilla Pieces that are between two COIN Checkers (i.e. "Safe" Guerilla
+	Pieces)
+	
 Discuss Intervals of Utility (by default 1, so all moves of utility within 1 or -1 are considered equal),
 and mention how this could be something for future analysis. They would be another interesting 
 parameter to tune.
+
+Discuss Further Insights from the game itself that were gained:
+	1. It is of great use to place pieces in corners between two COIN Checkers.
+	This was implied by not counting Pieces between Checkers as threatened, but from
+	own playing was an important step in winning (especially in the early game, when COIN
+	checkers are bunched up), so was incentivized as its own Evaluation Parameter,
+	different from the starting ones.
 
 Have a Criticisms Section, with:
 	1. Lack of Commenting, which would make work built on implementation difficult
 	2. Lack of Explanation for Minimax Parameters
 	3. No way of setting Random Seeds, so experiments are not reproducible 
-
+	
 Discuss limitation of Experiment - Random Seed does NOT set (was found later in project), so the
 results are NOT reproducible.
 

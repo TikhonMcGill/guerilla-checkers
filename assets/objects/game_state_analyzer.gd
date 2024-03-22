@@ -97,6 +97,25 @@ func count_threatened_guerilla_pieces(game_state : GameState) -> int:
 	
 	return count
 
+##Method to count the number of Guerilla Pieces in Corners between COIN Checkers
+func count_guerilla_pieces_between_coin_checkers(game_state : GameState) -> int:
+	var count := 0
+	
+	var existing_pairs := []
+	
+	for checker in game_state.coin_checker_positions:
+		for neighbor in game_state.get_adjacent_cells(checker):
+			if game_state.is_cell_occupied(neighbor) == true:
+				var possible_guerilla_corner = game_state.get_corner_between_cells(checker,neighbor)
+				if game_state.is_corner_occupied(possible_guerilla_corner) == true and existing_pairs.has([checker,neighbor]) == false:
+					count += 1
+					
+					#Append both combinations to existing pairs to prevent recounting
+					existing_pairs.append([checker,neighbor])
+					existing_pairs.append([neighbor,checker])
+	
+	return count
+
 ##Method to simulate a move in the current game state, returning a game state AFTER the move has been
 ##taken
 func simulate_move(game_state : GameState,move : Move) -> GameState:

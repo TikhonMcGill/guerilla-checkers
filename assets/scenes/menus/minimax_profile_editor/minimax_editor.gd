@@ -23,6 +23,8 @@ signal profile_completed(profile : MinimaxProfile)
 @onready var edge_threatened_checkers_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/EdgeThreatenedCheckersUtilitySpinBox
 @onready var threatened_guerilla_pieces_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/ThreatenedGuerillaPiecesUtilitySpinBox
 
+@onready var guerilla_pieces_between_checker_corners_utility_spinbox = $EvaluationsContainer/VBoxContainer/GuerillaPiecesBetweenCheckerCornersUtilitySpinbox
+
 @onready var same_name_label: Label = $SameNameLabel
 
 func clear() -> void:
@@ -63,6 +65,8 @@ func load_profile(profile : MinimaxProfile):
 	guerilla_threatened_checkers_utility_spin_box.value = profile.guerilla_threatened_checkers_utility
 	edge_threatened_checkers_utility_spin_box.value = profile.edge_threatened_checkers_utility
 	threatened_guerilla_pieces_utility_spin_box.value = profile.threatened_guerilla_pieces_utility
+	
+	guerilla_pieces_between_checker_corners_utility_spinbox.value = profile.guerilla_pieces_between_coin_checkers_utility
 
 func _on_confirm_button_pressed():
 	if profile_name_edit.text.validate_filename() == "":
@@ -98,6 +102,8 @@ func _on_confirm_button_pressed():
 	new_profile.guerilla_threatened_checkers_utility = guerilla_threatened_checkers_utility_spin_box.value
 	new_profile.edge_threatened_checkers_utility = edge_threatened_checkers_utility_spin_box.value
 	new_profile.threatened_guerilla_pieces_utility = threatened_guerilla_pieces_utility_spin_box.value
+	
+	new_profile.guerilla_pieces_between_coin_checkers_utility = guerilla_pieces_between_checker_corners_utility_spinbox.value
 	
 	profile_completed.emit(new_profile)
 

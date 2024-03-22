@@ -140,6 +140,9 @@ func _get_state_utility(state : GameState) -> float:
 	if is_equal_approx(profile.threatened_guerilla_pieces_utility,0) == false:
 		utility += (analyzer.count_threatened_guerilla_pieces(state) * profile.threatened_guerilla_pieces_utility)
 	
+	if is_equal_approx(profile.guerilla_pieces_between_coin_checkers_utility,0) == false:
+		utility += (analyzer.count_guerilla_pieces_between_coin_checkers(state) * profile.guerilla_pieces_between_coin_checkers_utility)
+	
 	#Since the Utility is from the perspective of the Guerilla, if the Player is a Counterinsurgent,
 	#we negate the utility (the advantage of the guerilla is the disadvantage of the COIN, and vice versa)
 	
