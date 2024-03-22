@@ -4,7 +4,3 @@
 
 [node name="MinimaxPlayer" type="Node"]
 script = ExtResource("1_hqk6b")
-
-[node name="MoveTimer" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
