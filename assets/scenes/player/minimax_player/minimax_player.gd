@@ -174,8 +174,6 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 	if _is_terminal_state(start_state) == true or depth == 0:
 		return MinimaxOutput.new(_get_state_utility(start_state),null)
 	
-	var start_time := Time.get_ticks_msec()
-	
 	var best_moves : Array[Move] = []
 	
 	if maximizing == true:
@@ -195,7 +193,7 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta).evaluation
 			
 			if evaluation > (best_evaluation + profile.utility_interval):
-				best_evaluation = evaluation
+				best_evaluation = evaluation + profile.utility_interval
 				best_moves = [a]
 			elif _is_within_interval(evaluation,best_evaluation) == true:
 				best_moves.append(a)
@@ -222,8 +220,8 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			
 			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta).evaluation
 			
-			if evaluation < worst_evaluation - profile.utility_interval:
-				worst_evaluation = evaluation
+			if evaluation < (worst_evaluation - profile.utility_interval):
+				worst_evaluation = evaluation - profile.utility_interval
 				best_moves = [a]
 			elif _is_within_interval(evaluation,worst_evaluation) == true:
 				best_moves.append(a)

@@ -116,6 +116,8 @@ func _ready():
 	
 	current_game_label.visible = GameManager.is_tournament()
 	
+	await get_tree().process_frame
+	
 	guerilla_player.do_move()
 
 func restart_game():

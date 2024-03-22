@@ -58,6 +58,7 @@ func load_profile(profile : MinimaxProfile):
 	
 	victory_utility_spin_box.value = profile.victory_utility
 	defeat_utility_spin_box.value = profile.defeat_utility
+	draw_utility_spin_box.value = profile.draw_utility
 	pieces_left_utility_spin_box.value = profile.pieces_left_utility
 	
 	pieces_on_board_utility_spin_box.value = profile.pieces_on_board_utility
