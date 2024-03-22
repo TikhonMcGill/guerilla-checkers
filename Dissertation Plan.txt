@@ -1,3 +1,9 @@
+Project Log 22/3/2024:
+	1. Removed "Random Seed", since it's misinformative - Random Seeds don't work for Minimax
+
+Discuss limitation of Experiment - Random Seed does NOT set (was found later in project), so the
+results are NOT reproducible.
+
 Consider also measuring how long it took for a Tournament to run, as a measure of efficiency etc.
 (In total, and an average time per game)
 

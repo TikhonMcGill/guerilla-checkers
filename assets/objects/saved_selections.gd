@@ -13,8 +13,6 @@ const MINIMAX_PLAYER : String = "MMX"
 @export var guerilla_player_type : String = HUMAN_PLAYER
 @export var coin_player_type : String = HUMAN_PLAYER
 
-@export var random_seed : int = 1
-
 @export var tournament : bool = false
 @export var tournament_games : int = 2
 @export var rapid_tournament : bool = false
