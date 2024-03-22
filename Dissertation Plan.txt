@@ -10,6 +10,10 @@ Project Log 22/3/2024:
 	Pieces)
 	4. Implement new Minimax Parameter - count of COIN Checkers taken - this
 	is to potentially Incentivize the Guerilla to take as many COIN Piece
+	5. Implemented a Proper Timeout to Minimax - there is now a Timer which,
+	when it reaches 0, makes the Minimax Return - before, there was a hacky
+	solution of counting milliseconds since the engine start time, subtracting,
+	and checking if it's zero, which was a messy solution 
 	
 Discuss Intervals of Utility (by default 1, so all moves of utility within 1 or -1 are considered equal),
 and mention how this could be something for future analysis. They would be another interesting 
