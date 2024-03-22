@@ -195,10 +195,10 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			
 			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
-			if evaluation > best_evaluation:
+			if evaluation > (best_evaluation + profile.utility_interval):
 				best_evaluation = evaluation
 				best_moves = [a]
-			elif is_equal_approx(evaluation,best_evaluation) == true:
+			elif _is_within_interval(evaluation,best_evaluation) == true:
 				best_moves.append(a)
 			
 			alpha = max(alpha,evaluation)
@@ -226,12 +226,12 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			var result := _get_result(start_state,a)
 			var cutoff := _get_cutoff(result)
 			
-			var evaluation : int = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
-			if evaluation < worst_evaluation:
+			if evaluation < worst_evaluation - profile.utility_interval:
 				worst_evaluation = evaluation
 				best_moves = [a]
-			elif is_equal_approx(evaluation,worst_evaluation) == true:
+			elif _is_within_interval(evaluation,worst_evaluation) == true:
 				best_moves.append(a)
 			
 			beta = min(beta,evaluation)
@@ -240,3 +240,6 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 				return MinimaxOutput.new(evaluation,best_moves.pick_random())
 		
 		return MinimaxOutput.new(worst_evaluation,best_moves.pick_random())
+
+func _is_within_interval(evaluation : float,comparison : float) -> bool:
+	return (evaluation <= comparison + profile.utility_interval) and (evaluation >= comparison - profile.utility_interval)

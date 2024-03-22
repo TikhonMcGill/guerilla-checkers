@@ -24,6 +24,8 @@ enum MOVE_SORT{
 
 @export var turn_lookahed : bool = false ##Whether the Minimax Player using this profile does its search in terms of TURNS, not Moves (e.g. a Guerilla's Turn is made up of 2 moves - placing 2 pieces)
 
+@export var utility_interval : float = 1.0 ##The Utility Interval of Minimax - Moves within this Interval of the Best move will be considered equal
+
 #Evaluation Function Values
 @export var victory_utility : float = 1.0 ##How much utility will be added to a Game State if, from the perspective of the Guerilla, they win (i.e. no more COIN Pieces remain)
 @export var defeat_utility : float = -1.0 ##How much utility will be added to a Game State if, from the perspective of the Guerilla, they lose (no more pieces on the board or no more pieces left to place)

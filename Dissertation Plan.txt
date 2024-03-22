@@ -1,5 +1,18 @@
 Project Log 22/3/2024:
 	1. Removed "Random Seed", since it's misinformative - Random Seeds don't work for Minimax
+	2. Implemented a "Utility Interval" for Minimax, which is a tunable value, and
+	Actions with an evaluation between (Highest Utility - Interval) and (Highest Utility + Interval)
+	are considered equal - the default is 1 for all profiles, and it will not be experimented with,
+	but would be interesting for future projects.
+
+Discuss Intervals of Utility (by default 1, so all moves of utility within 1 or -1 are considered equal),
+and mention how this could be something for future analysis. They would be another interesting 
+parameter to tune.
+
+Have a Criticisms Section, with:
+	1. Lack of Commenting, which would make work built on implementation difficult
+	2. Lack of Explanation for Minimax Parameters
+	3. No way of setting Random Seeds, so experiments are not reproducible 
 
 Discuss limitation of Experiment - Random Seed does NOT set (was found later in project), so the
 results are NOT reproducible.
