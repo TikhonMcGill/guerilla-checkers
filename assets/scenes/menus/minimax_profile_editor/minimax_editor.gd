@@ -26,15 +26,12 @@ signal profile_completed(profile : MinimaxProfile)
 @onready var guerilla_pieces_between_checker_corners_utility_spinbox : SpinBox = $EvaluationsContainer/VBoxContainer/GuerillaPiecesBetweenCheckerCornersUtilitySpinbox
 @onready var coin_checkers_taken_utility_spin_box = $EvaluationsContainer/VBoxContainer/COINCheckersTakenUtilitySpinBox
 
-@onready var same_name_label: Label = $SameNameLabel
-
 func clear() -> void:
 	profile_name_edit.clear()
 	move_sorting_option_button.selected = -1
 	cutoff_spin_box.value = 1
 	timeout_spin_box.value = 5000
 	turn_lookahead_checkbox.button_pressed = false
-	same_name_label.visible = false
 	
 	victory_utility_spin_box.value = 100
 	defeat_utility_spin_box.value = -100
@@ -76,12 +73,6 @@ func load_profile(profile : MinimaxProfile):
 func _on_confirm_button_pressed():
 	if profile_name_edit.text.validate_filename() == "":
 		return
-	
-	same_name_label.visible = false
-	for prof : MinimaxProfile in GameManager.minimax_profiles:
-		if prof.profile_name == profile_name_edit.text:
-			same_name_label.visible = true
-			return
 	
 	if move_sorting_option_button.selected == -1:
 		return

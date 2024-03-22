@@ -64,11 +64,6 @@ script = ExtResource("1_onhyv")
 layout_mode = 2
 placeholder_text = "Enter the name of the Minimax Profile"
 
-[node name="SameNameLabel" type="Label" parent="PanelContainer/MarginContainer/MinimaxEditor"]
-visible = false
-layout_mode = 2
-text = "The name you entered is already being used by a different Minimax Profile!"
-
 [node name="MoveSortingPrompt" type="Label" parent="PanelContainer/MarginContainer/MinimaxEditor"]
 layout_mode = 2
 text = "Select how moves are sorted by Minimax:"
