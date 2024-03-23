@@ -60,6 +60,12 @@ var total_draw_turns : float = 0
 var total_win_coin_checkers_left : float = 0
 var total_draw_coin_checkers_left : float = 0
 
+var total_possible_guerilla_moves : float = 0
+var total_possible_coin_moves : float = 0
+
+var total_guerilla_moves_taken : float = 0
+var total_coin_moves_taken : float = 0
+
 var current_player : GameState.PLAYER = GameState.PLAYER.GUERILLA
 
 var rapid_time_taken : int = 0
@@ -118,6 +124,7 @@ func _ready():
 	
 	await get_tree().process_frame
 	
+	total_possible_guerilla_moves += len(game_state.get_possible_moves())
 	guerilla_player.do_move()
 
 func restart_game():
@@ -284,7 +291,13 @@ func get_draw_average_coin_checkers() -> float:
 	if draws == 0:
 		return -1.0
 	
-	return total_draw_coin_checkers_left / coin_victories
+	return total_draw_coin_checkers_left / draws
+
+func get_mean_guerilla_branching_factor() -> float:
+	return total_possible_guerilla_moves / total_guerilla_moves_taken
+
+func get_mean_coin_branching_factor() -> float:
+	return total_possible_coin_moves / total_coin_moves_taken
 
 func get_average_draw_turns() -> float:
 	if draws == 0:
@@ -326,6 +339,11 @@ func simulate_move(move : Move) -> void:
 	if move == null:
 		return
 	
+	if game_state.get_current_player() == GameState.PLAYER.GUERILLA:
+		total_guerilla_moves_taken += 1
+	elif game_state.get_current_player() == GameState.PLAYER.COIN:
+		total_coin_moves_taken += 1
+	
 	game_state.take_move(move)
 	game_board.default_color_board()
 	
@@ -346,8 +364,10 @@ func simulate_move(move : Move) -> void:
 
 func next_move() -> void:
 	if game_state.get_current_player() == GameState.PLAYER.GUERILLA:
+		total_possible_guerilla_moves += len(game_state.get_possible_moves())
 		guerilla_player.do_move()
 	elif game_state.get_current_player() == GameState.PLAYER.COIN:
+		total_possible_coin_moves += len(game_state.get_possible_moves())
 		coin_player.do_move()
 
 func _on_replay_button_pressed():
@@ -385,6 +405,9 @@ func _on_save_rapid_play_results_button_pressed():
 	printed_string += "\nCOIN Victories by Capturing: %d" % coin_capture_victories
 	printed_string += "\nCOIN Victories by Guerilla Running out of Pieces: %d" % coin_runout_victories
 	printed_string += "\nDraws: %d" % draws
+	
+	printed_string += "\nMean Branching Factor for Guerilla: %.2f" % get_mean_guerilla_branching_factor()
+	printed_string += "\nMean Branching Factor for COIN: %.2f" % get_mean_coin_branching_factor()
 	
 	if guerilla_victories > 0:
 		printed_string += "\nMean Turn of Guerilla Victory: %.2f" % get_average_guerilla_win_turns()

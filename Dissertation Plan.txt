@@ -1,20 +1,6 @@
-Project Log 22/3/2024:
-	1. Removed "Random Seed", since it's misinformative - Random Seeds don't work for Minimax
-	2. Implemented a "Utility Interval" for Minimax, which is a tunable value, and
-	Actions with an evaluation between (Highest Utility - Interval) and (Highest Utility + Interval)
-	are considered equal - the default is 1 for all profiles, and it will not be experimented with,
-	but would be interesting for future projects.
-	3. Implemented a new Minimax Evaluation Parameter - Utility for
-	Pieces Between COIN Checkers - this is multiplied by the number of
-	Guerilla Pieces that are between two COIN Checkers (i.e. "Safe" Guerilla
-	Pieces)
-	4. Implement new Minimax Parameter - count of COIN Checkers taken - this
-	is to potentially Incentivize the Guerilla to take as many COIN Piece
-	5. Implemented a Proper Timeout to Minimax - there is now a Timer which,
-	when it reaches 0, makes the Minimax Return - before, there was a hacky
-	solution of counting milliseconds since the engine start time, subtracting,
-	and checking if it's zero, which was a messy solution 
-	
+Discuss mean branching factor for COIN and Guerilla - there was no data about this
+when research was being done, now it is known experimentally.
+
 Discuss Intervals of Utility (by default 1, so all moves of utility within 1 or -1 are considered equal),
 and mention how this could be something for future analysis. They would be another interesting 
 parameter to tune.

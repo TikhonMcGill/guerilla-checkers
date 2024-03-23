@@ -11,8 +11,6 @@ class_name MinimaxPlayer
 ##is exactly the disadvantage of the Counterinsurgent. Therefore, we have the evaluation function be 
 ##from the perspective of the Guerilla, and it is negated if the Minimax player is a COIN.
 
-@onready var timeout_timer = $TimeoutTimer
-
 var profile : MinimaxProfile = preload("res://assets/resources/placeholder_minimax_profile.tres")
 
 var analyzer : GameStateAnalyzer = GameStateAnalyzer.new()
@@ -27,11 +25,8 @@ class MinimaxOutput:
 
 ##Pick the best move for Minimax
 func do_move() -> void:
-	timeout_timer.wait_time = profile.timeout / 1000
-	timeout_timer.start()
-	var output := _minimax(profile.cutoff_depth,true,game_state,-INF,INF)
+	var output := _minimax(profile.cutoff_depth,true,game_state,-INF,INF,profile.timeout)
 	move_taken.emit(output.move)
-	timeout_timer.stop()
 
 ##A Method to get the Actions in a State, with sorting of moves
 func _get_actions(state : GameState) -> Array[Move]:
@@ -170,9 +165,11 @@ func _get_cutoff(state : GameState) -> int:
 	return 1
 
 ##A Function running the Minimax algorithm, with cutoff - getting the Utility of a state and the best move
-func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:float) -> MinimaxOutput:
+func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta:float,time_left:int) -> MinimaxOutput:
 	if _is_terminal_state(start_state) == true or depth == 0:
 		return MinimaxOutput.new(_get_state_utility(start_state),null)
+	
+	var start_time := Time.get_ticks_msec()
 	
 	var best_moves : Array[Move] = []
 	
@@ -187,10 +184,15 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			return MinimaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
+			var end_time := Time.get_ticks_msec()
+
+			var time_taken := end_time - start_time
+			time_left -= time_taken
+			
 			var result := _get_result(start_state,a)
 			var cutoff := _get_cutoff(result)
 			
-			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta).evaluation
+			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
 			if evaluation > (best_evaluation + profile.utility_interval):
 				best_evaluation = evaluation + profile.utility_interval
@@ -200,7 +202,7 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			
 			alpha = max(alpha,evaluation)
 			
-			if beta <= alpha or timeout_timer.time_left <= 0:
+			if beta <= alpha or time_left <= 0:
 				return MinimaxOutput.new(evaluation,best_moves.pick_random())
 		
 		return MinimaxOutput.new(best_evaluation,best_moves.pick_random())
@@ -215,10 +217,15 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			return MinimaxOutput.new(result,actions[0])
 		
 		for a in _get_actions(start_state):
+			var end_time := Time.get_ticks_msec()
+
+			var time_taken := end_time - start_time
+			time_left -= time_taken
+			
 			var result := _get_result(start_state,a)
 			var cutoff := _get_cutoff(result)
 			
-			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta).evaluation
+			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
 			if evaluation < (worst_evaluation - profile.utility_interval):
 				worst_evaluation = evaluation - profile.utility_interval
@@ -228,7 +235,7 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			
 			beta = min(beta,evaluation)
 			
-			if beta <= alpha or timeout_timer.time_left <= 0:
+			if beta <= alpha or time_left <= 0:
 				return MinimaxOutput.new(evaluation,best_moves.pick_random())
 		
 		return MinimaxOutput.new(worst_evaluation,best_moves.pick_random())

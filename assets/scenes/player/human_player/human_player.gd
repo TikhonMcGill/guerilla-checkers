@@ -18,13 +18,18 @@ func get_valid_corners() -> Array[int]:
 	var corners : Array[int] = []
 	
 	if _first_corner_clicked == -1:
-		for m in game_state.get_possible_moves():
-			if m is GuerillaPiecePlacementMove:
-				corners.append(m.first_corner)
-	else:
-		for m in game_state.get_possible_moves():
-			if m is GuerillaPiecePlacementMove and m.first_corner == _first_corner_clicked:
-				corners.append(m.second_corner)
+		if game_state.game_state == GameState.STATE.FIRST_GUERILLA_TURN:
+			for c in game_state.CORNERS:
+				corners.append(c)
+		elif game_state.game_state == GameState.STATE.SUBSEQUENT_GUERILLA_TURN:
+			for p in game_state.guerilla_piece_positions:
+				for n in game_state.get_adjacent_corners(p):
+					if game_state.is_corner_occupied(n) == false:
+						corners.append(n)
+	elif _second_corner_clicked == -1:
+		for n in game_state.get_adjacent_corners(_first_corner_clicked):
+			if game_state.is_corner_occupied(n) == false:
+				corners.append(n)
 	
 	return corners
 
@@ -64,15 +69,7 @@ func setup_guerilla_graphics():
 		_second_clicked_corner.set_color(game_board.corner_color)
 		_second_clicked_corner = null
 	
-	
-	var placeable_corners = []
-	
-	for g in game_state.get_possible_corner_pairs():
-		var corner = g[0]
-		if placeable_corners.has(corner) == false:
-			placeable_corners.append(corner)
-	
-	_paint_placeable_corners(placeable_corners)
+	_paint_placeable_corners(get_valid_corners())
 
 func _paint_placeable_corners(placeable_corners : Array) -> void:
 	for g in range(len(game_board.corners.get_children())):
@@ -127,10 +124,7 @@ func _click_on_corner(corner : Corner):
 			can_move = false
 
 func _handle_second_placeable_corner() -> void:
-	var second_placeables = []
-	for c in game_state.get_adjacent_corners(_first_corner_clicked):
-		if game_state.is_corner_occupied(c) == false:
-			second_placeables.append(c)
+	var second_placeables = get_valid_corners()
 	
 	#If there are no second corners to place, it's a draw
 	if len(second_placeables) == 0:
