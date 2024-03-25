@@ -5,12 +5,20 @@ Discuss Intervals of Utility (by default 1, so all moves of utility within 1 or 
 and mention how this could be something for future analysis. They would be another interesting 
 parameter to tune.
 
+Discuss, potentially, how evaluation parameters did not take into account the Game State's State
+(e.g. Guerillas might think that it's good to threaten a COIN Checker's Piece, not taking into account that
+it's in the "COIN Took Piece" State, meaning it would just take some of the Guerilla Pieces threatening it)
+
+Discuss Optimization of different order placement of pieces into same position and how that decreased searches
+
 Discuss Further Insights from the game itself that were gained:
 	1. It is of great use to place pieces in corners between two COIN Checkers.
 	This was implied by not counting Pieces between Checkers as threatened, but from
 	own playing was an important step in winning (especially in the early game, when COIN
 	checkers are bunched up), so was incentivized as its own Evaluation Parameter,
 	different from the starting ones.
+	2. It is of great use to "block off" movements of COIN Checkers, so for this
+	a new evaluation function was created for Minimax
 
 Have a Criticisms Section, with:
 	1. Lack of Commenting, which would make work built on implementation difficult

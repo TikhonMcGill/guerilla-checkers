@@ -24,7 +24,8 @@ signal profile_completed(profile : MinimaxProfile)
 @onready var threatened_guerilla_pieces_utility_spin_box: SpinBox = $EvaluationsContainer/VBoxContainer/ThreatenedGuerillaPiecesUtilitySpinBox
 
 @onready var guerilla_pieces_between_checker_corners_utility_spinbox : SpinBox = $EvaluationsContainer/VBoxContainer/GuerillaPiecesBetweenCheckerCornersUtilitySpinbox
-@onready var coin_checkers_taken_utility_spin_box = $EvaluationsContainer/VBoxContainer/COINCheckersTakenUtilitySpinBox
+@onready var coin_checkers_taken_utility_spin_box : SpinBox = $EvaluationsContainer/VBoxContainer/COINCheckersTakenUtilitySpinBox
+@onready var blocked_coin_checker_movements_utility_spinbox: SpinBox = $EvaluationsContainer/VBoxContainer/BlockedCOINCheckerMovementsUtilitySpinbox
 
 func clear() -> void:
 	profile_name_edit.clear()
@@ -47,6 +48,7 @@ func clear() -> void:
 	
 	guerilla_pieces_between_checker_corners_utility_spinbox.value = 0
 	coin_checkers_taken_utility_spin_box.value = 0
+	blocked_coin_checker_movements_utility_spinbox.value = 0
 	
 func load_profile(profile : MinimaxProfile):
 	profile_name_edit.text = profile.profile_name
@@ -70,7 +72,8 @@ func load_profile(profile : MinimaxProfile):
 	
 	guerilla_pieces_between_checker_corners_utility_spinbox.value = profile.guerilla_pieces_between_coin_checkers_utility
 	coin_checkers_taken_utility_spin_box.value = profile.coin_checkers_taken_utility
-
+	blocked_coin_checker_movements_utility_spinbox.value = profile.blocked_coin_checker_movements_utility
+	
 func _on_confirm_button_pressed():
 	if profile_name_edit.text.validate_filename() == "":
 		return
@@ -102,6 +105,7 @@ func _on_confirm_button_pressed():
 	
 	new_profile.guerilla_pieces_between_coin_checkers_utility = guerilla_pieces_between_checker_corners_utility_spinbox.value
 	new_profile.coin_checkers_taken_utility = coin_checkers_taken_utility_spin_box.value
+	new_profile.blocked_coin_checker_movements_utility = blocked_coin_checker_movements_utility_spinbox.value
 	
 	profile_completed.emit(new_profile)
 

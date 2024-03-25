@@ -203,7 +203,8 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			alpha = max(alpha,evaluation)
 			
 			if beta <= alpha or time_left <= 0:
-				return MinimaxOutput.new(evaluation,best_moves.pick_random())
+				break
+				#return MinimaxOutput.new(evaluation,best_moves.pick_random())
 		
 		return MinimaxOutput.new(best_evaluation,best_moves.pick_random())
 	else:
@@ -236,7 +237,8 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			beta = min(beta,evaluation)
 			
 			if beta <= alpha or time_left <= 0:
-				return MinimaxOutput.new(evaluation,best_moves.pick_random())
+				break
+				#return MinimaxOutput.new(evaluation,best_moves.pick_random())
 		
 		return MinimaxOutput.new(worst_evaluation,best_moves.pick_random())
 

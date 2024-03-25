@@ -40,3 +40,4 @@ enum MOVE_SORT{
 
 @export var guerilla_pieces_between_coin_checkers_utility : float = 0 ##Multiply the no. Guerilla Pieces in Corners between non-repeating Pairs of COIN Checkers by this amount, and add to total Utility
 @export var coin_checkers_taken_utility : float = 1.0 ##Multiply the no. COIN Checkers taken by this amount and add to total Utility
+@export var blocked_coin_checker_movements_utility : float = 1.0 ##Multiply the no. Blocked COIN Checker movements by this amount and add to total Utility

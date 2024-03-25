@@ -260,7 +260,7 @@ func _on_game_state_game_over(winner : GameState.PLAYER):
 			discussion_string = "%s was victorious, quashing %s!" % [GameManager.coin_player_name,GameManager.guerilla_player_name]
 		elif winner == GameState.PLAYER.NOBODY:
 			discussion_string = "Neither %s nor %s was victorious - this Struggle ended in a Stalemate." % [GameManager.guerilla_player_name,GameManager.coin_player_name]
-		
+			
 		show_game_over_window(discussion_string)
 	else:
 		GameManager.tournament_games_left -= 1
@@ -343,6 +343,9 @@ func simulate_move(move : Move) -> void:
 		total_guerilla_moves_taken += 1
 	elif game_state.get_current_player() == GameState.PLAYER.COIN:
 		total_coin_moves_taken += 1
+	
+	if move is GuerillaPiecePlacementMove and move.second_corner == -1:
+		print(move.first_corner)
 	
 	game_state.take_move(move)
 	game_board.default_color_board()

@@ -285,9 +285,10 @@ func get_possible_corner_pairs() -> Array:
 		var draw = true
 		for n in get_adjacent_corners(corner):
 			#Make sure there's corners aren't duplicated twice
-			if is_corner_occupied(n) == false and pairs.has([n,corner]) == false:
+			if is_corner_occupied(n) == false:
 				draw = false
-				pairs.append([corner,n])
+				if pairs.has([n,corner]) == false:
+					pairs.append([corner,n])
 		if draw == true:
 			pairs.append([corner,-1]) #If no free adjacent corners after first placement, then this is a draw corner
 	
