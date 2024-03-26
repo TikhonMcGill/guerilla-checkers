@@ -1,5 +1,12 @@
+Mention that there was a "Dissertation Plan.txt" to which things were added as they came up, providing useful reminders for actual
+thesis writing.
+
+Aim to get best-performing combination of Minimax Parameters
+
 Discuss mean branching factor for COIN and Guerilla - there was no data about this
 when research was being done, now it is known experimentally.
+
+Discuss how the Minimax player has no understanding of time - it prepares moves ahead of time, and the "Pieces Left Utility" somewhat helps, but it's pointless to prepare 5 moves ahead when it's just 1 move left (also from a depth of search standpoint)
 
 Discuss Intervals of Utility (by default 1, so all moves of utility within 1 or -1 are considered equal),
 and mention how this could be something for future analysis. They would be another interesting 
