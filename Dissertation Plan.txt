@@ -1,6 +1,10 @@
 Mention that there was a "Dissertation Plan.txt" to which things were added as they came up, providing useful reminders for actual
 thesis writing.
 
+As extension, mention adding Guerilla Pieces left per Guerilla Victory and per Draw as another metric
+
+Mention the creation of Python Scripts to analyze Data from txts
+
 Aim to get best-performing combination of Minimax Parameters
 
 Discuss mean branching factor for COIN and Guerilla - there was no data about this
