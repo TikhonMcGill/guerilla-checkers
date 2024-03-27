@@ -1,93 +1,3 @@
-Mention that there was a "Dissertation Plan.txt" to which things were added as they came up, providing useful reminders for actual
-thesis writing.
-
-As extension, mention adding Guerilla Pieces left per Guerilla Victory and per Draw as another metric
-
-Mention the creation of Python Scripts to analyze Data from txts
-
-Aim to get best-performing combination of Minimax Parameters
-
-Discuss mean branching factor for COIN and Guerilla - there was no data about this
-when research was being done, now it is known experimentally.
-
-Discuss how the Minimax player has no understanding of time - it prepares moves ahead of time, and the "Pieces Left Utility" somewhat helps, but it's pointless to prepare 5 moves ahead when it's just 1 move left (also from a depth of search standpoint)
-
-Discuss Intervals of Utility (by default 1, so all moves of utility within 1 or -1 are considered equal),
-and mention how this could be something for future analysis. They would be another interesting 
-parameter to tune.
-
-Discuss, potentially, how evaluation parameters did not take into account the Game State's State
-(e.g. Guerillas might think that it's good to threaten a COIN Checker's Piece, not taking into account that
-it's in the "COIN Took Piece" State, meaning it would just take some of the Guerilla Pieces threatening it)
-
-Discuss Optimization of different order placement of pieces into same position and how that decreased searches
-
-Discuss Further Insights from the game itself that were gained:
-	1. It is of great use to place pieces in corners between two COIN Checkers.
-	This was implied by not counting Pieces between Checkers as threatened, but from
-	own playing was an important step in winning (especially in the early game, when COIN
-	checkers are bunched up), so was incentivized as its own Evaluation Parameter,
-	different from the starting ones.
-	2. It is of great use to "block off" movements of COIN Checkers, so for this
-	a new evaluation function was created for Minimax
-
-Have a Criticisms Section, with:
-	1. Lack of Commenting, which would make work built on implementation difficult
-	2. Lack of Explanation for Minimax Parameters
-	3. No way of setting Random Seeds, so experiments are not reproducible 
-	
-Discuss limitation of Experiment - Random Seed does NOT set (was found later in project), so the
-results are NOT reproducible.
-
-Consider also measuring how long it took for a Tournament to run, as a measure of efficiency etc.
-(In total, and an average time per game)
-
-Discuss next stage of tuning - two placements counting as one move for the Guerilla, and its
-ramifications
-
-Mention that the two-piece placement was a workaround, since the original implementation was built
-for 1 piece = 1 move, and this led to several things, including:
-	1. Due to 2 pieces being placed in a move, they are animated at once, instead of in order
-	2. Extra variables have to be used for the human player to ensure they're placing their pieces in
-	valid corners
-
-Upload into the repo (at the end) the different Minimax Profiles I experimented with
-
-Discuss the Random Computer Player (for testing, mostly)
-
-Do flowchart, UML, text planning also suitable
-
-For modelling the game itself, go for class diagram, and write UML diagram of main classes - would be useful in dissertation, to explain how things are developed
-
-Fix the Rules images' checkers to be on BLACK Cells, and emphasize that they are on BLACK cells
-
-Look through all Self-Analyses and determine important points
-
-Copy UML Diagrams
-
-Categorize UML Diagrams appropriately
-
-Consider how to demonstrate it for Project
-
-Mention that timeout is now in milliseconds, given how long it takes
-
-As future extension, mention how I could've experimented with non-linear utility functions (as all were just multiples of board game situations)
-
-Mention the "DRAW" Utility as another Evaluation parameter
-
-Discuss in the dissertation that Depth 5 was used - the risk of Depth 10 being too slow came true, so Depth 5
-was used instead for all experiments with Class 2.
-
-Clarify that, for Minimax, "By Utility" sorting means in DESCENDING order of Utility
-
-Mention that Seed = 1 for Testing
-
-Reword the Rules-Based Computer Player:
-	1. Make it the Utility-Based Comptuter Player (UBCP)
-	2. Make it gain +1 Utility for taking a Guerilla Piece (as COIN), not for EVERY POSSIBLE TAKEABLE PIECE - reason being that the aim of the UCP is to create
-	a Player that thinks only IN THE CURRENT MOVE, and shouldn't think ahead - given that taking several Guerilla pieces is several moves, that would mean thinking several moves ahead
-	and so not applicable.
-	3. Make it gain -5 Utility (as COIN) for having a piece threatened by Guerillas - wasn't there before
 
 Discuss that, theoretically, it would be faster to do lookup of point adjacencies than to calculate them
 
@@ -103,61 +13,149 @@ Mention Godot's use of Signals as the Observer pattern
 
 Discuss discrepancies between Project Plan and implementation
 
-The initial configuration of Utility for the Players made them timid - the Guerilla did not want to place pieces in corners of COIN Checkers unless they were between COIN Checkers (which meant that the COIN would always win due to the Guerilla running out of pieces
+Changes in Requirements:
+	-Mention that timeout is now in milliseconds, given how long it takes
+	-Timeout Customizable
+	-Utility Interval instead of Equality
+	-New Parameters
+	-Mention the "DRAW" Utility as another Evaluation parameter
+	-Clarify that, for Minimax, "By Utility" sorting means in DESCENDING order of Utility
+	Changes to Rules-Based Computer Player:
+		Reword the Rules-Based Computer Player:
+			1. Make it the Utility Comptuter Player (UCP), as it picks moves with the highest Utility, and
+			doesn't act on specific rules per se
+			2. Make it gain +1 Utility for taking a Guerilla Piece (as COIN), not for EVERY POSSIBLE TAKEABLE PIECE - reason being that the aim of the UCP is to create
+			a Player that thinks only IN THE CURRENT MOVE, and shouldn't think ahead - given that taking several Guerilla pieces is several moves, that would mean thinking several moves ahead
+			and so not applicable.
+			3. Make it gain -5 Utility (as COIN) for having a piece threatened by Guerillas - wasn't there before
+		
+		The initial configuration of Utility for the Players made them timid - the Guerilla did not 
+		want to place pieces in corners of COIN Checkers unless they were between COIN 
+		Checkers (which meant that the COIN would always win due to the Guerilla running out of pieces
+		
+		Therefore, utilities were altered somewhat:
+			1. Added a "is_draw()" method to the GameStateAnalyzer, and made its utility -50 for the Guerilla, so that it doesn't back itself into a corner
+			2. Programmed, explicitly (i.e. not using the GameStateAnalyzer), +10 Utility for if there are less COIN Checkers in the hypothetical game state than in the reality, to incentivize taking the
+			COIN Checker (this is in place of -10 Utility per COIN Checker present)
 
-Therefore, utilities were altered somewhat:
-	1. Added a "is_draw()" method to the GameStateAnalyzer, and made its utility -50 for the Guerilla, so that it doesn't back itself into a corner
-	2. Programmed, explicitly (i.e. not using the GameStateAnalyzer), +10 Utility for if there are less COIN Checkers in the hypothetical game state than in the reality, to incentivize taking the
-	COIN Checker (this is in place of -10 Utility per COIN Checker present)
+	
+Introduction:
+	-Mention that the Framework used for Implementation was the Godot Game Engine,
+	Version 4.2.1
+	-Mention that it was a Systems Evaluation (focus on AI Performance and parameters,
+	want an objective experiment, User Testing would be subjective and limited)
+	-Briefly explain what Guerilla Checkers is (Turn-Based Two-Player Deterministic Asymmetric of
+	Perfect Information)
+	
+Implementation:
+	-Put in picture of configuration of board, and the hard coding of things
+	-Create Class Diagrams for every class
+	-Discuss the Random Computer Player (for testing, mostly)
+	-Discuss limitation of Experiment - Random Seed does NOT set (was found later in project), so the
+	results are NOT reproducible, therefore the setting of a Random Seed was removed
+	-Do flowchart, UML, text planning also suitable
+	-For modelling the game itself, go for class diagram, 
+	and write UML diagram of main classes - would be useful in dissertation, to explain how things are developed
+	-Copy in UML Diagrams
+	-Categorize UML Diagrams appropriately
+	-Discuss how there was a bug found - when there is no Minimax Profiles in existence, the User
+	cannot play Minimax. This, however, provided an extra avenue - experimenting with Different
+	Minimax Profiles meant the possibility of creating "Default" Minimax Profiles built into the game,
+	so that the User may play with them.
+	(e.g. "Easy", "Medium", "Hard")
+	-Mention the presence of a Memory Leak (for the Game State) with no obvious way to fix it, 
+	despite switching to Godot's Resource Type which purports to be automatically freed when there
+	are no references to a resource.
+	-Mention the reason for the memory leak - the "Move" Class extended "Object", and since many thousands
+	of moves were being analyzed my Minimax without being freed, this led to HUGE Memory usage.
+	This was fixed by making Move extend the Resource Class, which is automatically freed.
 
-Copy Requirements in, but don't change them for now
+Tuning Step:
+	-Discuss next stage of tuning - two placements counting as one move for the Guerilla, and its
+	ramifications
+	-Discuss Intervals of Utility (by default 1, so all moves of utility within 1 or -1 are considered equal),
+	and mention how this could be something for future analysis. They would be another interesting 
+	parameter to tune. Explain how this was chosen partly for more variation of movements, and also
+	because, according to Godot, exact equality between floating point numbers (which are the utilities)
+	is impossible to find
 
-Change any requirements to reflect the new reality, and mention that in the document
+Criticism and Future Work:
+	Future Work:
+		-As extension, mention adding Guerilla Pieces left per Guerilla Victory and per Draw as another metric
+		-Additionally, could discuss using a Neural Network to get the Utility of a Particular State given the
+		Parameters, rather than just multiplying.
+		-As future extension, mention how I could've experimented with non-linear utility functions (as all were just multiples of board game situations)
+	Criticism:
+		-Discuss, potentially, how evaluation parameters did not take into account the Game State's State, only piece configuration
+		(e.g. Guerillas might think that it's good to threaten a COIN Checker's Piece, not taking into account that
+		it's in the "COIN Took Piece" State, meaning it would just take some of the Guerilla Pieces threatening it)
+		-Lack of Commenting, which would make work built on top of this implementation difficult
+		-Lack of Explanation for Minimax Parameters in the Minimax Editor
+		-No way of setting Random Seeds, so experiments are not reproducible 
+		-Discuss how the Minimax player (particularly the Guerilla) has an imperfect understanding of
+		the time limit - it prepares moves ahead of time, and the "Pieces Left Utility" somewhat helps,
+		but from watching some games, sometimes a Guerilla Minimax with a GREATER cutoff ignores easily-takeable
+		COIN Checkers
 
-Could remove Parameter of Guerilla Pieces Left (reason being it's guaranteed to go down, no way for COIN to affect it)
+Project Plan Discussion:
+	-Mention that there was a "Dissertation Plan.txt" to which things were added as they came up, providing useful reminders for actual
+	thesis writing.
 
-Experimentally Find Timeout Such that Base Minmax Player (the unchanged parameters) wins against the Utility Computer Player 100 times in a tournament as both COIN and Guerilla (i.e. 200-game tournament)
+General:
+	-Aim to get best-performing combination of Minimax Parameters
+	-Add page numbers
+	-Upload into the repo (at the end) the different Minimax Profiles I experimented with
+	-Mention that the Minimax Profiles used are linked in the Repo
+	-Give a link to the repo
+	-Fix the Rules images' checkers to be on BLACK Cells, and emphasize that they are on BLACK cells
+	-Discuss in the dissertation that Depth 5 was used - the risk of Depth 10 being too slow came true, so Depth 5
+	was used instead for all experiments with Class 2.
 
-Could swap sides in Tournament with each game, rather than just playing all games as same sides
+Experimental Setup:
+	-Mention that experiments in Excel Spreadsheet were not "Re-Run")
+	
+	Preliminary Experiment:
+		-Mention that base Minimax Profile has 5000ms Timeout, which is constant
+		-Mention that a preliminary experiment was done for depth cutoff and sorting, but it was decided to redo it due to
+		lacking any useful metrics besides no. wins and draws. Furthermore, abysmal performance was found, particularly as the Guerilla,
+		so a new avenue of experimentation was decided upon - Turn lookahead.
+		-Then a smaller (10 games rather than 100) experiment was done with Turn-based Lookahead,
+		and Guerilla performance remained abysmal
+	Pre-Tuning Experiment:
+		-More Metrics:
+			1. Type of COIN Victories (by Guerilla Running out of Pieces or COIN Capturing all pieces)
+			2. Avg no. Turns per game, per COIN Victory, per Guerilla Victory, per Draw
+		-Added measures of how long Tournament took to run as measure of performance
+		-Mention my Hardware Specifications when discussing running the experiment
+		-A major issue found was that the Guerilla Player was at a disadvantage - their
+		placement of pieces counts as TWO separate moves, which uses up 2 plies of the
+		search tree, meaning it can look into the COIN's Player moves less, and thus be
+		less performant
+		-Therefore, the implementation was changed - the placement of Two Guerilla Pieces
+		counts as ONE Move
+		-Discuss Optimization of different order placement of pieces into same position 
+		and how that decreased searches
+		-Discuss Further Insights from the game itself that were gained:
+			-It is of great use to place pieces in corners between two COIN Checkers.
+			This was implied by not counting Pieces between Checkers as threatened, but from
+			own playing was an important step in winning (especially in the early game, when COIN
+			checkers are bunched up), so was incentivized as its own Evaluation Parameter,
+			different from the starting ones.
+			-It is of great use to "block off" movements of COIN Checkers, so for this
+			a new evaluation function was created for Minimax
+		-Discuss Major Minimax Issue that was fixed
+	Post-Tuning Experiment:
+		-Mention additional metrics devised:
+			1. No. COIN Checkers left in Draw and COIN Victory
+			2. Mean Branching Factor for COIN and Guerilla
+		-Mention the creation of Python Scripts to analyze Data from txts
 
-Put in picture of configuration of board, and the hard coding of things
+Analysis:
+	-Discuss mean branching factor for COIN and Guerilla - there was no data about this
+	when research was being done, now it is known experimentally.
+	-Discuss Performance difference (time took to run) pre and post-tuning
 
-Create Class Diagrams for every class
-
-Add page numbers
-
-Could also have, for MinMax move sorting, by Ascending order of Utility as well
-
-Discuss how there was a bug found - when there is no Minimax Profiles in existence, the User
-cannot play Minimax. This, however, provided an extra avenue - experimenting with Different
-Minimax Profiles meant the possibility of creating "Default" Minimax Profiles built into the game,
-so that the User may play with them.
-
-Mention the presence of a Memory Leak (for the Game State) with no obvious way to fix it, 
-despite switching to Godot's Resource Type which purports to be automatically freed when there
-are no references to a resource.
-
-Mention the reason for the memory leak - the "Move" Class extended "Object", and since many thousands
-of moves were being analyzed my Minimax without being freed, this led to HUGE Memory usage.
-This was fixed by making Move extend the Resource Class, which is automatically freed.
-
-Change "By Utility" to "By Descending Utility" for better understanding maybe?
-
-(Mention that experiments in Excel Spreadsheet were not "Re-Run")
-
-Mention that informal experiment was done with Turn-based, rather than move-based Lookahead, and it yielded
-no noticeable performance improvement (but made Minimax considerably slower, even with Depth 3 Lookahead)
-
-Mention that base Minimax Profile has 5000ms Timeout, which is constant
-Mention my Hardware Specifications when discussing running the experiment
-
-Mention that a preliminary experiment was done for depth cutoff and sorting, but it was decided to redo it due to
-lacking any useful metrics besides no. wins and draws. Furthermore, abysmal performance was found, particularly as the Guerilla,
-so a new avenue of experimentation was decided upon - Turn lookahead. 
-
-Mention that, for no. turns, this does NOT include the starting turn (i.e. count begins from 0, as it were)
-
-_____________________________________________
+_______________________________________
 
 1 – Abstract
 1.	Extend on the nature of the game (2 players, asymmetric, one side COIN playing by rules similar to Checkers, another the Guerilla, playing in corners)
@@ -204,12 +202,6 @@ _____________________________________________
 17.	Emphasize that a Neural Network is evolved genetically, not a Genetic Algorithm being used
 18.	Emphasize that there are no datasets for good moves in Guerilla Checkers
 19.	I lack authoritative references, particularly on AI techniques – need to have some more to cite, perhaps
- 
-4 – Framework Review
-1.	Elaborate what a Software Framework is
-2.	Need to elaborate why it should be a standalone .exe
-3.	See if GDScript is compiled to Binary or to a Virtual Machine
-4.	I should emphasize how GDScript works with other languages – bindings? How?
 
 5 – Requirements Analysis
 1.	For FR-2, link to the Rules-Based AI in the corresponding section
@@ -219,9 +211,6 @@ _____________________________________________
 5.	Somewhere in Project Management, discuss why I chose GitHub in particular to store my project on
 6.	For NFR-17, clarify that it is sorting of moves, and that it’s not future moves, but possible moves
 
-7 – Use Case Discussion
-1.	The first two main use cases I devised should be reworded to work for testing purposes (i.e. to make sure rules work by seeing them in UI, and seeing an AI in action by playing against it)
- 
 7 – Design of the Rules-Based Computer Player
 1.	Add a short introduction paragraph to discuss the Rules of this AI
 
@@ -234,12 +223,6 @@ _____________________________________________
 6.	“As described above” should be “As described above in 8.1”
 7.	Elaborate on what the sorting algorithm is of – sorting of possible moves
 8.	“Will be retained” (this is from me) should be reworded to “Will be selected as the best”
-
-9 – PLES Issues
-1.	Some of the PLES things (e.g. Logs and Version Control) should be moved into the Project Management
-
-Additionally, could discuss using a Neural Network to get the Utility of a Particular State given the
-Parameters, rather than just multiplying.
 
 
 
