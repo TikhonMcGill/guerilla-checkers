@@ -48,9 +48,8 @@ Introduction:
 	Perfect Information)
 	
 Implementation:
-	-Put in picture of configuration of board, and the hard coding of things
+	-Mention GameStateAnalyzer
 	-Create Class Diagrams for every class
-	-Discuss the Random Computer Player (for testing, mostly)
 	-Discuss limitation of Experiment - Random Seed does NOT set (was found later in project), so the
 	results are NOT reproducible, therefore the setting of a Random Seed was removed
 	-Do flowchart, UML, text planning also suitable
