@@ -1,17 +1,4 @@
-
-Discuss that, theoretically, it would be faster to do lookup of point adjacencies than to calculate them
-
-Consider, potentially, discussion of Constants:
-https://godotforums.org/d/22919-do-constants-use-up-memory-in-object-instances/6
-
-Mention that Assertions in Godot are NOT compiled into the Release build, which means that any slowdowns in performance from assertions are
-negated when the Game is compiled.
-
-Convert all important objects etc. into UML Diagrams (and update existing Class Diagrams for all important Classes, namely GameState and GameStateAnalyzer)
-
-Mention Godot's use of Signals as the Observer pattern
-
-Discuss discrepancies between Project Plan and implementation
+Discuss in Organization or elsewhere about "Rapid Tournaments" meaning Tournaments with "Rapid Play" activated.
 
 Changes in Requirements:
 	-Mention that timeout is now in milliseconds, given how long it takes
@@ -19,7 +6,6 @@ Changes in Requirements:
 	-Utility Interval instead of Equality
 	-New Parameters
 	-Mention the "DRAW" Utility as another Evaluation parameter
-	-Clarify that, for Minimax, "By Utility" sorting means in DESCENDING order of Utility
 	Changes to Rules-Based Computer Player:
 		Reword the Rules-Based Computer Player:
 			1. Make it the Utility Comptuter Player (UCP), as it picks moves with the highest Utility, and
@@ -37,11 +23,11 @@ Changes in Requirements:
 			1. Added a "is_draw()" method to the GameStateAnalyzer, and made its utility -50 for the Guerilla, so that it doesn't back itself into a corner
 			2. Programmed, explicitly (i.e. not using the GameStateAnalyzer), +10 Utility for if there are less COIN Checkers in the hypothetical game state than in the reality, to incentivize taking the
 			COIN Checker (this is in place of -10 Utility per COIN Checker present)
+	-(Write in Full UCP Parameters)
 
 	
 Introduction:
-	-Mention that the Framework used for Implementation was the Godot Game Engine,
-	Version 4.2.1
+	-Mention that the Framework used for Implementation was the Godot Game Engine, Version 4.2.1
 	-Mention that it was a Systems Evaluation (focus on AI Performance and parameters,
 	want an objective experiment, User Testing would be subjective and limited)
 	-Briefly explain what Guerilla Checkers is (Turn-Based Two-Player Deterministic Asymmetric of
@@ -49,7 +35,8 @@ Introduction:
 	
 Implementation:
 	-Mention GameStateAnalyzer
-	-Create Class Diagrams for every class
+	-Create Class Diagrams for every class (with signals)
+	-Mention Godot's use of Signals as the Observer pattern
 	-Discuss limitation of Experiment - Random Seed does NOT set (was found later in project), so the
 	results are NOT reproducible, therefore the setting of a Random Seed was removed
 	-Do flowchart, UML, text planning also suitable
@@ -78,24 +65,6 @@ Tuning Step:
 	because, according to Godot, exact equality between floating point numbers (which are the utilities)
 	is impossible to find
 
-Criticism and Future Work:
-	Future Work:
-		-As extension, mention adding Guerilla Pieces left per Guerilla Victory and per Draw as another metric
-		-Additionally, could discuss using a Neural Network to get the Utility of a Particular State given the
-		Parameters, rather than just multiplying.
-		-As future extension, mention how I could've experimented with non-linear utility functions (as all were just multiples of board game situations)
-	Criticism:
-		-Discuss, potentially, how evaluation parameters did not take into account the Game State's State, only piece configuration
-		(e.g. Guerillas might think that it's good to threaten a COIN Checker's Piece, not taking into account that
-		it's in the "COIN Took Piece" State, meaning it would just take some of the Guerilla Pieces threatening it)
-		-Lack of Commenting, which would make work built on top of this implementation difficult
-		-Lack of Explanation for Minimax Parameters in the Minimax Editor
-		-No way of setting Random Seeds, so experiments are not reproducible 
-		-Discuss how the Minimax player (particularly the Guerilla) has an imperfect understanding of
-		the time limit - it prepares moves ahead of time, and the "Pieces Left Utility" somewhat helps,
-		but from watching some games, sometimes a Guerilla Minimax with a GREATER cutoff ignores easily-takeable
-		COIN Checkers
-
 Project Plan Discussion:
 	-Mention that there was a "Dissertation Plan.txt" to which things were added as they came up, providing useful reminders for actual
 	thesis writing.
@@ -112,6 +81,7 @@ General:
 
 Experimental Setup:
 	-Mention that experiments in Excel Spreadsheet were not "Re-Run")
+	-Clarify that, for Minimax, "By Utility" sorting means in DESCENDING order of Utility
 	
 	Preliminary Experiment:
 		-Mention that base Minimax Profile has 5000ms Timeout, which is constant
@@ -212,16 +182,6 @@ _______________________________________
 
 7 – Design of the Rules-Based Computer Player
 1.	Add a short introduction paragraph to discuss the Rules of this AI
-
-8 – Methodology
-1.	I should avoid repeating things in the Introduction, and instead focus on the Main Deliverables (i.e. what I should implement)
-2.	Phrase my phases as objectives, not as “will be modelled”
-3.	Explain why these customizable parameters are the most important – these are the ones that will be changed and evaluated (also, link back to the Functional Requirements)
-4.	Remove “in earnest”
-5.	Make the explanation an 8.1 – Introduction section
-6.	“As described above” should be “As described above in 8.1”
-7.	Elaborate on what the sorting algorithm is of – sorting of possible moves
-8.	“Will be retained” (this is from me) should be reworded to “Will be selected as the best”
 
 
 
