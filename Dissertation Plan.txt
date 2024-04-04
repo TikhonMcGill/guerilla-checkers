@@ -1,5 +1,3 @@
-Discuss in Organization or elsewhere about "Rapid Tournaments" meaning Tournaments with "Rapid Play" activated.
-
 Changes in Requirements:
 	-Mention that timeout is now in milliseconds, given how long it takes
 	-Timeout Customizable
