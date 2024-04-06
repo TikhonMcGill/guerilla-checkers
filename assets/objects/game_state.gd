@@ -213,9 +213,6 @@ const CORNER_CELLS : Array[int] = [
 ##The number of pieces the Guerilla has left to place - initially, 66
 @export var guerilla_pieces_left : int = 66
 
-##The corner into which the Guerilla has placed their first piece - saved so that the Game State knows next to which corner next piece must be placed
-@export var first_placed_piece_corner : int = -1
-
 ##The COIN Checker that took a Guerilla Piece - this one will have to take all other available pieces
 @export var taking_coin_checker : int = -1
 
