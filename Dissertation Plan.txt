@@ -1,49 +1,12 @@
-Changes in Requirements:
-	-New Parameters
-	-Mention the "DRAW" Utility as another Evaluation parameter
-	Changes to Rules-Based Computer Player:
-		The initial configuration of Utility for the Players made them timid - the Guerilla did not 
-		want to place pieces in corners of COIN Checkers unless they were between COIN 
-		Checkers (which meant that the COIN would always win due to the Guerilla running out of pieces
+Experimental Setup:
+	-Mention that experiments in Excel Spreadsheet were not "Re-Run")
+	-Mention that the Process was "Realtime Priority" in Windows
+	-Mention my Hardware Specifications when discussing running the experiment
 
-Implementation:
-	-Mention GameStateAnalyzer
-	-Create Class Diagrams for GameState, GameStateAnalyzer, the UtilityComputerPlayer and MinimaxPlayer, as well
-	as the "Move" Class
-	-Mention Godot's use of Signals as the Observer pattern
-	-Discuss limitation of Experiment - Random Seed does NOT set (was found later in project), so the
-	results are NOT reproducible, therefore the setting of a Random Seed was removed
-	-Do flowchart, UML, text planning also suitable
-	-For modelling the game itself, go for class diagram, 
-	and write UML diagram of main classes - would be useful in dissertation, to explain how things are developed
-	-Copy in UML Diagrams
-	-Categorize UML Diagrams appropriately
-	-Discuss how there was a bug found - when there is no Minimax Profiles in existence, the User
-	cannot play Minimax. This, however, provided an extra avenue - experimenting with Different
-	Minimax Profiles meant the possibility of creating "Default" Minimax Profiles built into the game,
-	so that the User may play with them.
-	(e.g. "Easy", "Medium", "Hard")
-	-Mention the presence of a Memory Leak (for the Game State) with no obvious way to fix it, 
-	despite switching to Godot's Resource Type which purports to be automatically freed when there
-	are no references to a resource.
-	-Mention the reason for the memory leak - the "Move" Class extended "Object", and since many thousands
-	of moves were being analyzed my Minimax without being freed, this led to HUGE Memory usage.
-	This was fixed by making Move extend the Resource Class, which is automatically freed.
-	-Discuss inability to optimize Transposition Tables due to each Game State being an object, whose equality
-	is impossible in Godot due to them being references
-
-Tuning Step:
-	-Discuss next stage of tuning - two placements counting as one move for the Guerilla, and its
-	ramifications
-	-Discuss Intervals of Utility (by default 1, so all moves of utility within 1 or -1 are considered equal),
-	and mention how this could be something for future analysis. They would be another interesting 
-	parameter to tune. Explain how this was chosen partly for more variation of movements, and also
-	because, according to Godot, exact equality between floating point numbers (which are the utilities)
-	is impossible to find
-
-Project Plan Discussion:
-	-Mention that there was a "Dissertation Plan.txt" to which things were added as they came up, providing useful reminders for actual
-	thesis writing.
+Analysis:
+	-Discuss mean branching factor for COIN and Guerilla - there was no data about this
+	when research was being done, now it is known experimentally.
+	-Discuss Performance difference (time took to run) pre and post-tuning
 
 General:
 	-Add page numbers
@@ -55,88 +18,35 @@ General:
 	-Once the analysis is complete, don't forget the abstract
 	-Once everything is complete, make the links more concrete (e.g. not just "Section 7" for UCP, but e.g. "Section 7.3")
 		(In Requirements)
-
-Experimental Setup:
-	-Mention that experiments in Excel Spreadsheet were not "Re-Run")
-	-Clarify that, for Minimax, "By Utility" sorting means in DESCENDING order of Utility
-	
-	Preliminary Experiment:
-		-Mention that base Minimax Profile has 5000ms Timeout, which is constant
-		-Mention that a preliminary experiment was done for depth cutoff and sorting, but it was decided to redo it due to
-		lacking any useful metrics besides no. wins and draws. Furthermore, abysmal performance was found, particularly as the Guerilla,
-		so a new avenue of experimentation was decided upon - Turn lookahead.
-		-Then a smaller (10 games rather than 100) experiment was done with Turn-based Lookahead,
-		and Guerilla performance remained abysmal
-	Pre-Tuning Experiment:
-		-More Metrics:
-			1. Type of COIN Victories (by Guerilla Running out of Pieces or COIN Capturing all pieces)
-			2. Avg no. Turns per game, per COIN Victory, per Guerilla Victory, per Draw
-		-Added measures of how long Tournament took to run as measure of performance
-		-Mention my Hardware Specifications when discussing running the experiment
-		-A major issue found was that the Guerilla Player was at a disadvantage - their
-		placement of pieces counts as TWO separate moves, which uses up 2 plies of the
-		search tree, meaning it can look into the COIN's Player moves less, and thus be
-		less performant
-		-Therefore, the implementation was changed - the placement of Two Guerilla Pieces
-		counts as ONE Move
-		-Discuss Optimization of different order placement of pieces into same position 
-		and how that decreased searches
-		-Discuss Further Insights from the game itself that were gained:
-			-It is of great use to place pieces in corners between two COIN Checkers.
-			This was implied by not counting Pieces between Checkers as threatened, but from
-			own playing was an important step in winning (especially in the early game, when COIN
-			checkers are bunched up), so was incentivized as its own Evaluation Parameter,
-			different from the starting ones.
-			-It is of great use to "block off" movements of COIN Checkers, so for this
-			a new evaluation function was created for Minimax
-		-Discuss Major Minimax Issue that was fixed
-	Post-Tuning Experiment:
-		-Mention additional metrics devised:
-			1. No. COIN Checkers left in Draw and COIN Victory
-			2. Mean Branching Factor for COIN and Guerilla
-		-Mention the creation of Python Scripts to analyze Data from txts
-
-Analysis:
-	-Discuss mean branching factor for COIN and Guerilla - there was no data about this
-	when research was being done, now it is known experimentally.
-	-Discuss Performance difference (time took to run) pre and post-tuning
+	-Make the References align normally
+	-Check the Handbook to see if everything matches
 
 _______________________________________
 
 1 – Abstract
-1.	Extend on the nature of the game (2 players, asymmetric, one side COIN playing by rules similar to Checkers, another the Guerilla, playing in corners)
-2.	Explain my rationale – why am I doing this project?
-3.	Give the context of the project – briefly discuss GDScript, and why I chose a desktop project (more power & memory)
-4.	Explain what the Customizable Evaluation Function is
+1. Extend on the nature of the game (2 players, asymmetric, one side COIN playing by rules similar to Checkers, another the Guerilla, playing in corners)
+2. Explain my rationale – why am I doing this project?
+3. Give the context of the project – briefly discuss GDScript, and why I chose a desktop project (more power & memory)
+4. Explain what the Customizable Evaluation Function is
 
 2 – Background
-1.	When discussing the rules, mention that Guerilla Checkers is turn-based, with the two sides alternating Turns, the Guerilla Player going first
-2.	It’s not a corner of the board that pieces are placed on, it’s the intersection of 2 lines on the board
-3.	“Game ending criteria” – reword that to “Victory Conditions”
-4.	Discuss all characteristics – not just asymmetric, also turn-based, zero-sum, deterministic and perfect-information games
-5.	When talking about Game State being particular configuration of the game, emphasize that the full state of the world is visible
-6.	Mention the evaluation function (i.e., expand in Russell, Norvig that most games’ minimax trees are too deep to choose a move that wins the game, 
+1. When discussing the rules, mention that Guerilla Checkers is turn-based, with the two sides alternating Turns, the Guerilla Player going first
+2. It’s not a corner of the board that pieces are placed on, it’s the intersection of 2 lines on the board
+3. “Game ending criteria” – reword that to “Victory Conditions”
+4. Discuss all characteristics – not just asymmetric, also turn-based, zero-sum, deterministic and perfect-information games
+5. When talking about Game State being particular configuration of the game, emphasize that the full state of the world is visible
+6. Mention the evaluation function (i.e., expand in Russell, Norvig that most games’ minimax trees are too deep to choose a move that wins the game, 
 so instead an evaluation function has to be used, and the maximizer needs to maximize it, and minimizer minimize)
-7.	Remove the point about Neural Networks for why Minimax is best
-8.	For the “Performance can be improved by up to 50%”, cite Russell and Norvig right after the 50%
-9.	At some point discuss why studying Minimax for a game like Guerilla Checkers is of general interest
-10.	Remove “Issues of Minimax Performance” section, (and the Allis in 1994 reference), expanding on Point 6 instead – also, explain how and why the search tree being cut off is good – in a 	recursive function, have an argument that is subtracted by 1 each time, when it reaches 0, return, good because it reduces number of searches
-11.	Explain why Alpha-Beta Pruning increases performance by up to a Factor of 2
-12.	Shorten discussion of Markov Decision Processes, and Value and Policy Iteration
-13.	For “lack of literature” (if I keep that part) – elaborate “lack of data on optimal moves and strategies for Guerilla Checkers in particular”
-14.	Expand on Active Reinforcement learning – “how to operate well in it.” – in the context of Guerilla Checkers
-15.	“Guerilla Checkers” is a complex game – more nuance – “While Guerilla Checkers has a short ruleset, they still give rise to many unique scenarios, particularly in later turns of the game, 	making it less likely for Reinforcement learning to…”
-16.	Have picture for a Neural Network 
-17.	Emphasize that a Neural Network is evolved genetically, not a Genetic Algorithm being used
-18.	Emphasize that there are no datasets for good moves in Guerilla Checkers
-19.	I lack authoritative references, particularly on AI techniques – need to have some more to cite, perhaps
-
-3 – Requirements Analysis
-1.	For FR-2, link to the Rules-Based AI in the corresponding section
-2.	For FR-3, I should reword it better – the Parameters are Tunable, not adjustable, and each tunable parameter should be separate, with a link to the corresponding Non-Functional Requirement
-4.	Reword NFR-7 to “”, not them “Understanding” how things work
-5.	Somewhere in Project Management, discuss why I chose GitHub in particular to store my project on
-6.	For NFR-17, clarify that it is sorting of moves, and that it’s not future moves, but possible moves
-
-4 – Design of the Rules-Based Computer Player
-1.	Add a short introduction paragraph to discuss the Rules of this AI
+7. Remove the point about Neural Networks for why Minimax is best
+8. For the “Performance can be improved by up to 50%”, cite Russell and Norvig right after the 50%
+9. At some point discuss why studying Minimax for a game like Guerilla Checkers is of general interest
+10. Remove “Issues of Minimax Performance” section, (and the Allis in 1994 reference), expanding on Point 6 instead – also, explain how and why the search tree being cut off is good – in a 	recursive function, have an argument that is subtracted by 1 each time, when it reaches 0, return, good because it reduces number of searches
+11. Explain why Alpha-Beta Pruning increases performance by up to a Factor of 2
+12. Shorten discussion of Markov Decision Processes, and Value and Policy Iteration
+13. For “lack of literature” (if I keep that part) – elaborate “lack of data on optimal moves and strategies for Guerilla Checkers in particular”
+14. Expand on Active Reinforcement learning – “how to operate well in it.” – in the context of Guerilla Checkers
+15. “Guerilla Checkers” is a complex game – more nuance – “While Guerilla Checkers has a short ruleset, they still give rise to many unique scenarios, particularly in later turns of the game, 	making it less likely for Reinforcement learning to…”
+16. Have picture for a Neural Network 
+17. Emphasize that a Neural Network is evolved genetically, not a Genetic Algorithm being used
+18. Emphasize that there are no datasets for good moves in Guerilla Checkers
+19. I lack authoritative references, particularly on AI techniques – need to have some more to cite, perhaps
