@@ -5,32 +5,10 @@ Changes in Requirements:
 	-New Parameters
 	-Mention the "DRAW" Utility as another Evaluation parameter
 	Changes to Rules-Based Computer Player:
-		Reword the Rules-Based Computer Player:
-			1. Make it the Utility Comptuter Player (UCP), as it picks moves with the highest Utility, and
-			doesn't act on specific rules per se
-			2. Make it gain +1 Utility for taking a Guerilla Piece (as COIN), not for EVERY POSSIBLE TAKEABLE PIECE - reason being that the aim of the UCP is to create
-			a Player that thinks only IN THE CURRENT MOVE, and shouldn't think ahead - given that taking several Guerilla pieces is several moves, that would mean thinking several moves ahead
-			and so not applicable.
-			3. Make it gain -5 Utility (as COIN) for having a piece threatened by Guerillas - wasn't there before
-		
 		The initial configuration of Utility for the Players made them timid - the Guerilla did not 
 		want to place pieces in corners of COIN Checkers unless they were between COIN 
 		Checkers (which meant that the COIN would always win due to the Guerilla running out of pieces
-		
-		Therefore, utilities were altered somewhat:
-			1. Added a "is_draw()" method to the GameStateAnalyzer, and made its utility -50 for the Guerilla, so that it doesn't back itself into a corner
-			2. Programmed, explicitly (i.e. not using the GameStateAnalyzer), +10 Utility for if there are less COIN Checkers in the hypothetical game state than in the reality, to incentivize taking the
-			COIN Checker (this is in place of -10 Utility per COIN Checker present)
-	-(Write in Full UCP Parameters)
 
-	
-Introduction:
-	-Mention that the Framework used for Implementation was the Godot Game Engine, Version 4.2.1
-	-Mention that it was a Systems Evaluation (focus on AI Performance and parameters,
-	want an objective experiment, User Testing would be subjective and limited)
-	-Briefly explain what Guerilla Checkers is (Turn-Based Two-Player Deterministic Asymmetric of
-	Perfect Information)
-	
 Implementation:
 	-Mention GameStateAnalyzer
 	-Create Class Diagrams for every class (with signals)
@@ -76,6 +54,7 @@ General:
 	-Fix the Rules images' checkers to be on BLACK Cells, and emphasize that they are on BLACK cells
 	-Discuss in the dissertation that Depth 5 was used - the risk of Depth 10 being too slow came true, so Depth 5
 	was used instead for all experiments with Class 2.
+	-Once the analysis is complete, don't forget the abstract
 
 Experimental Setup:
 	-Mention that experiments in Excel Spreadsheet were not "Re-Run")
@@ -130,26 +109,7 @@ _______________________________________
 3.	Give the context of the project – briefly discuss GDScript, and why I chose a desktop project (more power & memory)
 4.	Explain what the Customizable Evaluation Function is
 
-2 – Introduction
-1.	Link to the Rules (In general, I should maybe have a set of links between pages for easy navigation) from the Intro
-2.	Discuss how the game is of perfect information
-3.	Discuss how the game is non-random (no dice rolls, no random moves)
-4.	Give rationale for why it is interesting to explore an AI algorithm for Guerilla Checkers
-5.	Discuss which systems evaluation I’m doing in particular – in my case, that’s AIs playing against each other
-6.	Explain systems evaluation - want an objective measure of AI capabilities (and which parameter is most consequential) - users would be of varying abilities and would give subjective responses, and would only play a small number of games (but having AIs play against each other would mean hundreds of games)
-7.	Reference the Godot Game Engine when I introduce it – do so for any new concept I introduce
-8.	Expand on what a Utility Computer Player is
-9.	Explain why I am using Alpha-Beta Pruning
-10.	Talk about the different Minimax parameters in relation to the game, otherwise they are ok
-11.	Expand on why I chose an additional utility for Checkers threatened on the edge
-12.	Explain what I mean by the sorting algorithm – the Sorting of Possible Moves
-13.	When referring to a different part of the report, write in e.g. “Section 4.3”, not just “see the Evaluation Strategy” section – I should also add a link for easy navigation
-14.	Give concrete objectives - all other things remaining constant (Level 3 Cutoff, Simple Minimax Profile, Simple Move Sorting Algorithm), which of the Parameters – Cutoff Depth, Minimax Profile, Move Sorting Algorithm – provides the most positive impact on performance, against a Utility Computer Player, and against other AIs with different parameters?
-15.	My User Interface should be for testing purposes – not a requirement per se
-16.	Explain how the Minimax Algorithm will be optimized (Alpha-Beta Pruning)
-17.	Explain why I am doing a 10-second timeout, and why in general I chose it – maybe 1 second is better, idk
- 
-3 – Background
+2 – Background
 1.	When discussing the rules, mention that Guerilla Checkers is turn-based, with the two sides alternating Turns, the Guerilla Player going first
 2.	It’s not a corner of the board that pieces are placed on, it’s the intersection of 2 lines on the board
 3.	“Game ending criteria” – reword that to “Victory Conditions”
@@ -170,7 +130,7 @@ _______________________________________
 18.	Emphasize that there are no datasets for good moves in Guerilla Checkers
 19.	I lack authoritative references, particularly on AI techniques – need to have some more to cite, perhaps
 
-5 – Requirements Analysis
+3 – Requirements Analysis
 1.	For FR-2, link to the Rules-Based AI in the corresponding section
 2.	For FR-3, I should reword it better – the Parameters are Tunable, not adjustable, and each tunable parameter should be separate, with a link to the corresponding Non-Functional Requirement
 3.	Reword NFR-6 to “The System shall provide visual feedback to the User about the opponent’s actions” through animations
@@ -178,8 +138,5 @@ _______________________________________
 5.	Somewhere in Project Management, discuss why I chose GitHub in particular to store my project on
 6.	For NFR-17, clarify that it is sorting of moves, and that it’s not future moves, but possible moves
 
-7 – Design of the Rules-Based Computer Player
+4 – Design of the Rules-Based Computer Player
 1.	Add a short introduction paragraph to discuss the Rules of this AI
-
-
-
