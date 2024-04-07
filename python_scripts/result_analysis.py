@@ -136,8 +136,17 @@ def order_guerillas(dataset : pd.DataFrame):
 
 #Order the COINs from Best to Worst
 def order_coins(dataset : pd.DataFrame):
-    pass
+    unique_coins = dataset[COIN_PLAYER_LABEL].unique()
 
-dataset = pd.read_csv(EVAL_FUNCTION_PATH)
+    data = []
 
-print(order_guerillas(dataset))
+    for coin in unique_coins:
+        coin_rows = get_coin_games(dataset,coin)
+        data.append([coin,(coin_rows[COIN_RUNOUT_VICTORIES_LABEL].sum()) + (2 * coin_rows[COIN_CAPTURE_VICTORIES_LABEL].sum())])
+    
+    labels = ["COIN Player","Total Competence"]
+
+    new_dataframe = pd.DataFrame(data,columns=labels)
+    new_dataframe = new_dataframe.sort_values("Total Competence",ascending=False)
+
+    return new_dataframe
