@@ -1,15 +1,7 @@
-Analysis:
-	-Discuss mean branching factor for COIN and Guerilla - there was no data about this
-	when research was being done, now it is known experimentally.
-	-Discuss Performance difference (time took to run) pre and post-tuning
-
 General:
 	-Add page numbers
 	-Upload into the repo (at the end) the different Minimax Profiles I experimented with
-	-Mention that the Minimax Profiles used are linked in the Repo
 	-Give a link to the repo
-	-Discuss in the dissertation that Depth 5 was used - the risk of Depth 10 being too slow came true, so Depth 5
-	was used instead for all experiments with Class 2.
 	-Once the analysis is complete, don't forget the abstract
 	-Once everything is complete, make the links more concrete (e.g. not just "Section 7" for UCP, but e.g. "Section 7.3")
 		(In Requirements)
@@ -17,6 +9,7 @@ General:
 	-Check the Handbook to see if everything matches
 	-Put Dissertation Versions into Appendix
 	-Put Project Log into the Appendix
+	-Upload CSV results to Repo
 _______________________________________
 
 1 – Abstract
