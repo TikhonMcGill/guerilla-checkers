@@ -118,7 +118,21 @@ def generate_heatmap(dataset : pd.DataFrame):
 
 #Order the Guerillas from Best to Worst
 def order_guerillas(dataset : pd.DataFrame):
-    pass
+    unique_guerillas = dataset[GUERILLA_PLAYER_LABEL].unique()
+
+    data = []
+
+    for guerilla in unique_guerillas:
+        guerilla_rows = get_guerilla_games(dataset,guerilla)
+        data.append([guerilla,guerilla_rows[GUERILLA_VICTORIES_LABEL].sum()])
+    
+    labels = ["Guerilla Player","Total Wins"]
+
+    new_dataframe = pd.DataFrame(data,columns=labels)
+    new_dataframe = new_dataframe.sort_values("Total Wins",ascending=False)
+
+    return new_dataframe
+
 
 #Order the COINs from Best to Worst
 def order_coins(dataset : pd.DataFrame):
@@ -126,5 +140,4 @@ def order_coins(dataset : pd.DataFrame):
 
 dataset = pd.read_csv(EVAL_FUNCTION_PATH)
 
-generate_heatmap(dataset)
-print(get_guerilla_performance_quotient(dataset,"Aggressive"))
+print(order_guerillas(dataset))
