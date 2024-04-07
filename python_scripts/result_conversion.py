@@ -168,21 +168,3 @@ def convert_folder(path : str) -> pd.DataFrame:
     }
 
     return pd.DataFrame(dictionary)
-
-data = convert_folder("D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/Text Results/Phase 1 - Single-placement Guerilla Moves/1 - Lookahead Experiment Results")
-data2 = convert_folder("D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/Text Results/Phase 1 - Single-placement Guerilla Moves//2 - Move Sorting Class Results")
-data3 = convert_folder("D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/Text Results/Phase 1 - Single-placement Guerilla Moves/3 - Depth Cutoff Class Results")
-data4 = convert_folder("D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/Text Results/Phase 1 - Single-placement Guerilla Moves/4 - General Evaluation Function Class Results")
-
-data5 = convert_folder("D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/Text Results/Phase 2 - Double-Placement Guerilla Moves/1 - Move Sorting Results")
-data6 = convert_folder("D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/Text Results/Phase 2 - Double-Placement Guerilla Moves/2 - Depth Cutoff Results")
-data7 = convert_folder("D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/Text Results/Phase 2 - Double-Placement Guerilla Moves/3 - Evaluation Function Results")
-
-data.to_csv("pre_tune_turn_lookahead.csv",index=False)
-data2.to_csv("pre_tune_move_sort.csv",index=False)
-data3.to_csv("pre_tune_depth_cutoff.csv",index=False)
-data4.to_csv("pre_tune_eval_functions.csv",index=False)
-
-data5.to_csv("post_tune_move_sort.csv",index=False)
-data6.to_csv("post_tune_depth_cutoff.csv",index=False)
-data7.to_csv("post_tune_eval_functions.csv",index=False)

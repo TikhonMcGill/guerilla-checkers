@@ -1,8 +1,3 @@
-Experimental Setup:
-	-Mention that experiments in Excel Spreadsheet were not "Re-Run")
-	-Mention that the Process was "Realtime Priority" in Windows
-	-Mention my Hardware Specifications when discussing running the experiment
-
 Analysis:
 	-Discuss mean branching factor for COIN and Guerilla - there was no data about this
 	when research was being done, now it is known experimentally.
@@ -20,7 +15,8 @@ General:
 		(In Requirements)
 	-Make the References align normally
 	-Check the Handbook to see if everything matches
-
+	-Put Dissertation Versions into Appendix
+	-Put Project Log into the Appendix
 _______________________________________
 
 1 – Abstract
