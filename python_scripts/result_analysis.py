@@ -1,4 +1,7 @@
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import textwrap
 
 TOTAL_GAMES_LABEL = "Total Games"
 TOURNAMENT_TIME_LABEL = "Tournament Time (ms)"
@@ -50,6 +53,9 @@ def calculate_advantage_coefficient(dataset : pd.DataFrame,guerilla_player : str
     coin_victories = my_coin_rows[COIN_VICTORIES_LABEL].sum()
 
     non_draw_games = guerilla_victories + coin_victories
+    #If ARE NO non-draw games (i.e. all games are draws), assume the two opponents are evenly-matched and return 0
+    if non_draw_games == 0:
+        return 0
 
     #The Advantage Coefficient = (guerilla victories - coin victories) / non draw games
     #When Advantage Coefficient is 1 or close, the Guerilla did really well, when it's -1 or close, COIN did really well,
@@ -59,9 +65,15 @@ def calculate_advantage_coefficient(dataset : pd.DataFrame,guerilla_player : str
 
 #Generate a new Dataframe, with rows being Guerilla Players, and columns being COIN Players, with values being advantage
 #coefficients
-def generate_heatmap(dataset : pd.DataFrame) -> pd.DataFrame:
+def generate_heatmap_dataframe(dataset : pd.DataFrame) -> pd.DataFrame:
     player_names = dataset[GUERILLA_PLAYER_LABEL].unique()
-    
+
+    #This line of code ensures the label text autowraps for the heatmap
+    player_name_labels = []
+    for p in player_names:
+        new_name = "\n".join(textwrap.wrap(p,20))
+        player_name_labels.append(new_name)
+
     data = []
 
     for guerilla in player_names:
@@ -70,7 +82,24 @@ def generate_heatmap(dataset : pd.DataFrame) -> pd.DataFrame:
             new_row.append(calculate_advantage_coefficient(dataset,guerilla,coin))
         data.append(new_row)
     
-    return pd.DataFrame(data, player_names, player_names)
+    return pd.DataFrame(data, player_name_labels, player_name_labels)
 
+#Generate a Heatmap, based on the Dataframe
+def generate_heatmap(dataset : pd.DataFrame):
+    heatmap_data = generate_heatmap_dataframe(dataset)
 
-dataset = pd.read_csv(EVAL_FUNCTION_PATH)
+    plt.subplots(figsize=(10,10))
+    plt.subplots_adjust(left=0.3)
+    plt.yticks(rotation=45)
+    plt.tight_layout()
+
+    ax = sns.heatmap(
+        heatmap_data,cmap="bwr", vmin=-1, vmax=1, annot=True,
+        square=True,annot_kws={"fontsize":12,"fontweight":"bold"}
+    )
+    ax.xaxis.tick_top()
+
+dataset = pd.read_csv(MOVE_SORT_PATH)
+heatmap = generate_heatmap(dataset)
+
+plt.savefig("plot.svg")
