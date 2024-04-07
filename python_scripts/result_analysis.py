@@ -57,4 +57,20 @@ def calculate_advantage_coefficient(dataset : pd.DataFrame,guerilla_player : str
 
     return float(guerilla_victories - coin_victories) / non_draw_games
 
+#Generate a new Dataframe, with rows being Guerilla Players, and columns being COIN Players, with values being advantage
+#coefficients
+def generate_heatmap(dataset : pd.DataFrame) -> pd.DataFrame:
+    player_names = dataset[GUERILLA_PLAYER_LABEL].unique()
+    
+    data = []
+
+    for guerilla in player_names:
+        new_row = []
+        for coin in player_names:
+            new_row.append(calculate_advantage_coefficient(dataset,guerilla,coin))
+        data.append(new_row)
+    
+    return pd.DataFrame(data, player_names, player_names)
+
+
 dataset = pd.read_csv(EVAL_FUNCTION_PATH)
