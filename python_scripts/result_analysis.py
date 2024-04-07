@@ -15,6 +15,7 @@ COIN_BRANCHING_FACTOR_LABEL = "Mean COIN Branching Factor"
 GUERILLA_PLAYER_LABEL = "Guerilla Player"
 COIN_PLAYER_LABEL = "COIN Player"
 
+MEAN_COIN_VICTORY_TURNS_LABEL = "Mean Turns per COIN Victory"
 
 DEPTH_CUTOFF_PATH = "D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/CSV Results/depth_cutoff_results.csv"
 EVAL_FUNCTION_PATH = "D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/CSV Results/eval_function_results.csv"
@@ -35,22 +36,26 @@ def calculate_mean_branching_factor(dataset : pd.DataFrame) -> tuple:
 
     return mean_guerilla_factor, mean_coin_factor
 
+#Get all data entries for games between a specific Guerilla and a Specific COIN
+def get_all_specific_games(dataset : pd.DataFrame,guerilla : str,coin:str):
+     #Get all Rows where the Guerilla is the one passed in
+    my_guerilla_rows = dataset.loc[dataset[GUERILLA_PLAYER_LABEL] == guerilla]
+    
+    #Return all Rows where the COIN is the one passed in (in my experiment, I only had each type of AI play
+    #against each other one once, but this function should work for multiple takes, BUT IS UNTESTED)
+    return my_guerilla_rows.loc[my_guerilla_rows[COIN_PLAYER_LABEL] == coin]
+
 #Calculate Advantage Coefficient between two Players in a Dataset
 def calculate_advantage_coefficient(dataset : pd.DataFrame,guerilla_player : str,coin_player : str) -> float:
     #In my implementation, AIs don't play against themselves, so if the two players are the same, return 0
     if guerilla_player == coin_player:
         return 0.0
 
-    #Get all Rows where the Guerilla is the one passed in
-    my_guerilla_rows = dataset.loc[dataset[GUERILLA_PLAYER_LABEL] == guerilla_player]
-
-    #Get all Rows where the COIN is the one passed in (in my experiment, I only had each type of AI play
-    #against each other one once, but this function should work for multiple takes, BUT IS UNTESTED)
-    my_coin_rows = my_guerilla_rows.loc[my_guerilla_rows[COIN_PLAYER_LABEL] == coin_player]
+    all_games = get_all_specific_games(dataset,guerilla_player,coin_player)
 
     #Get total Guerilla Victories, total COIN Victories, and total non-Draw games
-    guerilla_victories = my_coin_rows[GUERILLA_VICTORIES_LABEL].sum()
-    coin_victories = my_coin_rows[COIN_VICTORIES_LABEL].sum()
+    guerilla_victories = all_games[GUERILLA_VICTORIES_LABEL].sum()
+    coin_victories = all_games[COIN_VICTORIES_LABEL].sum()
 
     non_draw_games = guerilla_victories + coin_victories
     #If ARE NO non-draw games (i.e. all games are draws), assume the two opponents are evenly-matched and return 0
@@ -100,6 +105,26 @@ def generate_heatmap(dataset : pd.DataFrame):
     ax.xaxis.tick_top()
 
 dataset = pd.read_csv(MOVE_SORT_PATH)
-heatmap = generate_heatmap(dataset)
 
-plt.savefig("plot.svg")
+text = """
+    Mean time for a No Sorting Guerilla against UCP: %.1f
+    Mean time for a End-Take-Other Guerilla against UCP: %.1f
+    Mean time for a By Utility Guerilla against UCP: %.1f
+    Mean time for a Random Shuffle Guerilla against UCP: %.1f
+    Mean turns for Coin victory (No Sorting against UCP): %.1f
+    Mean turns for Coin victory (End-Take-Other against UCP): %.1f
+    Mean turns for Coin victory (By Utility against UCP): %.1f
+    Mean turns for Coin victory (Random Shuffle against UCP): %.1f
+
+""" % (
+    get_all_specific_games(dataset,"No Sorting","Utility Computer Player")[TOURNAMENT_TIME_LABEL].mean(),
+    get_all_specific_games(dataset,"End-Take-Other","Utility Computer Player")[TOURNAMENT_TIME_LABEL].mean(),
+    get_all_specific_games(dataset,"By Utility","Utility Computer Player")[TOURNAMENT_TIME_LABEL].mean(),
+    get_all_specific_games(dataset,"Random Shuffle","Utility Computer Player")[TOURNAMENT_TIME_LABEL].mean(),
+    get_all_specific_games(dataset,"No Sorting","Utility Computer Player")[MEAN_COIN_VICTORY_TURNS_LABEL].mean(),
+    get_all_specific_games(dataset,"End-Take-Other","Utility Computer Player")[MEAN_COIN_VICTORY_TURNS_LABEL].mean(),
+    get_all_specific_games(dataset,"By Utility","Utility Computer Player")[MEAN_COIN_VICTORY_TURNS_LABEL].mean(),
+    get_all_specific_games(dataset,"Random Shuffle","Utility Computer Player")[MEAN_COIN_VICTORY_TURNS_LABEL].mean()
+)
+
+print(text)
