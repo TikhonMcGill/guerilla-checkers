@@ -24,6 +24,8 @@ enum MOVE_SORT{
 
 @export var turn_lookahed : bool = false ##Whether the Minimax Player using this profile does its search in terms of TURNS, not Moves (e.g. a Guerilla's Turn is made up of 2 moves - placing 2 pieces)
 
+@export var utility_interval : float = 1.0 ##The Utility Interval of Minimax - Moves within this Interval of the Best move will be considered equal
+
 #Evaluation Function Values
 @export var victory_utility : float = 1.0 ##How much utility will be added to a Game State if, from the perspective of the Guerilla, they win (i.e. no more COIN Pieces remain)
 @export var defeat_utility : float = -1.0 ##How much utility will be added to a Game State if, from the perspective of the Guerilla, they lose (no more pieces on the board or no more pieces left to place)
@@ -35,3 +37,7 @@ enum MOVE_SORT{
 @export var guerilla_threatened_checkers_utility : float = 1.0 ##Multiply the number of COIN Checkers threatened by Guerilla Pieces by this amount, and add to total Utility
 @export var edge_threatened_checkers_utility : float = 1.0 ##Multiply the number of COIN Checkers present on Edge (and Corner) Cells by this amount, add to total Utility
 @export var threatened_guerilla_pieces_utility : float = -1.0 ##Multiply the number of Guerilla Pieces threatened by COIN Checkers by this amount, add to total Utility
+
+@export var guerilla_pieces_between_coin_checkers_utility : float = 0 ##Multiply the no. Guerilla Pieces in Corners between non-repeating Pairs of COIN Checkers by this amount, and add to total Utility
+@export var coin_checkers_taken_utility : float = 1.0 ##Multiply the no. COIN Checkers taken by this amount and add to total Utility
+@export var blocked_coin_checker_movements_utility : float = 1.0 ##Multiply the no. Blocked COIN Checker movements by this amount and add to total Utility

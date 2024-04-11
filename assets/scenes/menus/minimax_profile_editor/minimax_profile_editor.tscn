@@ -64,11 +64,6 @@ script = ExtResource("1_onhyv")
 layout_mode = 2
 placeholder_text = "Enter the name of the Minimax Profile"
 
-[node name="SameNameLabel" type="Label" parent="PanelContainer/MarginContainer/MinimaxEditor"]
-visible = false
-layout_mode = 2
-text = "The name you entered is already being used by a different Minimax Profile!"
-
 [node name="MoveSortingPrompt" type="Label" parent="PanelContainer/MarginContainer/MinimaxEditor"]
 layout_mode = 2
 text = "Select how moves are sorted by Minimax:"
@@ -105,6 +100,17 @@ step = 10.0
 value = 5000.0
 allow_greater = true
 suffix = "Milliseconds"
+
+[node name="IntervalPrompt" type="Label" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+text = "Adjust the Utility Interval of Minimax"
+
+[node name="IntervalSpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor"]
+layout_mode = 2
+step = 0.1
+value = 1.0
+allow_greater = true
+prefix = "Utility Interval: "
 
 [node name="TurnLookaheadCheckbox" type="CheckBox" parent="PanelContainer/MarginContainer/MinimaxEditor"]
 layout_mode = 2
@@ -189,6 +195,27 @@ step = 0.1
 allow_greater = true
 allow_lesser = true
 prefix = "Threatened Guerilla Pieces Utility:"
+
+[node name="GuerillaPiecesBetweenCheckerCornersUtilitySpinbox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+prefix = "Guerilla Pieces Between COIN Checkers Utility:"
+
+[node name="COINCheckersTakenUtilitySpinBox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+prefix = "COIN Checkers Taken Utility:"
+
+[node name="BlockedCOINCheckerMovementsUtilitySpinbox" type="SpinBox" parent="PanelContainer/MarginContainer/MinimaxEditor/EvaluationsContainer/VBoxContainer"]
+layout_mode = 2
+step = 0.1
+allow_greater = true
+allow_lesser = true
+prefix = "Blocked COIN Checker Movements Utility:"
 
 [node name="ConfirmButton" type="Button" parent="PanelContainer/MarginContainer/MinimaxEditor"]
 layout_mode = 2

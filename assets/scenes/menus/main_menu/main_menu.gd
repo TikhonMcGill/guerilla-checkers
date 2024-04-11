@@ -21,8 +21,6 @@ const TOURNAMENT_STARTING_SETTINGS_PATH := "res://assets/scenes/menus/tournament
 @onready var games_spin_box: SpinBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer/HBoxContainer/GamesSpinBox
 @onready var rapid_play_check_box: CheckBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/TournamentContainer/RapidPlayCheckBox
 
-@onready var random_seed: SpinBox = $PanelContainer/MarginContainer/ScrollContainer/VBoxContainer/RandomSeed
-
 func _ready() -> void:
 	_populate_minimax_select(guerilla_minimax_profile_select)
 	_populate_minimax_select(coin_minimax_profile_select)
@@ -69,16 +67,12 @@ func _load_settings():
 	tournament_check_box.button_pressed = saved_selections.tournament
 	games_spin_box.value = saved_selections.tournament_games
 	rapid_play_check_box.button_pressed = saved_selections.rapid_tournament
-	
-	random_seed.value = saved_selections.random_seed
 
 func _save_settings():
 	var saved_settings : SavedSelections = GameManager.saved_selections
 	
 	saved_settings.guerilla_player_name = guerilla_name_edit.text
 	saved_settings.coin_player_name = counterinsurgent_name_edit.text
-	
-	saved_settings.random_seed = random_seed.value
 	
 	_save_guerilla_select()
 	_save_coin_select()
@@ -91,8 +85,6 @@ func _save_settings():
 
 func _set_settings():
 	_save_settings()
-	
-	seed(random_seed.value)
 	
 	if guerilla_player_select.selected == 0:
 		GameManager.guerilla_player_type = GameManager.PLAYER_TYPE.HUMAN

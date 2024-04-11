@@ -8,7 +8,7 @@ class_name GameState
 ##Note - the term "COIN" and "Counterinsurgent" is used interchangeably, and means the
 ##Player that is playing using Checkers.
 
-##Emitted when the Guerilla Places a piece - used for animation
+##Emitted when the Guerilla Places their pieces - used for animation
 signal guerilla_piece_placed(corner : int)
 
 ##Emitted when the COIN Player moves a piece - used for animation
@@ -28,9 +28,8 @@ signal game_over(winner : PLAYER)
 
 ##The State of the Game - used for determining possible moves in [code]get_possible_moves()[/code]
 enum STATE{
-	FIRST_TURN, ##It is the first Turn, and the Guerilla can place their first piece in ANY corner
-	FIRST_GUERILLA_PIECE, ##The Guerilla places their first piece - it has to be in a corner adjacent to one where a Guerilla Piece was already placed
-	SECOND_GUERILLA_PIECE, ##The Guerilla places their second piece - it has to be in a corner adjacent to the first piece placed
+	FIRST_GUERILLA_TURN, ##It is the first Turn, and the Guerilla can place their first piece in ANY corner
+	SUBSEQUENT_GUERILLA_TURN, ##The Guerilla places their first piece - it has to be in a corner adjacent to one where a Guerilla Piece was already placed
 	COIN_TURN, ##It is the COIN Player's turn (entered after SECOND_GUERILLA_PIECE)
 	COIN_TOOK_PIECE, ##This State is entered when the COIN Player takes a Guerilla's Piece, and is only left when there are no more Pieces to Place
 	GUERILLA_VICTORY, ##The Guerilla is victorious - no more COIN Checkers remain
@@ -209,13 +208,10 @@ const CORNER_CELLS : Array[int] = [
 #endregion
 
 ##The current game state - initially, the First Turn
-@export var game_state : STATE = STATE.FIRST_TURN : set = _set_state
+@export var game_state : STATE = STATE.FIRST_GUERILLA_TURN : set = _set_state
 
 ##The number of pieces the Guerilla has left to place - initially, 66
 @export var guerilla_pieces_left : int = 66
-
-##The corner into which the Guerilla has placed their first piece - saved so that the Game State knows next to which corner next piece must be placed
-@export var first_placed_piece_corner : int = -1
 
 ##The COIN Checker that took a Guerilla Piece - this one will have to take all other available pieces
 @export var taking_coin_checker : int = -1
@@ -266,35 +262,34 @@ func get_corner_between_cells(cell1: int, cell2: int) -> int:
 	
 	return -1
 
-##Get the Possible Corners into which the Guerilla Player can place their pieces
-func get_placeable_corners():
-	#If it's the first turn, the Guerilla can place their piece anywhere, so return all corners
-	if game_state == STATE.FIRST_TURN:
-		return CORNERS
-	#If it's not the Guerilla's First Turn, they can place their first piece in any corner orthogonally-adjacent to
-	#an existing piece, so we must go through all pieces and get empty adjacent corners, ensuring no duplicates
-	elif game_state == STATE.FIRST_GUERILLA_PIECE:
-		var result : Array[int] = []
+##Get Possible Pairs of Corners into which the Guerilla Player can place their pieces
+func get_possible_corner_pairs() -> Array:
+	var pairs = []
+	
+	var first_corners : Array = []
+	if game_state == STATE.FIRST_GUERILLA_TURN:
+		first_corners = CORNERS
+	elif game_state == STATE.SUBSEQUENT_GUERILLA_TURN:
 		for occupied_corner in guerilla_piece_positions:
 			var occupied_corner_neighbors = get_adjacent_corners(occupied_corner)
 			for neighbor in occupied_corner_neighbors:
-				if is_corner_occupied(neighbor) == false and result.has(neighbor) == false:
-					result.append(neighbor)
-		
-		return result
-	#When the Guerilla places their second piece, it must be adjacent to the one initially-placed
-	elif game_state == STATE.SECOND_GUERILLA_PIECE:
-		var result : Array[int] = []
-		var first_piece_neighbors = get_adjacent_corners(first_placed_piece_corner)
-		for neighbor in first_piece_neighbors:
-			if is_corner_occupied(neighbor) == false:
-				result.append(neighbor)
-		
-		return result
+				if is_corner_occupied(neighbor) == false and first_corners.has(neighbor) == false:
+					first_corners.append(neighbor)
+	else:
+		return []
 	
-	#In any other Game State, it's not the Guerilla's Turn (or they have won/lost), 
-	#so they can't place any pieces, so return empty array
-	return []
+	for corner in first_corners:
+		var draw = true
+		for n in get_adjacent_corners(corner):
+			#Make sure there's corners aren't duplicated twice
+			if is_corner_occupied(n) == false:
+				draw = false
+				if pairs.has([n,corner]) == false:
+					pairs.append([corner,n])
+		if draw == true:
+			pairs.append([corner,-1]) #If no free adjacent corners after first placement, then this is a draw corner
+	
+	return pairs
 
 ##Get the Possible Cells into which the COIN Player can move their Checker
 func get_moveable_cells(from_cell : int):
@@ -341,7 +336,7 @@ func get_moveable_cells(from_cell : int):
 
 ##Get the Current player (i.e. the one whose turn it is)
 func get_current_player() -> PLAYER:
-	if game_state == STATE.FIRST_TURN or game_state == STATE.FIRST_GUERILLA_PIECE or game_state == STATE.SECOND_GUERILLA_PIECE:
+	if game_state == STATE.FIRST_GUERILLA_TURN or game_state == STATE.SUBSEQUENT_GUERILLA_TURN:
 		return PLAYER.GUERILLA
 	elif game_state == STATE.COIN_TURN or game_state == STATE.COIN_TOOK_PIECE:
 		return PLAYER.COIN
@@ -395,19 +390,20 @@ func is_coin_victorious() -> bool:
 
 ##A Method to place a Guerilla Piece, updating the Game State accordingly
 func place_guerilla_piece(corner : int) -> void:
-	var placeable_corners = get_placeable_corners()
+	assert((corner >= 0 or corner == -1) and corner <= 48,"Corner to place into must be between 0 and 48")
 	
-	assert(corner >= 0 and corner <= 48,"Corner to place into must be between 0 and 48")
-	assert(corner in placeable_corners,"Corner to place into must be valid")
+	guerilla_piece_placed.emit(corner)
+	
+	#If the corner to be placed in is -1, that's the Draw Corner, so we're drawed
+	if corner == -1:
+		game_state = STATE.DRAW
+		return
 	
 	#Decrement number of pieces left by 1, since a Piece was placed
 	guerilla_pieces_left -= 1
 	
 	#Place the Piece in the corner
 	guerilla_piece_positions.append(corner)
-	
-	#Emit the signal that the piece was placed
-	guerilla_piece_placed.emit(corner)
 	
 	#Check if any COIN Checkers were captured after the Guerilla Placed their piece
 	check_coin_checker_capture()
@@ -417,19 +413,12 @@ func place_guerilla_piece(corner : int) -> void:
 	#If the Guerilla is victorious (i.e. no more COIN Pieces remain), switch to the Guerilla Victory Game State
 	if is_guerilla_victorious() == true:
 		game_state = STATE.GUERILLA_VICTORY
-	#If the Guerilla has placed the first piece (be it in the first turn or otherwise), switch to the Second Piece State
-	#Also, set the first piece placed variable, since we need to know to which first piece the second piece must be
-	#adjacent
-	elif game_state == STATE.FIRST_TURN or game_state == STATE.FIRST_GUERILLA_PIECE:
-		game_state = STATE.SECOND_GUERILLA_PIECE
-		first_placed_piece_corner = corner
-	elif game_state == STATE.SECOND_GUERILLA_PIECE:
-		#If the Guerilla still has more pieces to place, it is now the COIN's Turn
-		if guerilla_pieces_left > 0:
-			game_state = STATE.COIN_TURN
-		#If the Guerilla has no more pieces to place, per the rules, the COIN is victorious
-		else:
-			game_state = STATE.COIN_VICTORY
+	
+	if guerilla_pieces_left > 0:
+		game_state = STATE.COIN_TURN
+	#If the Guerilla has no more pieces to place, per the rules, the COIN is victorious
+	else:
+		game_state = STATE.COIN_VICTORY
 
 ##A Method to move a COIN Checker, updating the Game State accordingly
 func move_coin_checker(from_cell : int,to_cell : int) -> void:
@@ -464,7 +453,7 @@ func move_coin_checker(from_cell : int,to_cell : int) -> void:
 		game_state = STATE.COIN_VICTORY
 	#If the COIN Player moved their Checker without taking anything, it becomes the Guerilla's Turn
 	elif game_state == STATE.COIN_TURN:
-		game_state = STATE.FIRST_GUERILLA_PIECE
+		game_state = STATE.SUBSEQUENT_GUERILLA_TURN
 	elif game_state == STATE.COIN_TOOK_PIECE:
 		#Get the Possible Cells the COIN could move to after it moved to the position 
 		#(since the State is "Coin Took Piece", these are the Cells which have a Guerilla Piece between them
@@ -474,7 +463,7 @@ func move_coin_checker(from_cell : int,to_cell : int) -> void:
 		#If there are no movable positions (i.e. the COIN Player can take no more Guerilla Pieces), it's now
 		#the Guerilla's Turn
 		if len(movable_positions) == 0:
-			game_state = STATE.FIRST_GUERILLA_PIECE
+			game_state = STATE.SUBSEQUENT_GUERILLA_TURN
 		else:
 			#If there ARE movable positions (i.e. the COIN Player can take more pieces), it's still the COIN Player's
 			#turn, since, per the rules of Guerilla Checkers, while taking the first piece is optional, if the COIN
@@ -488,15 +477,10 @@ func get_possible_moves() -> Array[Move]:
 	var moves : Array[Move] = []
 	
 	if current_player == PLAYER.GUERILLA:
-		var placeable_corners = get_placeable_corners()
-		for p in placeable_corners:
-			moves.append(GuerillaPiecePlacementMove.new(p))
+		var placeable_pairs = get_possible_corner_pairs()
 		
-		#If it's the Second Piece of the Guerilla to place, and they have no pieces
-		#to place in, then it's a draw
-		if len(moves) == 0 and game_state == STATE.SECOND_GUERILLA_PIECE:
-			game_state = STATE.DRAW
-		
+		for p in placeable_pairs:
+			moves.append(GuerillaPiecePlacementMove.new(p[0],p[1]))
 	elif current_player == PLAYER.COIN:
 		if game_state == STATE.COIN_TURN:
 			for checker in coin_checker_positions:
@@ -513,7 +497,8 @@ func get_possible_moves() -> Array[Move]:
 ##Method to take a specific move, given by the Move class
 func take_move(move : Move) -> void:
 	if move is GuerillaPiecePlacementMove:
-		place_guerilla_piece(move.corner)
+		place_guerilla_piece(move.first_corner)
+		place_guerilla_piece(move.second_corner)
 	elif move is COINCheckerMovementMove:
 		move_coin_checker(move.cell_from,move.cell_to)
 

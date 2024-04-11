@@ -15,8 +15,6 @@ var profile : MinimaxProfile = preload("res://assets/resources/placeholder_minim
 
 var analyzer : GameStateAnalyzer = GameStateAnalyzer.new()
 
-@onready var move_timer: Timer = $MoveTimer
-
 class MinimaxOutput:
 	var evaluation : float
 	var move : Move
@@ -27,12 +25,7 @@ class MinimaxOutput:
 
 ##Pick the best move for Minimax
 func do_move() -> void:
-	move_timer.start()
-	
 	var output := _minimax(profile.cutoff_depth,true,game_state,-INF,INF,profile.timeout)
-	
-	#await move_timer.timeout
-	
 	move_taken.emit(output.move)
 
 ##A Method to get the Actions in a State, with sorting of moves
@@ -140,6 +133,12 @@ func _get_state_utility(state : GameState) -> float:
 	if is_equal_approx(profile.threatened_guerilla_pieces_utility,0) == false:
 		utility += (analyzer.count_threatened_guerilla_pieces(state) * profile.threatened_guerilla_pieces_utility)
 	
+	if is_equal_approx(profile.guerilla_pieces_between_coin_checkers_utility,0) == false:
+		utility += (analyzer.count_guerilla_pieces_between_coin_checkers(state) * profile.guerilla_pieces_between_coin_checkers_utility)
+	
+	if is_equal_approx(profile.coin_checkers_taken_utility,0) == false:
+		utility += (analyzer.count_coin_checkers_taken(state) * profile.coin_checkers_taken_utility)
+	
 	#Since the Utility is from the perspective of the Guerilla, if the Player is a Counterinsurgent,
 	#we negate the utility (the advantage of the guerilla is the disadvantage of the COIN, and vice versa)
 	
@@ -186,7 +185,7 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 		
 		for a in _get_actions(start_state):
 			var end_time := Time.get_ticks_msec()
-			
+
 			var time_taken := end_time - start_time
 			time_left -= time_taken
 			
@@ -195,16 +194,17 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 			
 			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
-			if evaluation > best_evaluation:
-				best_evaluation = evaluation
+			if evaluation > (best_evaluation + profile.utility_interval):
+				best_evaluation = evaluation + profile.utility_interval
 				best_moves = [a]
-			elif is_equal_approx(evaluation,best_evaluation) == true:
+			elif _is_within_interval(evaluation,best_evaluation) == true:
 				best_moves.append(a)
 			
 			alpha = max(alpha,evaluation)
 			
 			if beta <= alpha or time_left <= 0:
-				return MinimaxOutput.new(evaluation,best_moves.pick_random())
+				break
+				#return MinimaxOutput.new(evaluation,best_moves.pick_random())
 		
 		return MinimaxOutput.new(best_evaluation,best_moves.pick_random())
 	else:
@@ -219,24 +219,28 @@ func _minimax(depth:int,maximizing:bool,start_state : GameState,alpha:float,beta
 		
 		for a in _get_actions(start_state):
 			var end_time := Time.get_ticks_msec()
-			
+
 			var time_taken := end_time - start_time
 			time_left -= time_taken
 			
 			var result := _get_result(start_state,a)
 			var cutoff := _get_cutoff(result)
 			
-			var evaluation : int = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
+			var evaluation : float = _minimax(depth-cutoff,_is_my_turn_in_state(result),result,alpha,beta,time_left).evaluation
 			
-			if evaluation < worst_evaluation:
-				worst_evaluation = evaluation
+			if evaluation < (worst_evaluation - profile.utility_interval):
+				worst_evaluation = evaluation - profile.utility_interval
 				best_moves = [a]
-			elif is_equal_approx(evaluation,worst_evaluation) == true:
+			elif _is_within_interval(evaluation,worst_evaluation) == true:
 				best_moves.append(a)
 			
 			beta = min(beta,evaluation)
 			
 			if beta <= alpha or time_left <= 0:
-				return MinimaxOutput.new(evaluation,best_moves.pick_random())
+				break
+				#return MinimaxOutput.new(evaluation,best_moves.pick_random())
 		
 		return MinimaxOutput.new(worst_evaluation,best_moves.pick_random())
+
+func _is_within_interval(evaluation : float,comparison : float) -> bool:
+	return (evaluation <= comparison + profile.utility_interval) and (evaluation >= comparison - profile.utility_interval)

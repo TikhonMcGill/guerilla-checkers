@@ -18,7 +18,7 @@ Phase 3 (March 8th to April 5th)
 Running the Experiment (March 8th to March 11th, 2024):
 	1. Ensure that there is a set Random Seed, to make any random result reproducible
 	2. Carry out the Experiment per the Methodology Section
-	Analyzing the Data (March 11th to March 15th, 2024):
+Analyzing the Data (March 11th to March 15th, 2024):
 	1. Write down the data into tables
 	2. Produce meaningful charts from the data tables
 	3. Based on the data and charts, produce conclusions

@@ -1,202 +1,30 @@
-Discuss how Neural Networks would be an interesting way of computing evaluation functions, for the future.
+General:
+	-Check the Handbook to see if everything matches
 
-Find the papers where the Minimax and other Algorithms were coined, and cite THEM - that should give me more marks
+Before Submission:
+	-Upload CSV results to Repo
+	-Check the Handbook AGAIN to see if everything matches
+	-Upload into the repo the different Minimax Profiles I experimented with
 
-Also, discuss how another improvement would've been creating separate evaluation functions for Guerillas and COINS, since while the game is zero-sum, it is still asymmetric,
-and disadvantage is not one-to-one.
+_______________________________________
 
-Consider also measuring how long it took for a Tournament to run, as a measure of efficiency etc.
-(In total, and an average time per game)
-
-Upload into the repo (at the end) the different Minimax Profiles I experimented with
-
-Discuss the Random Computer Player (for testing, mostly)
-
-Do flowchart, UML, text planning also suitable
-
-For modelling the game itself, go for class diagram, and write UML diagram of main classes - would be useful in dissertation, to explain how things are developed
-
-Fix the Rules images' checkers to be on BLACK Cells, and emphasize that they are on BLACK cells
-
-Look through all Self-Analyses and determine important points
-
-Copy UML Diagrams
-
-Categorize UML Diagrams appropriately
-
-Consider how to demonstrate it for Project
-
-Mention that timeout is now in milliseconds, given how long it takes
-
-As future extension, mention how I could've experimented with non-linear utility functions (as all were just multiples of board game situations)
-
-Mention the "DRAW" Utility as another Evaluation parameter
-
-Discuss in the dissertation that Depth 5 was used - the risk of Depth 10 being too slow came true, so Depth 5
-was used instead for all experiments with Class 2.
-
-Clarify that, for Minimax, "By Utility" sorting means in DESCENDING order of Utility
-
-Mention that Seed = 1 for Testing
-
-Reword the Rules-Based Computer Player:
-	1. Make it the Utility-Based Comptuter Player (UBCP)
-	2. Make it gain +1 Utility for taking a Guerilla Piece (as COIN), not for EVERY POSSIBLE TAKEABLE PIECE - reason being that the aim of the UCP is to create
-	a Player that thinks only IN THE CURRENT MOVE, and shouldn't think ahead - given that taking several Guerilla pieces is several moves, that would mean thinking several moves ahead
-	and so not applicable.
-	3. Make it gain -5 Utility (as COIN) for having a piece threatened by Guerillas - wasn't there before
-
-Discuss that, theoretically, it would be faster to do lookup of point adjacencies than to calculate them
-
-Consider, potentially, discussion of Constants:
-https://godotforums.org/d/22919-do-constants-use-up-memory-in-object-instances/6
-
-Mention that Assertions in Godot are NOT compiled into the Release build, which means that any slowdowns in performance from assertions are
-negated when the Game is compiled.
-
-Convert all important objects etc. into UML Diagrams (and update existing Class Diagrams for all important Classes, namely GameState and GameStateAnalyzer)
-
-Mention Godot's use of Signals as the Observer pattern
-
-Discuss discrepancies between Project Plan and implementation
-
-The initial configuration of Utility for the Players made them timid - the Guerilla did not want to place pieces in corners of COIN Checkers unless they were between COIN Checkers (which meant that the COIN would always win due to the Guerilla running out of pieces
-
-Therefore, utilities were altered somewhat:
-	1. Added a "is_draw()" method to the GameStateAnalyzer, and made its utility -50 for the Guerilla, so that it doesn't back itself into a corner
-	2. Programmed, explicitly (i.e. not using the GameStateAnalyzer), +10 Utility for if there are less COIN Checkers in the hypothetical game state than in the reality, to incentivize taking the
-	COIN Checker (this is in place of -10 Utility per COIN Checker present)
-
-Copy Requirements in, but don't change them for now
-
-Change any requirements to reflect the new reality, and mention that in the document
-
-Could remove Parameter of Guerilla Pieces Left (reason being it's guaranteed to go down, no way for COIN to affect it)
-
-Experimentally Find Timeout Such that Base Minmax Player (the unchanged parameters) wins against the Utility Computer Player 100 times in a tournament as both COIN and Guerilla (i.e. 200-game tournament)
-
-Could swap sides in Tournament with each game, rather than just playing all games as same sides
-
-Put in picture of configuration of board, and the hard coding of things
-
-Create Class Diagrams for every class
-
-Add page numbers
-
-Could also have, for MinMax move sorting, by Ascending order of Utility as well
-
-Discuss how there was a bug found - when there is no Minimax Profiles in existence, the User
-cannot play Minimax. This, however, provided an extra avenue - experimenting with Different
-Minimax Profiles meant the possibility of creating "Default" Minimax Profiles built into the game,
-so that the User may play with them.
-
-Mention the presence of a Memory Leak (for the Game State) with no obvious way to fix it, 
-despite switching to Godot's Resource Type which purports to be automatically freed when there
-are no references to a resource.
-
-Mention the reason for the memory leak - the "Move" Class extended "Object", and since many thousands
-of moves were being analyzed my Minimax without being freed, this led to HUGE Memory usage.
-This was fixed by making Move extend the Resource Class, which is automatically freed.
-
-Change "By Utility" to "By Descending Utility" for better understanding maybe?
-
-(Mention that experiments in Excel Spreadsheet were not "Re-Run")
-
-Mention that informal experiment was done with Turn-based, rather than move-based Lookahead, and it yielded
-no noticeable performance improvement (but made Minimax considerably slower, even with Depth 3 Lookahead)
-
-Mention that base Minimax Profile has 5000ms Timeout, which is constant
-Mention my Hardware Specifications when discussing running the experiment
-
-Mention that a preliminary experiment was done for depth cutoff and sorting, but it was decided to redo it due to
-lacking any useful metrics besides no. wins and draws. Furthermore, abysmal performance was found, particularly as the Guerilla,
-so a new avenue of experimentation was decided upon - Turn lookahead. 
-
-Mention that, for no. turns, this does NOT include the starting turn (i.e. count begins from 0, as it were)
-
-_____________________________________________
-
-1 – Abstract
-1.	Extend on the nature of the game (2 players, asymmetric, one side COIN playing by rules similar to Checkers, another the Guerilla, playing in corners)
-2.	Explain my rationale – why am I doing this project?
-3.	Give the context of the project – briefly discuss GDScript, and why I chose a desktop project (more power & memory)
-4.	Explain what the Customizable Evaluation Function is
-
-2 – Introduction
-1.	Link to the Rules (In general, I should maybe have a set of links between pages for easy navigation) from the Intro
-2.	Discuss how the game is of perfect information
-3.	Discuss how the game is non-random (no dice rolls, no random moves)
-4.	Give rationale for why it is interesting to explore an AI algorithm for Guerilla Checkers
-5.	Discuss which systems evaluation I’m doing in particular – in my case, that’s AIs playing against each other
-6.	Explain systems evaluation - want an objective measure of AI capabilities (and which parameter is most consequential) - users would be of varying abilities and would give subjective responses, and would only play a small number of games (but having AIs play against each other would mean hundreds of games)
-7.	Reference the Godot Game Engine when I introduce it – do so for any new concept I introduce
-8.	Expand on what a Utility Computer Player is
-9.	Explain why I am using Alpha-Beta Pruning
-10.	Talk about the different Minimax parameters in relation to the game, otherwise they are ok
-11.	Expand on why I chose an additional utility for Checkers threatened on the edge
-12.	Explain what I mean by the sorting algorithm – the Sorting of Possible Moves
-13.	When referring to a different part of the report, write in e.g. “Section 4.3”, not just “see the Evaluation Strategy” section – I should also add a link for easy navigation
-14.	Give concrete objectives - all other things remaining constant (Level 3 Cutoff, Simple Minimax Profile, Simple Move Sorting Algorithm), which of the Parameters – Cutoff Depth, Minimax Profile, Move Sorting Algorithm – provides the most positive impact on performance, against a Utility Computer Player, and against other AIs with different parameters?
-15.	My User Interface should be for testing purposes – not a requirement per se
-16.	Explain how the Minimax Algorithm will be optimized (Alpha-Beta Pruning)
-17.	Explain why I am doing a 10-second timeout, and why in general I chose it – maybe 1 second is better, idk
- 
-3 – Background
-1.	When discussing the rules, mention that Guerilla Checkers is turn-based, with the two sides alternating Turns, the Guerilla Player going first
-2.	It’s not a corner of the board that pieces are placed on, it’s the intersection of 2 lines on the board
-3.	“Game ending criteria” – reword that to “Victory Conditions”
-4.	Discuss all characteristics – not just asymmetric, also turn-based, zero-sum, deterministic and perfect-information games
-5.	When talking about Game State being particular configuration of the game, emphasize that the full state of the world is visible
-6.	Mention the evaluation function (i.e., expand in Russell, Norvig that most games’ minimax trees are too deep to choose a move that wins the game, so instead an evaluation function has to 	be used, and the maximizer needs to maximize it, and minimizer minimize)
-7.	Remove the point about Neural Networks for why Minimax is best
-8.	For the “Performance can be improved by up to 50%”, cite Russell and Norvig right after the 50%
-9.	At some point discuss why studying Minimax for a game like Guerilla Checkers is of general interest
-10.	Remove “Issues of Minimax Performance” section, (and the Allis in 1994 reference), expanding on Point 6 instead – also, explain how and why the search tree being cut off is good – in a 	recursive function, have an argument that is subtracted by 1 each time, when it reaches 0, return, good because it reduces number of searches
-11.	Explain why Alpha-Beta Pruning increases performance by up to a Factor of 2
-12.	Shorten discussion of Markov Decision Processes, and Value and Policy Iteration
-13.	For “lack of literature” (if I keep that part) – elaborate “lack of data on optimal moves and strategies for Guerilla Checkers in particular”
-14.	Expand on Active Reinforcement learning – “how to operate well in it.” – in the context of Guerilla Checkers
-15.	“Guerilla Checkers” is a complex game – more nuance – “While Guerilla Checkers has a short ruleset, they still give rise to many unique scenarios, particularly in later turns of the game, 	making it less likely for Reinforcement learning to…”
-16.	Have picture for a Neural Network 
-17.	Emphasize that a Neural Network is evolved genetically, not a Genetic Algorithm being used
-18.	Emphasize that there are no datasets for good moves in Guerilla Checkers
-19.	I lack authoritative references, particularly on AI techniques – need to have some more to cite, perhaps
- 
-4 – Framework Review
-1.	Elaborate what a Software Framework is
-2.	Need to elaborate why it should be a standalone .exe
-3.	See if GDScript is compiled to Binary or to a Virtual Machine
-4.	I should emphasize how GDScript works with other languages – bindings? How?
-
-5 – Requirements Analysis
-1.	For FR-2, link to the Rules-Based AI in the corresponding section
-2.	For FR-3, I should reword it better – the Parameters are Tunable, not adjustable, and each tunable parameter should be separate, with a link to the corresponding Non-Functional Requirement
-3.	Reword NFR-6 to “The System shall provide visual feedback to the User about the opponent’s actions” through animations
-4.	Reword NFR-7 to “The System shall provide visual feedback to the User”, not them “Understanding” how things work
-5.	Somewhere in Project Management, discuss why I chose GitHub in particular to store my project on
-6.	For NFR-17, clarify that it is sorting of moves, and that it’s not future moves, but possible moves
-
-7 – Use Case Discussion
-1.	The first two main use cases I devised should be reworded to work for testing purposes (i.e. to make sure rules work by seeing them in UI, and seeing an AI in action by playing against it)
- 
-7 – Design of the Rules-Based Computer Player
-1.	Add a short introduction paragraph to discuss the Rules of this AI
-
-8 – Methodology
-1.	I should avoid repeating things in the Introduction, and instead focus on the Main Deliverables (i.e. what I should implement)
-2.	Phrase my phases as objectives, not as “will be modelled”
-3.	Explain why these customizable parameters are the most important – these are the ones that will be changed and evaluated (also, link back to the Functional Requirements)
-4.	Remove “in earnest”
-5.	Make the explanation an 8.1 – Introduction section
-6.	“As described above” should be “As described above in 8.1”
-7.	Elaborate on what the sorting algorithm is of – sorting of possible moves
-8.	“Will be retained” (this is from me) should be reworded to “Will be selected as the best”
-
-9 – PLES Issues
-1.	Some of the PLES things (e.g. Logs and Version Control) should be moved into the Project Management
-
-Additionally, could discuss using a Neural Network to get the Utility of a Particular State given the
-Parameters, rather than just multiplying.
-
-
-
+1 – Background
+1. When discussing the rules, mention that Guerilla Checkers is turn-based, with the two sides alternating Turns, the Guerilla Player going first
+3. “Game ending criteria” – reword that to “Victory Conditions”
+4. Discuss all characteristics – not just asymmetric, also turn-based, zero-sum, deterministic and perfect-information games
+5. When talking about Game State being particular configuration of the game, emphasize that the full state of the world is visible
+6. Mention the evaluation function (i.e., expand in Russell, Norvig that most games’ minimax trees are too deep to choose a move that wins the game, 
+so instead an evaluation function has to be used, and the maximizer needs to maximize it, and minimizer minimize)
+7. Remove the point about Neural Networks for why Minimax is best
+8. For the “Performance can be improved by up to 50%”, cite Russell and Norvig right after the 50%
+9. At some point discuss why studying Minimax for a game like Guerilla Checkers is of general interest
+10. Remove “Issues of Minimax Performance” section, (and the Allis in 1994 reference), expanding on Point 6 instead – also, explain how and why the search tree being cut off is good – in a 	recursive function, have an argument that is subtracted by 1 each time, when it reaches 0, return, good because it reduces number of searches
+11. Explain why Alpha-Beta Pruning increases performance by up to a Factor of 2
+12. Shorten discussion of Markov Decision Processes, and Value and Policy Iteration
+13. For “lack of literature” (if I keep that part) – elaborate “lack of data on optimal moves and strategies for Guerilla Checkers in particular”
+14. Expand on Active Reinforcement learning – “how to operate well in it.” – in the context of Guerilla Checkers
+15. “Guerilla Checkers” is a complex game – more nuance – “While Guerilla Checkers has a short ruleset, they still give rise to many unique scenarios, particularly in later turns of the game, 	making it less likely for Reinforcement learning to…”
+16. Have picture for a Neural Network 
+17. Emphasize that a Neural Network is evolved genetically, not a Genetic Algorithm being used
+18. Emphasize that there are no datasets for good moves in Guerilla Checkers
+19. I lack authoritative references, particularly on AI techniques – need to have some more to cite, perhaps

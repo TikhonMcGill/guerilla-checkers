@@ -22,7 +22,7 @@ var analyzer : GameStateAnalyzer = GameStateAnalyzer.new()
 
 func do_move():
 	var best_move = choose_best_move()
-	move_taken.emit(choose_best_move())
+	move_taken.emit(best_move)
 
 func choose_best_move() -> Move:
 	var best_moves : Array[Move] = []
