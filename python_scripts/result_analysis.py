@@ -142,9 +142,9 @@ def order_coins(dataset : pd.DataFrame):
 
     for coin in unique_coins:
         coin_rows = get_coin_games(dataset,coin)
-        data.append([coin,(coin_rows[COIN_RUNOUT_VICTORIES_LABEL].sum()) + (2 * coin_rows[COIN_CAPTURE_VICTORIES_LABEL].sum())])
+        data.append([coin,(coin_rows[COIN_RUNOUT_VICTORIES_LABEL].sum()) + (2 * coin_rows[COIN_CAPTURE_VICTORIES_LABEL].sum()),coin_rows[COIN_RUNOUT_VICTORIES_LABEL].sum(),coin_rows[COIN_CAPTURE_VICTORIES_LABEL].sum(),coin_rows[COIN_VICTORIES_LABEL].sum()])
     
-    labels = ["COIN Player","Total Competence"]
+    labels = ["COIN Player","Total Competence","Total Runout Victories","Total Capture Victories","Total Victories"]
 
     new_dataframe = pd.DataFrame(data,columns=labels)
     new_dataframe = new_dataframe.sort_values("Total Competence",ascending=False)
