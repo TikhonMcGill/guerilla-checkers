@@ -25,10 +25,6 @@ MEAN_GUERILLA_VICTORY_TURNS_LABEL = "Mean Turns per Guerilla Victory"
 MEAN_COIN_CHECKERS_PER_COIN_WIN_LABEL = "Mean COIN Checkers left per COIN Victory"
 MEAN_COIN_CHECKERS_PER_DRAW_LABEL = "Mean COIN Checkers left per Draw"
 
-DEPTH_CUTOFF_PATH = "D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/CSV Results/depth_cutoff_results.csv"
-EVAL_FUNCTION_PATH = "D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/CSV Results/eval_function_results.csv"
-MOVE_SORT_PATH = "D:/Tisha's Files/University (Better Organized)/Year 4/Honors Project/Stage 2 - Dissertation/Experimentation Results/CSV Results/move_sort_results.csv"
-
 #Calculate total no. games in the Dataset
 def calculate_total_games(dataset : pd.DataFrame) -> int:
     return dataset[TOTAL_GAMES_LABEL].sum()
