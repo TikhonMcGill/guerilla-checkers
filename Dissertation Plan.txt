@@ -1,6 +1,5 @@
 General:
 	-Check the Handbook to see if everything matches
-	
 
 Before Submission:
 	-Upload CSV results to Repo

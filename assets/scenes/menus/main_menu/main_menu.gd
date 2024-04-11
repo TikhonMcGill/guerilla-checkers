@@ -211,5 +211,5 @@ func _on_swap_players_button_pressed():
 	var guerilla_name := guerilla_name_edit.text
 	var coin_name := counterinsurgent_name_edit.text
 	
-	guerilla_name_edit.text = coin_name.replacen("COIN","Guerilla")
-	counterinsurgent_name_edit.text = guerilla_name.replacen("Guerilla","COIN")
+	counterinsurgent_name_edit.text = guerilla_name.replace("Guerilla","COIN")
+	guerilla_name_edit.text = coin_name.replace("COIN","Guerilla")
