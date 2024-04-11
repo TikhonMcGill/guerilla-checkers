@@ -1,0 +1,21 @@
+Guerilla Player,COIN Player,Total Games,Guerilla Victories,Total COIN Victories,COIN Capture Victories,COIN Runout Victories,Draws,Mean Turns Per Game,Mean Turns per Guerilla Victory,Mean Turns per COIN Victory,Mean Turns per Draw,Mean COIN Checkers left per COIN Victory,Mean COIN Checkers left per Draw,Tournament Time (ms),Time Per Game (ms),Mean Guerilla Branching Factor,Mean COIN Branching Factor
+By Utility,End-Take-Other,100,8,35,3,32,57,43.49,47.13,59.2,33.32,2.69,3.93,4499812,44998.12,20.24,7.07
+By Utility,No Sorting,100,4,44,7,37,52,42.87,47.25,56.05,31.37,4.11,4.81,2922578,29225.78,18.48,7.49
+By Utility,Random Shuffle,100,1,45,8,37,54,41.58,64,55.62,29.44,3.42,4.91,2642330,26423.3,19.02,7.27
+By Utility,Utility Computer Player,100,0,38,6,32,62,40.85,,55.79,31.68,4.5,4.92,2173835,21738.35,17.8,9.11
+End-Take-Other,By Utility,100,4,45,6,39,51,43.09,50.75,56.04,31.04,2.71,4.16,4402590,44025.9,20.25,7.12
+End-Take-Other,No Sorting,100,0,48,11,37,52,42.55,,52.79,33.08,4.23,4.6,2892487,28924.87,19.11,7.42
+End-Take-Other,Random Shuffle,100,9,40,7,33,51,41.19,38.89,54.38,31.24,3.95,4.39,2655703,26557.03,19.13,7.39
+End-Take-Other,Utility Computer Player,100,1,31,5,26,68,37.51,54,55.42,29.09,4.35,5.07,1996360,19963.6,17.6,9.22
+No Sorting,By Utility,100,9,16,7,9,75,33.19,43.11,37.94,30.97,3.13,3.41,2094170,20941.7,20.84,7.47
+No Sorting,End-Take-Other,100,17,16,9,7,67,30.57,39.76,30.94,28.13,4.06,3.73,2079762,20797.62,20.66,7.86
+No Sorting,Random Shuffle,100,17,21,8,13,62,33.19,43.65,40.67,27.77,3.9,4.16,872706,8727.06,20.65,7.55
+No Sorting,Utility Computer Player,100,0,8,3,5,92,27.66,,41.38,26.46,4.38,5.04,453352,4533.52,19.37,10.3
+Random Shuffle,By Utility,100,20,13,4,9,67,34.97,40.2,45,31.45,3.08,3.45,2219358,22193.58,21.38,7.07
+Random Shuffle,End-Take-Other,100,12,15,6,9,73,32.07,42.17,40.13,28.74,3.33,3.81,2101421,21014.21,20.57,7.22
+Random Shuffle,No Sorting,100,14,22,6,16,64,37.31,41.64,48.73,32.42,3.41,3.92,1027310,10273.1,20.42,7.3
+Random Shuffle,Utility Computer Player,100,0,6,4,2,94,25.91,,24.33,26,5.5,5.04,391007,3910.07,18.12,10.76
+Utility Computer Player,By Utility,100,36,64,3,61,0,57.13,50.22,61,,1.55,,2343333,23433.33,25.52,4.53
+Utility Computer Player,End-Take-Other,100,45,55,2,53,0,57.01,50.84,62.04,,1.42,,2509818,25098.18,26.18,4.45
+Utility Computer Player,No Sorting,100,11,89,3,86,0,60.77,49,62.21,,2.22,,536038,5360.38,23.69,5.46
+Utility Computer Player,Random Shuffle,100,19,81,4,77,0,59.77,49.84,62.09,,2.12,,386063,3860.63,23.64,5.51
