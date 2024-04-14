@@ -37,6 +37,14 @@ There are, therefore, Python scripts for working with the results, in the "pytho
 "result_analysis.py" contains a host of helper methods that I used in my dissertation for analysis - they might be of use in future implementations, and
 are decently commented.
 
+### 1.4 - Minimax Profiles
+
+The Different Configurations of Minimax that I used for the experiment are in the "minimax_profiles" folder - to use them, launch the Project once, 
+and then go to your User folder (on Windows, Users/YOUR_USERNAME/Appdata/Roaming/Guerilla Checkers/), and copy the "minimax_profiles" folder into them. 
+
+Then, restart the Application, and you should have the Minimax Profiles show up! You can then select them by choosing one of your players to be a Minimax
+Player, and then choosing a Profile for them.
+
 ## 2 - Rapid Tournaments
 
 In the Implementation, two players can play a "Tournament" against each other, which is a repeated number of games (the number of games is set by the User), with a final tally at the end. Sides do not swap in a Tournament. 

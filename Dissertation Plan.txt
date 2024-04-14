@@ -3,4 +3,3 @@ General:
 
 Before Submission:
 	-Check the Handbook AGAIN to see if everything matches
-	-Upload into the repo the different Minimax Profiles I experimented with

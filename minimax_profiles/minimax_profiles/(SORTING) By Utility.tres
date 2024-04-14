@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="MinimaxProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://assets/scenes/player/minimax_player/minimax_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+profile_name = "(SORTING) By Utility"
+cutoff_depth = 3
+move_sorting = 2
+timeout = 5000.0
+turn_lookahed = false
+victory_utility = 0.0
+defeat_utility = 0.0
+draw_utility = 0.0
+pieces_left_utility = 0.0
+pieces_on_board_utility = 1.0
+checkers_utility = -11.0
+guerilla_threatened_checkers_utility = 0.0
+edge_threatened_checkers_utility = 0.0
+threatened_guerilla_pieces_utility = 0.0
