@@ -54,6 +54,7 @@ func _populate_minimax_select(select : OptionButton) -> void:
 	select.clear()
 	for profile : MinimaxProfile in GameManager.minimax_profiles:
 		select.add_item(profile.profile_name)
+	
 
 func _load_settings():
 	var saved_selections : SavedSelections = GameManager.saved_selections
