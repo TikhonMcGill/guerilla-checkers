@@ -116,7 +116,7 @@ func _initialize_corners():
 			
 			#Subtract half of the Corner's size, so that it is in the middle of
 			#the corner
-			placement_position -= Vector2i(tile_size,tile_size)/8
+			placement_position -= _get_corner_size()/2
 			
 			var corner := _create_corner(placement_position)
 			
@@ -134,6 +134,10 @@ func _initialize_labels():
 	current_player_label.text = "Current Player: Guerilla"
 	current_player_label.add_theme_font_size_override("font_size",tile_size/2)
 	current_player_label.position = Vector2i(0,8 * tile_size)
+
+##Method to get the size of a corner, based on the size of a tile
+func _get_corner_size() -> Vector2i:
+	return Vector2i(tile_size/3,tile_size/3)
 
 ##Method to write in the label which player's turn it is
 func show_current_player(player : GameState.PLAYER):
@@ -160,10 +164,9 @@ func _create_tile(_tile_col : Color,_tile_pos : Vector2i) -> Tile:
 ##Create a Corner at the selected position, its color dictated by the export variable
 func _create_corner(_corner_pos : Vector2i) -> Corner:
 	var new_corner : Corner = CORNER_SCENE.instantiate()
-	new_corner.size = Vector2i(tile_size/4,tile_size/4)
+	new_corner.size = _get_corner_size()
 	
 	new_corner.global_position = _corner_pos
-	
 	
 	new_corner.corner_pressed.connect(handle_corner_pressed)
 	
