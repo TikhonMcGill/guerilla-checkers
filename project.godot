@@ -15,6 +15,8 @@ run/main_scene="res://assets/scenes/menus/main_menu/main_menu.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Guerilla Checkers"
 config/features=PackedStringArray("4.2", "GL Compatibility")
+boot_splash/bg_color=Color(0.347817, 0.347817, 0.347817, 1)
+boot_splash/image="res://splash_screen.png"
 config/icon="res://assets/resources/Icon.png"
 config/windows_native_icon="res://assets/resources/icon.ico"
 
